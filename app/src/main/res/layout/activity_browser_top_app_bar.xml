@@ -45,7 +45,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.tachibana.downloader.ui.customview.NestedWebView
-            android:id="@+id/web_view"
+            android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:focusable="true"

@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- just switched the top browser app to gravity bottom and change the progress to above input to fix the overlap issue -->
+<?xml version="1.0" encoding="utf-8"?><!-- just switched the top browser app to gravity bottom and change the progress to above input to fix the overlap issue -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.tachibana.downloader.ui.browser.BrowserViewModel" />
@@ -12,12 +12,12 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
-        android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         tools:context=".ui.browser.BrowserActivity">
 
         <WebView
-            android:id="@+id/web_view"
+            android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="?attr/actionBarSize"
@@ -25,25 +25,27 @@
             android:focusableInTouchMode="true" />
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/bottom_bar"
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:background="?attr/toolbarColor">
+
             <include
                 android:id="@+id/progress"
                 layout="@layout/browser_progress_bar"
                 app:viewModel="@{viewModel}" />
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/toolbarColor"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:transitionName="actionBar"
-                app:popupTheme="?attr/popupTheme"
-                android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
                 android:focusable="true"
+                android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
+                android:transitionName="actionBar"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="?attr/popupTheme"
                 tools:ignore="UnusedAttribute">
 
                 <include

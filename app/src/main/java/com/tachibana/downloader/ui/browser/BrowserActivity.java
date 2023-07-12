@@ -54,7 +54,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.tachibana.downloader.R;
 import com.tachibana.downloader.core.model.data.entity.BrowserBookmark;
 import com.tachibana.downloader.core.utils.Utils;
-import com.tachibana.downloader.databinding.ActivityBrowserBottomAppBarBinding;
+import com.tachibana.downloader.databinding.ABrowserBottomAppBarBinding;
 import com.tachibana.downloader.databinding.ActivityBrowserTopAppBarBinding;
 import com.tachibana.downloader.ui.FragmentCallback;
 import com.tachibana.downloader.ui.SendTextToClipboard;
@@ -75,8 +75,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public class BrowserActivity extends AppCompatActivity
-    implements FragmentCallback
-{
+        implements FragmentCallback {
     @SuppressWarnings("unused")
     private static final String TAG = BrowserActivity.class.getSimpleName();
 
@@ -95,12 +94,11 @@ public class BrowserActivity extends AppCompatActivity
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         if (!Utils.isWebViewAvailable(this)) {
             Toast.makeText(getApplicationContext(),
-                    R.string.webview_is_required,
-                    Toast.LENGTH_SHORT)
+                            R.string.webview_is_required,
+                            Toast.LENGTH_SHORT)
                     .show();
             finish();
         }
@@ -134,23 +132,20 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
 
         disposables.clear();
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         observeDownloadRequests();
     }
 
-    private void observeDownloadRequests()
-    {
+    private void observeDownloadRequests() {
         disposables.add(viewModel.observeDownloadRequests()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((request) -> {
@@ -159,8 +154,7 @@ public class BrowserActivity extends AppCompatActivity
                 }));
     }
 
-    private void showAddDownloadDialog(String url)
-    {
+    private void showAddDownloadDialog(String url) {
         if (url == null)
             return;
 
@@ -172,8 +166,7 @@ public class BrowserActivity extends AppCompatActivity
         startActivityForResult(i, 0);
     }
 
-    private void handleUrlFetchState(BrowserViewModel.UrlFetchState fetchState)
-    {
+    private void handleUrlFetchState(BrowserViewModel.UrlFetchState fetchState) {
         isCurrentPageBookmarked = false;
         invalidateOptionsMenu();
         if (fetchState == BrowserViewModel.UrlFetchState.PAGE_FINISHED) {
@@ -181,8 +174,7 @@ public class BrowserActivity extends AppCompatActivity
         }
     }
 
-    private void checkIsCurrentPageBookmarked()
-    {
+    private void checkIsCurrentPageBookmarked() {
         disposables.add(viewModel.isCurrentPageBookmarked()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -197,8 +189,7 @@ public class BrowserActivity extends AppCompatActivity
         );
     }
 
-    private String getUrlFromIntent()
-    {
+    private String getUrlFromIntent() {
         Intent i = getIntent();
         if (i != null) {
             if (i.getData() != null)
@@ -210,11 +201,10 @@ public class BrowserActivity extends AppCompatActivity
         return null;
     }
 
-    private void initView()
-    {
+    private void initView() {
         if (viewModel.pref.browserBottomAddressBar()) {
-            ActivityBrowserBottomAppBarBinding binding =
-                    DataBindingUtil.setContentView(this, R.layout.activity_browser_bottom_app_bar);
+            ABrowserBottomAppBarBinding binding =
+                    DataBindingUtil.setContentView(this, R.layout.a_browser_bottom_app_bar);
             binding.setLifecycleOwner(this);
             binding.setViewModel(viewModel);
             setSupportActionBar(binding.toolbar); // change this to toolbar instead of bottomBar
@@ -237,8 +227,7 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState)
-    {
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(TAG_DOUBLE_BACK_PRESSED, doubleBackPressed);
         outState.putBoolean(TAG_IS_CURRENT_PAGE_BOOKMARKED, isCurrentPageBookmarked);
         webView.saveState(outState);
@@ -246,8 +235,7 @@ public class BrowserActivity extends AppCompatActivity
         super.onSaveInstanceState(outState);
     }
 
-    private void initWebView()
-    {
+    private void initWebView() {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
             webView.setAnimationCacheEnabled(false);
             webView.setAlwaysDrawnWithCacheEnabled(false);
@@ -271,8 +259,7 @@ public class BrowserActivity extends AppCompatActivity
         viewModel.initWebView(webView);
     }
 
-    private void initAddressBar()
-    {
+    private void initAddressBar() {
         KeyboardVisibilityEvent.setEventListener(this, this, (isOpen) -> {
             if (!isOpen)
                 addressLayout.clearFocus();
@@ -291,14 +278,15 @@ public class BrowserActivity extends AppCompatActivity
 
         addressInput.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 toggleClearButton(s.length() > 0 && addressInput.hasFocus());
             }
         });
@@ -315,32 +303,27 @@ public class BrowserActivity extends AppCompatActivity
         });
     }
 
-    private void toggleClearButton(boolean show)
-    {
+    private void toggleClearButton(boolean show) {
         addressLayout.setEndIconVisible(show);
     }
 
-    private void toggleMenuButtons(boolean hide)
-    {
+    private void toggleMenuButtons(boolean hide) {
         hideMenuButtons = hide;
         invalidateOptionsMenu();
     }
 
-    private void hideKeyboard()
-    {
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(addressInput.getWindowToken(), 0);
     }
 
-    private void showContextMenu(String url)
-    {
+    private void showContextMenu(String url) {
         BrowserContextMenuDialog dialog = BrowserContextMenuDialog.newInstance(url);
         dialog.show(getSupportFragmentManager(), TAG_CONTEXT_MENU_DIALOG);
     }
 
     @Override
-    public void fragmentFinished(Intent intent, ResultCode code)
-    {
+    public void fragmentFinished(Intent intent, ResultCode code) {
         if (code != ResultCode.OK)
             return;
 
@@ -364,15 +347,14 @@ public class BrowserActivity extends AppCompatActivity
 
     @SuppressLint("RestrictedApi")
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         if (hideMenuButtons)
             return false;
 
         getMenuInflater().inflate(R.menu.browser, menu);
 
-        if (menu instanceof MenuBuilder){
-            MenuBuilder menuBuilder = (MenuBuilder)menu;
+        if (menu instanceof MenuBuilder) {
+            MenuBuilder menuBuilder = (MenuBuilder) menu;
             menuBuilder.setOptionalIconsVisible(true);
         }
 
@@ -451,8 +433,8 @@ public class BrowserActivity extends AppCompatActivity
 
         return true;
     }
-    private void makeShareDialog(String url)
-    {
+
+    private void makeShareDialog(String url) {
         if (url == null)
             return;
 
@@ -461,8 +443,7 @@ public class BrowserActivity extends AppCompatActivity
                 getString(R.string.share_via)));
     }
 
-    private void showCopyToClipboardDialog(String url)
-    {
+    private void showCopyToClipboardDialog(String url) {
         if (url == null)
             return;
 
@@ -471,20 +452,17 @@ public class BrowserActivity extends AppCompatActivity
         startActivityForResult(i, 0);
     }
 
-    private void showSettings()
-    {
+    private void showSettings() {
         Intent i = new Intent(this, SettingsActivity.class);
         i.putExtra(SettingsActivity.TAG_OPEN_PREFERENCE, SettingsActivity.BrowserSettings);
         settings.launch(i);
     }
 
-    private void showBookmarks()
-    {
+    private void showBookmarks() {
         bookmarks.launch(new Intent(this, BrowserBookmarksActivity.class));
     }
 
-    private void addBookmark()
-    {
+    private void addBookmark() {
         disposables.add(viewModel.addBookmark()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -496,8 +474,7 @@ public class BrowserActivity extends AppCompatActivity
         );
     }
 
-    private void showEditBookmarkDialog(BrowserBookmark bookmark)
-    {
+    private void showEditBookmarkDialog(BrowserBookmark bookmark) {
         if (bookmark == null)
             return;
 
@@ -506,23 +483,21 @@ public class BrowserActivity extends AppCompatActivity
         editBookmark.launch(i);
     }
 
-    private void showBookmarkAddedSnackbar(BrowserBookmark bookmark)
-    {
+    private void showBookmarkAddedSnackbar(BrowserBookmark bookmark) {
         Snackbar.make(coordinatorLayout,
-                R.string.browser_bookmark_added,
-                Snackbar.LENGTH_SHORT)
+                        R.string.browser_bookmark_added,
+                        Snackbar.LENGTH_SHORT)
                 .setAction(R.string.browser_bookmark_edit_menu,
                         (v) -> showEditBookmarkDialog(bookmark))
                 .show();
     }
 
-    private void showAddBookmarkFailedSnackbar(Throwable e)
-    {
+    private void showAddBookmarkFailedSnackbar(Throwable e) {
         Log.e(TAG, Log.getStackTraceString(e));
 
         Snackbar.make(coordinatorLayout,
-                R.string.browser_bookmark_add_failed,
-                Snackbar.LENGTH_SHORT)
+                        R.string.browser_bookmark_add_failed,
+                        Snackbar.LENGTH_SHORT)
                 .show();
     }
 
@@ -553,8 +528,7 @@ public class BrowserActivity extends AppCompatActivity
             }
     );
 
-    private void handleEditBookmarkRequest(int resultCode, @Nullable Intent data)
-    {
+    private void handleEditBookmarkRequest(int resultCode, @Nullable Intent data) {
         if (resultCode != RESULT_OK || data == null)
             return;
 
@@ -586,8 +560,7 @@ public class BrowserActivity extends AppCompatActivity
             Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
     }
 
-    private void handleBookmarksRequest(@Nullable Intent data)
-    {
+    private void handleBookmarksRequest(@Nullable Intent data) {
         String action = (data == null ? null : data.getAction());
         if (BrowserBookmarksActivity.TAG_ACTION_OPEN_BOOKMARK.equals(action)) {
             BrowserBookmark bookmark = data.getParcelableExtra(BrowserBookmarksActivity.TAG_BOOKMARK);
@@ -601,8 +574,7 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         if (webView.canGoBack()) {
             doubleBackPressed = false;
             webView.goBack();
@@ -613,8 +585,8 @@ public class BrowserActivity extends AppCompatActivity
             } else {
                 doubleBackPressed = true;
                 Toast.makeText(this,
-                        R.string.browser_back_pressed,
-                        Toast.LENGTH_SHORT)
+                                R.string.browser_back_pressed,
+                                Toast.LENGTH_SHORT)
                         .show();
             }
         }

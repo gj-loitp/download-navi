@@ -101,14 +101,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:visibility="@{viewModel.config.showMode == FileManagerConfig.DIR_CHOOSER_MODE || viewModel.config.showMode == FileManagerConfig.SAVE_FILE_MODE ? View.VISIBLE : View.GONE}"
-            app:layout_anchor="@id/bottom_bar"
+            app:layout_anchor="@id/bottomBar"
             app:layout_anchorGravity="top|end"
             app:srcCompat="@drawable/ic_add_black_24dp"
             android:focusable="true"
             android:contentDescription="@string/dialog_new_folder_title" />
 
         <FrameLayout
-            android:id="@+id/bottom_bar"
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
