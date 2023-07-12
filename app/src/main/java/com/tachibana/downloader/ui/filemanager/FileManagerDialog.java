@@ -49,7 +49,7 @@ import com.tachibana.downloader.R;
 import com.tachibana.downloader.core.system.FileSystemFacade;
 import com.tachibana.downloader.core.system.SystemFacadeHelper;
 import com.tachibana.downloader.core.utils.Utils;
-import com.tachibana.downloader.databinding.ActivityFilemanagerDialogBinding;
+import com.tachibana.downloader.databinding.AFileManagerDialogBinding;
 import com.tachibana.downloader.ui.BaseAlertDialog;
 import com.tachibana.downloader.ui.errorreport.ErrorReportDialog;
 
@@ -89,7 +89,7 @@ public class FileManagerDialog extends AppCompatActivity
 
     public static final String TAG_CONFIG = "config";
 
-    private ActivityFilemanagerDialogBinding binding;
+    private AFileManagerDialogBinding binding;
     private LinearLayoutManager layoutManager;
     /* Save state scrolling */
     private Parcelable filesListState;
@@ -123,7 +123,7 @@ public class FileManagerDialog extends AppCompatActivity
                 intent.getParcelableExtra(TAG_CONFIG), startDir);
         viewModel = new ViewModelProvider(this, factory).get(FileManagerViewModel.class);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_filemanager_dialog);
+        binding = DataBindingUtil.setContentView(this, R.layout.a_file_manager_dialog);
         binding.setViewModel(viewModel);
 
         FragmentManager fm = getSupportFragmentManager();
@@ -154,7 +154,7 @@ public class FileManagerDialog extends AppCompatActivity
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         binding.addFab.setOnClickListener((v) -> showInputNameDialog());
-        binding.openSystemFilemanagerFab.setOnClickListener((v) -> showSAFDialog());
+        binding.openSystemFileManagerFab.setOnClickListener((v) -> showSAFDialog());
 
         if (savedInstanceState == null)
             binding.fileName.setText(viewModel.config.fileName);

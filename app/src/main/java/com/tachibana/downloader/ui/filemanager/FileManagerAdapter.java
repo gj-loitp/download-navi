@@ -120,7 +120,7 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
         {
             super(itemView);
 
-            fileName = itemView.findViewById(R.id.file_name);
+            fileName = itemView.findViewById(R.id.fileName);
             fileIcon = itemView.findViewById(R.id.file_icon);
         }
 

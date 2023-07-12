@@ -4,24 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.tachibana.downloader.ui.filemanager.FileManagerViewModel" />
-        <import
-            type="com.tachibana.downloader.ui.filemanager.FileManagerConfig" />
-        <import
-            type="android.view.View" />
-        <import
-            type="android.os.Build" />
+
+        <import type="com.tachibana.downloader.ui.filemanager.FileManagerConfig" />
+
+        <import type="android.view.View" />
+
+        <import type="android.os.Build" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
         android:fitsSystemWindows="true"
-        tools:context=".ui.filemanager.FileManagerDialog">
+        android:focusableInTouchMode="true">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
@@ -35,9 +35,9 @@
                 android:background="?attr/toolbarColor"
                 android:focusable="true"
                 android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
                 android:transitionName="actionBar"
                 app:layout_scrollFlags="enterAlways"
-                android:theme="@style/ThemeOverlay.MaterialComponents.ActionBar"
                 app:popupTheme="?attr/popupTheme" />
 
             <HorizontalScrollView
@@ -47,8 +47,8 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
-                <TextView
-                    android:id="@+id/title_cur_folder_path"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/titleCurFolderPath"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="8dp"
@@ -62,75 +62,75 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.tachibana.downloader.ui.customview.ThemedSwipeRefreshLayout
-            android:id="@+id/swipe_container"
+            android:id="@+id/swipeContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/appBar"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/file_list"
+                android:id="@+id/fileList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/background"
+                android:clipToPadding="false"
+                android:focusable="true"
                 android:paddingTop="@{@dimen/fab_size + @dimen/fab_margin}"
                 android:paddingBottom="@{@dimen/fab_size + @dimen/fab_margin}"
-                android:clipToPadding="false"
-                android:background="?attr/background"
-                android:scrollbars="vertical"
-                android:focusable="true"
-                android:scrollbarStyle="outsideOverlay" /> <!-- Need for padding -->
+                android:scrollbarStyle="outsideOverlay"
+                android:scrollbars="vertical" /> <!-- Need for padding -->
         </com.tachibana.downloader.ui.customview.ThemedSwipeRefreshLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/open_system_filemanager_fab"
+            android:id="@+id/openSystemFileManagerFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@string/system_manager"
-            android:layout_marginTop="135dp"
             android:layout_gravity="top|start"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="135dp"
+            android:focusable="true"
+            android:text="@string/system_manager"
             android:visibility="visible"
             app:backgroundTint="?attr/colorSecondary"
             app:cornerRadius="16dp"
-            app:icon="@drawable/ic_folder_grey600_24dp"
-            android:focusable="true" />
+            app:icon="@drawable/ic_folder_grey600_24dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/add_fab"
+            android:id="@+id/addFab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
+            android:contentDescription="@string/dialog_new_folder_title"
+            android:focusable="true"
             android:visibility="@{viewModel.config.showMode == FileManagerConfig.DIR_CHOOSER_MODE || viewModel.config.showMode == FileManagerConfig.SAVE_FILE_MODE ? View.VISIBLE : View.GONE}"
             app:layout_anchor="@id/bottomBar"
             app:layout_anchorGravity="top|end"
-            app:srcCompat="@drawable/ic_add_black_24dp"
-            android:focusable="true"
-            android:contentDescription="@string/dialog_new_folder_title" />
+            app:srcCompat="@drawable/ic_add_black_24dp" />
 
         <FrameLayout
             android:id="@+id/bottomBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:paddingTop="48dp"
-            android:background="@android:color/transparent">
+            android:background="@android:color/transparent"
+            android:paddingTop="48dp">
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
                 android:background="?attr/foreground"
+                android:padding="8dp"
                 android:visibility="@{viewModel.config.showMode == FileManagerConfig.SAVE_FILE_MODE ? View.VISIBLE : View.GONE}">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_file_name"
+                    android:id="@+id/layoutFileName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/file_name"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:hint="@string/file_name">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/file_name"
+                        android:id="@+id/fileName"
                         style="@style/TextAppearance.MaterialComponents.Subtitle1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />

@@ -20,7 +20,6 @@
 
 package com.tachibana.downloader.ui.main;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -36,8 +35,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -186,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         drawerLayout = findViewById(R.id.drawer_layout);
         tabLayout = findViewById(R.id.download_list_tabs);
         viewPager = findViewById(R.id.download_list_viewpager);
-        fab = findViewById(R.id.add_fab);
+        fab = findViewById(R.id.addFab);
         drawerItemsList = findViewById(R.id.drawer_items_list);
         layoutManager = new LinearLayoutManager(this);
 
