@@ -49,7 +49,7 @@
                 tools:ignore="UnusedAttribute">
 
                 <include
-                    android:id="@+id/address_bar"
+                    android:id="@+id/addressBar"
                     layout="@layout/browser_address_bar"
                     app:viewModel="@{viewModel}" />
             </androidx.appcompat.widget.Toolbar>

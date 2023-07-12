@@ -55,7 +55,7 @@ import com.tachibana.downloader.R;
 import com.tachibana.downloader.core.model.data.entity.BrowserBookmark;
 import com.tachibana.downloader.core.utils.Utils;
 import com.tachibana.downloader.databinding.ABrowserBottomAppBarBinding;
-import com.tachibana.downloader.databinding.ActivityBrowserTopAppBarBinding;
+import com.tachibana.downloader.databinding.ABrowserTopAppBarBinding;
 import com.tachibana.downloader.ui.FragmentCallback;
 import com.tachibana.downloader.ui.SendTextToClipboard;
 import com.tachibana.downloader.ui.adddownload.AddDownloadActivity;
@@ -214,8 +214,8 @@ public class BrowserActivity extends AppCompatActivity
             coordinatorLayout = binding.coordinatorLayout;
 
         } else {
-            ActivityBrowserTopAppBarBinding binding =
-                    DataBindingUtil.setContentView(this, R.layout.activity_browser_top_app_bar);
+            ABrowserTopAppBarBinding binding =
+                    DataBindingUtil.setContentView(this, R.layout.a_browser_top_app_bar);
             binding.setLifecycleOwner(this);
             binding.setViewModel(viewModel);
             setSupportActionBar(binding.toolbar);
