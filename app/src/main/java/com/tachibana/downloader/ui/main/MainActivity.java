@@ -179,8 +179,8 @@ public class MainActivity extends AppCompatActivity
     {
         toolbar = findViewById(R.id.toolbar);
         coordinatorLayout = findViewById(R.id.coordinator);
-        navigationView = findViewById(R.id.navigation_view);
-        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.navigationView);
+        drawerLayout = findViewById(R.id.drawerLayout);
         tabLayout = findViewById(R.id.download_list_tabs);
         viewPager = findViewById(R.id.download_list_viewpager);
         fab = findViewById(R.id.addFab);
