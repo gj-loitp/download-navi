@@ -69,7 +69,7 @@ public class AppearanceSettingsFragment extends PreferenceFragmentCompat
     {
         super.onViewCreated(view, savedInstanceState);
 
-        coordinatorLayout = view.findViewById(R.id.coordinator_layout);
+        coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
     }
 
     @Override

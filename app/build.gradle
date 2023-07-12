@@ -6,7 +6,7 @@ android {
     compileSdkVersion 33
     defaultConfig {
         applicationId 'com.tachibana.downloader'
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 33
         versionCode 20230712
         versionName '2023.07.12'

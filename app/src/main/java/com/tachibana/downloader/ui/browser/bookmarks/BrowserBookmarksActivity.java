@@ -47,7 +47,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.tachibana.downloader.R;
 import com.tachibana.downloader.core.model.data.entity.BrowserBookmark;
 import com.tachibana.downloader.core.utils.Utils;
-import com.tachibana.downloader.databinding.ActivityBrowserBookmarksBinding;
+import com.tachibana.downloader.databinding.ABrowserBookmarksBinding;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -71,7 +71,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     private static final String TAG_BOOKMARKS_LIST_STATE = "bookmarks_list_state";
     private static final String SELECTION_TRACKER_ID = "selection_tracker_0";
 
-    private ActivityBrowserBookmarksBinding binding;
+    private ABrowserBookmarksBinding binding;
     private BrowserBookmarksViewModel viewModel;
     private LinearLayoutManager layoutManager;
     private BrowserBookmarksAdapter adapter;
@@ -88,7 +88,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(BrowserBookmarksViewModel.class);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_browser_bookmarks);
+        binding = DataBindingUtil.setContentView(this, R.layout.a_browser_bookmarks);
 
         setSupportActionBar(binding.toolbar);
         ActionBar actionBar = getSupportActionBar();
