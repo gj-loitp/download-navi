@@ -118,7 +118,6 @@
     <string name="download_error_no_enough_free_space">Ikke nok ledig plass: %1$s ledig, men filstørrelsen er %2$s</string>
     <string name="download_error_empty_name">Skriv inn navn</string>
     <string name="download_ticker_notify">Laster ned %1$s</string>
-    <string name="verify">Bekreft</string>
     <string name="clipboard">Utklippstavle</string>
     <string name="more_details">Flere detaljer</string>
     <string name="report">Rapporter</string>

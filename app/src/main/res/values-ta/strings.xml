@@ -32,7 +32,6 @@
     <string name="close">மூடு</string>
     <string name="apply">விண்ணப்பிக்கவும்</string>
     <string name="clipboard">கிளிப்போர்டு</string>
-    <string name="verify">சரிபார்க்கவும்</string>
     <string name="perm_denied_title">அனுமதி மறுக்கப்பட்டது</string>
     <string name="download_ticker_notify">பதிவிறக்குகிறது %1$s</string>
     <string name="app_running_in_the_background">பின்னணியில் இயங்கும் நவியைப் பதிவிறக்கவும்</string>

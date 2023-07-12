@@ -53,7 +53,6 @@
     <string name="file">Fil</string>
     <string name="close">Stäng</string>
     <string name="clipboard">Urklipp</string>
-    <string name="verify">Bekräfta</string>
     <string name="pause_all">Pausa alla</string>
     <plurals name="browser_bookmark_deleted">
         <item quantity="one">Bokmärke borttaget</item>

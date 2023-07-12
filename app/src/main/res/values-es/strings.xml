@@ -52,7 +52,6 @@
     <string name="report">Reportar</string>
     <string name="more_details">Más detalles</string>
     <string name="clipboard">Portapapeles</string>
-    <string name="verify">Verificar</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">Permiso denegado</string>
     <string name="perm_denied_warning">Sin este permiso, la aplicación no puede guardar archivos en la memoria de algunos dispositivos y versiones de Android. La aplicación no funcionará correctamente. ¿Estás seguro de que deseas denegar este permiso?</string>

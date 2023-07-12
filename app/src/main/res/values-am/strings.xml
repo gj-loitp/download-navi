@@ -52,7 +52,6 @@
     <string name="report">አስታዉቅ</string>
     <string name="more_details">ተጨማሪ ዝርዝሮች</string>
     <string name="clipboard">ቅንጥብ ሰሌዳ</string>
-    <string name="verify">አረጋግጥ</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">ፍቃድ ተከልክሏል</string>
     <string name="perm_denied_warning">ያለዚህ ፈቃድ መተግበሪያዉ በአንዳንድ መሣሪያዎች እና በ Android ስሪቶች ላይ ማህደረ ትውስታ ውስጥ ፋይሎችን ማስቀመጥ አይችልም። መተግበሪያው በትክክል አይሰራም። እርግጠኛ ነዎት ይህንን ፈቃድ መከልከል ይፈልጋሉ?</string>

@@ -52,7 +52,6 @@
     <string name="report">گزارش</string>
     <string name="more_details">جزئیات بیشتر</string>
     <string name="clipboard">تخته‌گیره</string>
-    <string name="verify">تصدیق</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">دسترسی رد شد</string>
     <string name="perm_denied_warning">بدون این دسترسی برنامه نمی‌تواند پرونده‌ها را در برخی دستگاه‌ها و نگارش‌های اندروید در حافظه ذخیره کند. برنامه به‌درستی کار نخواهد کرد. آیا مطمئن هستید که می‌خواهید این مجوز را رد کنید؟</string>

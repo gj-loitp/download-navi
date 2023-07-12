@@ -52,7 +52,6 @@
     <string name="report">Пријави</string>
     <string name="more_details">Детаљније</string>
     <string name="clipboard">Клипборд</string>
-    <string name="verify">Верификуј</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">Дозвола одбијена</string>
     <string name="perm_denied_warning">Без ове дозволе апликације неће моћи да чува фајлове у меморији на неким верзијама система. Апликације неће радити правилно. Да ли сигурно желите да одбијете ову дозволу?</string>

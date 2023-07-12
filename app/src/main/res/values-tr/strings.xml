@@ -52,7 +52,6 @@
     <string name="report">Bildir</string>
     <string name="more_details">Daha fazla ayrıntı</string>
     <string name="clipboard">Pano</string>
-    <string name="verify">Doğrula</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">İzin reddedildi</string>
     <string name="perm_denied_warning">Bu izin olmadan uygulama, bazı aygıtlarda ve Android sürümlerinde dosyaları belleğe kaydedemez. Uygulama düzgün çalışmayacak. Bu izni reddetmek istediğinizden emin misiniz\?</string>

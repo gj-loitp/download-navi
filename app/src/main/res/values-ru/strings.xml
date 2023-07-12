@@ -52,7 +52,6 @@
     <string name="report">Сообщить</string>
     <string name="more_details">Подробнее</string>
     <string name="clipboard">Буфер обмена</string>
-    <string name="verify">Проверить</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">Разрешение отклонено</string>
     <string name="perm_denied_warning">Без этого разрешения приложение не может сохранять файлы в памяти на некоторых устройствах и версиях Android. Приложение не будет работать должным образом. Вы уверены, что хотите запретить это разрешение?</string>

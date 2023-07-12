@@ -52,7 +52,6 @@
     <string name="report">Report</string>
     <string name="more_details">More details</string>
     <string name="clipboard">Clipboard</string>
-    <string name="verify">Verify</string>
     <string name="disable">Disable</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">Permission denied</string>

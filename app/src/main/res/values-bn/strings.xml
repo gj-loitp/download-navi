@@ -52,7 +52,6 @@
     <string name="report">প্রতিবেদন করুন</string>
     <string name="more_details">আরও বিস্তারিত</string>
     <string name="clipboard">ক্লিপবোর্ড</string>
-    <string name="verify">যাচাইকরণ</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">অনুমতি দেওয়া হয়নি</string>
     <string name="perm_denied_warning">এই অনুমতি ব্যতীত অ্যাপটি অ্যান্ড্রয়েডের কিছু ডিভাইস এবং সংস্করণগুলির মেমরিতে ফাইলগুলি সংরক্ষণ করতে পারবে না। অ্যাপটি সঠিকভাবে কাজ করবে না। আপনি কি এই অনুমতিটি অস্বীকার করার বিষয়ে নিশ্চিত?</string>

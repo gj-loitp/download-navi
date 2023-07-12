@@ -52,7 +52,6 @@
     <string name="report">Відгук</string>
     <string name="more_details">Детальніше</string>
     <string name="clipboard">Буфер обміну</string>
-    <string name="verify">Перевірити</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">Доступ заборонено</string>
     <string name="perm_denied_warning">Без цього дозволу, програма не зможе зберігати файли в пам\'яті на деяких пристроях та версіях Android. Застосунок не працюватиме належним чином. Ви впевнені, що хочете заборонити цей дозвіл?</string>

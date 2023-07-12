@@ -52,7 +52,6 @@
     <string name="report">反馈</string>
     <string name="more_details">更多详情</string>
     <string name="clipboard">剪贴板</string>
-    <string name="verify">验证</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">权限不足</string>
     <string name="perm_denied_warning">如果没有此权限，应用无法在某些设备和 Android 版本的内存中保存文件。该应用程序将无法正常工作。您确定要拒绝此权限吗？</string>

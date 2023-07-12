@@ -52,7 +52,6 @@
     <string name="report">Riporta</string>
     <string name="more_details">Mostra dettagli</string>
     <string name="clipboard">Appunti</string>
-    <string name="verify">Verifica</string>
     <!-- Permission dialog -->
     <string name="perm_denied_title">Permesso negato</string>
     <string name="perm_denied_warning">Senza questa autorizzazione l\'app non può salvare file in memoria su alcuni dispositivi e versioni di Android. L\'app non funzionerà correttamente. Sei sicuro di voler negare questa autorizzazione?</string>
