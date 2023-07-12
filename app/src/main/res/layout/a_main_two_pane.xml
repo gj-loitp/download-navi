@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
     android:fitsSystemWindows="true"
     android:gravity="center"
+    android:orientation="horizontal"
     tools:context=".ui.main.MainActivity">
 
     <RelativeLayout
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent">
 
-        <include
-            layout="@layout/toolbar"/>
+        <include layout="@layout/toolbar" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
-            app:elevation="0dp"
             android:background="?attr/backgroundDialog"
-            android:focusable="true">
+            android:focusable="true"
+            app:elevation="0dp">
 
-            <include
-                layout="@layout/main_drawer_content" />
+            <include layout="@layout/main_drawer_content" />
         </com.google.android.material.navigation.NavigationView>
     </RelativeLayout>
 
@@ -36,7 +34,7 @@
 
         <!-- Fake divider -->
         <View
-            android:id="@+id/toolbar_divider"
+            android:id="@+id/toolbarDivider"
             android:layout_width="1dp"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/statusBarColor" />
@@ -44,10 +42,9 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar_divider"
+            android:layout_below="@id/toolbarDivider"
             android:background="?attr/divider" />
     </RelativeLayout>
 
-    <include
-        layout="@layout/content_main" />
-</LinearLayout>
+    <include layout="@layout/content_main" />
+</androidx.appcompat.widget.LinearLayoutCompat>
