@@ -22,7 +22,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:background="?attr/transparentRoundRipple"
-            app:srcCompat="@drawable/play_vector"
+            app:srcCompat="@drawable/anim_play_vector"
             android:contentDescription="@string/resume"
             android:padding="3dp"
             android:scaleType="fitXY"

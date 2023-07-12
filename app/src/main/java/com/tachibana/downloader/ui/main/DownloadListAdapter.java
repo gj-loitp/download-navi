@@ -212,8 +212,8 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         {
             super(itemView);
 
-            playToPauseAnim = AnimatedVectorDrawableCompat.create(itemView.getContext(), R.drawable.play_to_pause);
-            pauseToPlayAnim = AnimatedVectorDrawableCompat.create(itemView.getContext(), R.drawable.pause_to_play);
+            playToPauseAnim = AnimatedVectorDrawableCompat.create(itemView.getContext(), R.drawable.anim_play_to_pause);
+            pauseToPlayAnim = AnimatedVectorDrawableCompat.create(itemView.getContext(), R.drawable.anim_pause_to_play);
             pauseButton = itemView.findViewById(R.id.pause);
             progressBar = itemView.findViewById(R.id.progress);
             Utils.colorizeProgressBar(itemView.getContext(), progressBar);

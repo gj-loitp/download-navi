@@ -34,7 +34,7 @@
         <item name="defaultRoundRipple">@drawable/default_round_ripple</item>
         <item name="transparentRoundRipple">@drawable/transparent_round_ripple</item>
         <item name="transparentRectRipple">@drawable/transparent_rect_ripple</item>
-        <item name="divider">@drawable/divider</item>
+        <item name="divider">@drawable/shape_divider</item>
         <item name="dialogRectRipple">@drawable/default_rect_ripple</item>
         <item name="dialogRoundRipple">@drawable/default_round_ripple</item>
         <item name="selectableColor">@color/selectable</item>
@@ -80,7 +80,7 @@
         <item name="defaultRoundRipple">@drawable/default_round_ripple_dark</item>
         <item name="transparentRoundRipple">@drawable/transparent_round_ripple_dark</item>
         <item name="transparentRectRipple">@drawable/transparent_rect_ripple_dark</item>
-        <item name="divider">@drawable/divider_dark</item>
+        <item name="divider">@drawable/shape_divider_dark</item>
         <item name="dialogRectRipple">@drawable/dialog_rect_ripple_dark</item>
         <item name="dialogRoundRipple">@drawable/dialog_round_ripple_dark</item>
         <item name="selectableColor">@color/selectable_dark</item>
@@ -132,7 +132,7 @@
         <item name="colorSecondary">@color/accent</item>
         <item name="colorSecondaryVariant">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/text_primary</item>
-        <item name="android:windowBackground">@drawable/background_dialog_rounded</item>
+        <item name="android:windowBackground">@drawable/shape_background_dialog_rounded</item>
 
         <item name="android:bottomBright">@color/background_dialog</item>
         <item name="android:bottomDark">@color/background_dialog</item>
@@ -153,7 +153,7 @@
         <item name="colorSecondary">@color/accent_light</item>
         <item name="colorSecondaryVariant">@color/accent_dark</item>
         <item name="colorOnSecondary">@color/text_primary</item>
-        <item name="android:windowBackground">@drawable/background_dialog_rounded_dark</item>
+        <item name="android:windowBackground">@drawable/shape_background_dialog_rounded_dark</item>
 
         <item name="android:bottomBright">@color/background_dialog_dark</item>
         <item name="android:bottomDark">@color/background_dialog_dark</item>
@@ -168,7 +168,7 @@
     </style>
 
     <style name="BaseTheme.Dialog.Black" parent="BaseTheme.Dialog.Dark">
-        <item name="android:windowBackground">@drawable/background_dialog_rounded_black</item>
+        <item name="android:windowBackground">@drawable/shape_background_dialog_rounded_black</item>
 
         <item name="android:bottomBright">@color/background_dialog_black</item>
         <item name="android:bottomDark">@color/background_dialog_black</item>
