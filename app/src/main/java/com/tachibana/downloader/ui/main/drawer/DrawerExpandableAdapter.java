@@ -74,7 +74,7 @@ public class DrawerExpandableAdapter extends AbstractExpandableItemAdapter<
     public GroupViewHolder onCreateGroupViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.drawer_group_header, parent, false);
+        View v = inflater.inflate(R.layout.v_drawer_group_header, parent, false);
 
         return new GroupViewHolder(v);
     }
@@ -84,7 +84,7 @@ public class DrawerExpandableAdapter extends AbstractExpandableItemAdapter<
     public ItemViewHolder onCreateChildViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View v = inflater.inflate(R.layout.drawer_item, parent, false);
+        View v = inflater.inflate(R.layout.v_drawer_item, parent, false);
 
         return new ItemViewHolder(v);
     }
