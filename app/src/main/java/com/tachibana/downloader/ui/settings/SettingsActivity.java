@@ -64,7 +64,7 @@ public class SettingsActivity extends AppCompatActivity
         if (getSupportActionBar() != null)
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        detailTitle = findViewById(R.id.detail_title);
+        detailTitle = findViewById(R.id.detailTitle);
         viewModel.detailTitleChanged.observe(this, title -> {
             if (title != null && detailTitle != null)
                 detailTitle.setText(title);

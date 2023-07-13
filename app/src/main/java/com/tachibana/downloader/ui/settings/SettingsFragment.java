@@ -91,7 +91,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         } else if (Utils.isTwoPane(activity)) {
             Fragment f = activity.getSupportFragmentManager()
-                    .findFragmentById(R.id.detail_fragment_container);
+                    .findFragmentById(R.id.detailFragmentContainer);
             if (f == null)
                 setFragment(AppearanceSettingsFragment.newInstance(),
                         getString(R.string.pref_header_appearance));
@@ -181,7 +181,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         if (Utils.isLargeScreenDevice(activity)) {
             activity.getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.detail_fragment_container, fragment)
+                    .replace(R.id.detailFragmentContainer, fragment)
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
         }

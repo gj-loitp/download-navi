@@ -9,7 +9,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         class="com.tachibana.downloader.ui.settings.SettingsFragment"
-        android:id="@+id/settings_fragmentContainer"
+        android:id="@+id/settingsFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar" />

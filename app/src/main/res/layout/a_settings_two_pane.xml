@@ -4,42 +4,41 @@
     android:layout_height="wrap_content"
     android:background="?attr/background">
 
-    <include
-        layout="@layout/toolbar" />
+    <include layout="@layout/toolbar" />
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_below="@id/toolbar"
         android:baselineAligned="false"
-        android:showDividers="middle"
-        android:divider="?attr/divider">
+        android:divider="?attr/divider"
+        android:orientation="horizontal"
+        android:showDividers="middle">
 
         <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/settingsFragmentContainer"
             class="com.tachibana.downloader.ui.settings.SettingsFragment"
-            android:id="@+id/settings_fragmentContainer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/detail_title"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/detailTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
             <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/detail_fragment_container"
+                android:id="@+id/detailFragmentContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-        </LinearLayout>
-    </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </RelativeLayout>
