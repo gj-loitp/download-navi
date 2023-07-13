@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.tachibana.downloader.ui.adddownload.AddDownloadViewModel" />
@@ -12,15 +15,15 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/dialog_padding"
-        android:paddingBottom="8dp"
-        android:paddingEnd="@dimen/dialog_padding"
-        android:paddingStart="@dimen/dialog_padding"
         android:fadeScrollbars="false"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="outsideOverlay"> <!-- Need for padding -->
+        android:paddingStart="@dimen/dialog_padding"
+        android:paddingTop="@dimen/dialog_padding"
+        android:paddingEnd="@dimen/dialog_padding"
+        android:paddingBottom="8dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minWidth="@dimen/min_width_dialog"
@@ -32,11 +35,11 @@
                 android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_link"
+                    android:id="@+id/layoutLink"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@id/fetch_progress"
-                    android:layout_toStartOf="@+id/url_clipboard_button"
+                    android:layout_toStartOf="@+id/urlClipboardButton"
+                    android:layout_toEndOf="@id/fetchProgress"
                     android:hint="@string/download_link">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -48,33 +51,33 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/fetch_progress"
+                    android:id="@+id/fetchProgress"
                     style="@style/Widget.AppCompat.ProgressBar"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
                     android:visibility="gone" />
 
-                <ImageButton
-                    android:id="@+id/url_clipboard_button"
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/urlClipboardButton"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:scaleType="fitCenter"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="8dp"
                     android:layout_alignParentEnd="true"
-                    android:padding="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
                     android:background="?attr/dialogRoundRipple"
                     android:contentDescription="@string/clipboard"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/ic_content_copy_grey600_48dp"
                     android:visibility="@{viewModel.showClipboardButton ? View.VISIBLE : View.GONE}" />
             </RelativeLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/layout_name"
+                android:id="@+id/layoutName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -85,7 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text|textNoSuggestions"
-                    android:text="@={viewModel.params.fileName}"/>
+                    android:text="@={viewModel.params.fileName}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
@@ -94,14 +97,14 @@
                 android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_save_path"
+                    android:id="@+id/layoutSavePath"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/folder_chooser_button"
+                    android:layout_toStartOf="@id/folderChooserButton"
                     android:hint="@string/path">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/save_path"
+                        android:id="@+id/savePath"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
@@ -109,21 +112,21 @@
                         android:text="@{viewModel.params.dirName}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <ImageButton
-                    android:id="@+id/folder_chooser_button"
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/folderChooserButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="8dp"
-                    android:layout_alignParentEnd="true"
-                    android:padding="8dp"
                     android:background="?attr/dialogRoundRipple"
                     android:contentDescription="@string/dir_chooser_title"
+                    android:padding="8dp"
                     android:src="@drawable/ic_folder_grey600_24dp" />
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/free_space"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/freeSpace"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -131,49 +134,50 @@
                 app:fileSize="@{viewModel.params.storageFreeSpace}"
                 app:formatFileSize="@{@string/storage_free_space}" />
 
-            <LinearLayout
-                android:id="@+id/after_fetch_layout"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/afterFetchLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/size"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                     app:fileSize="@{viewModel.params.totalBytes}"
-                    app:formatFileSize="@{@string/download_size}"/>
+                    app:formatFileSize="@{@string/download_size}" />
 
                 <RelativeLayout
-                    android:id="@+id/partial_support_warning"
+                    android:id="@+id/partialSupportWarning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp">
 
-                    <ImageView
-                        android:id="@+id/partial_support_warning_img"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/partialSupportWarningImg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerInParent="true"
+                        android:contentDescription="@null"
                         android:paddingStart="0dp"
                         android:paddingEnd="8dp"
-                        android:layout_centerInParent="true"
-                        android:layout_alignParentStart="true"
-                        android:contentDescription="@null"
                         android:src="@drawable/ic_warning_white_24dp"
                         android:tint="?attr/colorWarning" />
 
-                    <TextView
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_toEndOf="@id/partial_support_warning_img"
                         android:layout_centerInParent="true"
-                        android:textColor="?attr/colorWarning"
-                        android:text="@string/partial_download_not_supported" />
+                        android:layout_toEndOf="@id/partialSupportWarningImg"
+                        android:text="@string/partial_download_not_supported"
+                        android:textColor="?attr/colorWarning" />
                 </RelativeLayout>
-            </LinearLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
             <com.google.android.material.internal.FlowLayout
                 android:layout_width="match_parent"
@@ -192,46 +196,46 @@
                     android:id="@+id/replace_file"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/replace_file"
-                    android:checked="@={viewModel.params.replaceFile}" />
+                    android:checked="@={viewModel.params.replaceFile}"
+                    android:text="@string/replace_file" />
 
                 <CheckBox
                     android:id="@+id/uncompress_archive"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="@={viewModel.params.uncompressArchive}"
                     android:text="@string/uncompress_archive"
-                    android:visibility="@{viewModel.enableUncompressArchive ? View.VISIBLE : View.GONE}"
-                    android:checked="@={viewModel.params.uncompressArchive}" />
+                    android:visibility="@{viewModel.enableUncompressArchive ? View.VISIBLE : View.GONE}" />
 
                 <CheckBox
                     android:id="@+id/unmetered_connections_only"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/unmetered_connections_only"
-                    android:checked="@={viewModel.params.unmeteredConnectionsOnly}" />
+                    android:checked="@={viewModel.params.unmeteredConnectionsOnly}"
+                    android:text="@string/unmetered_connections_only" />
             </com.google.android.material.internal.FlowLayout>
 
             <com.tachibana.downloader.ui.customview.ExpansionHeader
-                android:id="@+id/expansion_header"
+                android:id="@+id/expansionHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:padding="8dp"
-                app:expansion_text="@string/download_advanced"
-                app:expansion_expanded="false"
-                app:expansion_textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 android:background="?attr/dialogRectRipple"
-                android:focusable="true" />
+                android:focusable="true"
+                android:padding="8dp"
+                app:expansion_expanded="false"
+                app:expansion_text="@string/download_advanced"
+                app:expansion_textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/advanced_layout"
+                android:id="@+id/advancedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 app:el_duration="5"
-                app:el_parallax="0"
-                app:el_expanded="false">
+                app:el_expanded="false"
+                app:el_parallax="0">
 
-                <LinearLayout
+                <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="8dp"
@@ -239,7 +243,7 @@
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/layout_description"
+                        android:id="@+id/layoutDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -250,15 +254,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text|textNoSuggestions"
-                            android:text="@={viewModel.params.description}"/>
+                            android:text="@={viewModel.params.description}" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:id="@+id/pieces_number"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/piecesNumber"
+                        style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/download_pieces_number_title"
-                        style="@style/TitleText"/>
+                        android:text="@string/download_pieces_number_title" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -266,66 +270,66 @@
                         android:layout_marginBottom="16dp">
 
                         <androidx.appcompat.widget.AppCompatSeekBar
-                            android:id="@+id/pieces_number_select"
+                            android:id="@+id/piecesNumberSelect"
+                            style="@style/Widget.AppCompat.SeekBar.Discrete"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toStartOf="@id/pieces_number_value"
                             android:layout_centerVertical="true"
-                            android:progress="@{viewModel.params.numPieces - 1}"
+                            android:layout_toStartOf="@id/piecesNumberValue"
                             android:max="@{viewModel.maxNumPieces - 1}"
-                            style="@style/Widget.AppCompat.SeekBar.Discrete" />
+                            android:progress="@{viewModel.params.numPieces - 1}" />
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/pieces_number_value"
+                            android:id="@+id/piecesNumberValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="8dp"
                             android:layout_marginEnd="16dp"
-                            android:layout_alignParentEnd="true"
                             android:inputType="numberDecimal"
-                            android:text="@{String.valueOf(viewModel.params.numPieces)}"/>
+                            android:text="@{String.valueOf(viewModel.params.numPieces)}" />
                     </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/user_agent_title"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/userAgentTitle"
+                        style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="0dp"
-                        android:text="@string/download_user_agent"
-                        style="@style/TitleText" />
+                        android:text="@string/download_user_agent" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp">
 
-                        <Spinner
-                            android:id="@+id/user_agent"
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/userAgent"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerInParent="true"
                             android:layout_marginEnd="8dp"
-                            android:layout_toStartOf="@id/add_user_agent" />
+                            android:layout_toStartOf="@id/addUserAgent" />
 
-                        <ImageButton
-                            android:id="@+id/add_user_agent"
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/addUserAgent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="16dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerInParent="true"
-                            android:contentDescription="@null"
                             android:background="?attr/dialogRoundRipple"
+                            android:contentDescription="@null"
+                            android:padding="16dp"
                             android:src="@drawable/ic_add_grey600_24px" />
                     </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/checksum_title"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/checkSumTitle"
+                        style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/checksum"
-                        style="@style/TitleText" />
+                        android:text="@string/checksum" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -333,38 +337,38 @@
                         android:layout_marginBottom="16dp">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/layout_checksum"
+                            android:id="@+id/layoutCheckSum"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            app:hintEnabled="false"
-                            android:layout_toStartOf="@+id/checksum_clipboard_button">
+                            android:layout_toStartOf="@+id/checksumClipboardButton"
+                            app:hintEnabled="false">
 
                             <com.tachibana.downloader.ui.customview.FixHintTextInputEditText
                                 android:id="@+id/checksum"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="text|textNoSuggestions"
                                 android:hint="@string/add_dialog_checksum_description"
-                                android:text="@={viewModel.params.checksum}"/>
+                                android:inputType="text|textNoSuggestions"
+                                android:text="@={viewModel.params.checksum}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <ImageButton
-                            android:id="@+id/checksum_clipboard_button"
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/checksumClipboardButton"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:scaleType="fitCenter"
-                            android:layout_marginTop="9dp"
-                            android:layout_marginStart="8dp"
                             android:layout_alignParentEnd="true"
-                            android:padding="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="9dp"
                             android:background="?attr/dialogRoundRipple"
                             android:contentDescription="@string/clipboard"
+                            android:padding="8dp"
+                            android:scaleType="fitCenter"
                             android:src="@drawable/ic_content_copy_grey600_48dp"
                             android:visibility="@{viewModel.showClipboardButton ? View.VISIBLE : View.GONE}" />
                     </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/referer_title"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/refererTitle"
                         style="@style/TitleText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -375,10 +379,10 @@
                         android:layout_height="wrap_content">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/layout_referer"
+                            android:id="@+id/layoutReferer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toStartOf="@+id/referer_clipboard_button"
+                            android:layout_toStartOf="@+id/refererClipboardButton"
                             app:hintEnabled="false">
 
                             <com.tachibana.downloader.ui.customview.FixHintTextInputEditText
@@ -390,8 +394,8 @@
                                 android:text="@={viewModel.params.referer}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <ImageButton
-                            android:id="@+id/referer_clipboard_button"
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/refererClipboardButton"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_alignParentEnd="true"
@@ -405,8 +409,8 @@
                             android:visibility="@{viewModel.showClipboardButton ? View.VISIBLE : View.GONE}" />
                     </RelativeLayout>
 
-                </LinearLayout>
+                </androidx.appcompat.widget.LinearLayoutCompat>
             </net.cachapa.expandablelayout.ExpandableLayout>
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 </layout>

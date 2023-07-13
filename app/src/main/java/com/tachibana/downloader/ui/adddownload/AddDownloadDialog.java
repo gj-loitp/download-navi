@@ -20,7 +20,6 @@
 
 package com.tachibana.downloader.ui.adddownload;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
@@ -47,7 +46,6 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -68,7 +66,7 @@ import com.tachibana.downloader.core.exception.NormalizeUrlException;
 import com.tachibana.downloader.core.model.data.entity.UserAgent;
 import com.tachibana.downloader.core.system.FileSystemContracts;
 import com.tachibana.downloader.core.utils.Utils;
-import com.tachibana.downloader.databinding.DialogAddDownloadBinding;
+import com.tachibana.downloader.databinding.DlgDialogAddDownloadBinding;
 import com.tachibana.downloader.ui.BaseAlertDialog;
 import com.tachibana.downloader.ui.ClipboardDialog;
 import com.tachibana.downloader.ui.FragmentCallback;
@@ -103,7 +101,7 @@ public class AddDownloadDialog extends DialogFragment {
     private AddDownloadViewModel viewModel;
     private BaseAlertDialog addUserAgentDialog;
     private BaseAlertDialog.SharedViewModel dialogViewModel;
-    private DialogAddDownloadBinding binding;
+    private DlgDialogAddDownloadBinding binding;
     private final CompositeDisposable disposables = new CompositeDisposable();
     private ClipboardDialog clipboardDialog;
     private ClipboardDialog.SharedViewModel clipboardViewModel;
@@ -112,8 +110,7 @@ public class AddDownloadDialog extends DialogFragment {
     private PermissionDeniedDialog permDeniedDialog;
     private PermissionManager permissionManager;
 
-    public static AddDownloadDialog newInstance(@NonNull AddInitParams initParams)
-    {
+    public static AddDownloadDialog newInstance(@NonNull AddInitParams initParams) {
         AddDownloadDialog frag = new AddDownloadDialog();
 
         Bundle args = new Bundle();
@@ -124,8 +121,7 @@ public class AddDownloadDialog extends DialogFragment {
     }
 
     @Override
-    public void onAttach(@NonNull Context context)
-    {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         if (context instanceof AppCompatActivity)
@@ -133,8 +129,7 @@ public class AddDownloadDialog extends DialogFragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         /* Back button handle */
@@ -153,8 +148,7 @@ public class AddDownloadDialog extends DialogFragment {
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         unsubscribeClipboardManager();
@@ -163,8 +157,7 @@ public class AddDownloadDialog extends DialogFragment {
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         subscribeParamsChanged();
@@ -172,8 +165,7 @@ public class AddDownloadDialog extends DialogFragment {
         subscribeClipboardManager();
     }
 
-    private void subscribeAlertDialog()
-    {
+    private void subscribeAlertDialog() {
         Disposable d = dialogViewModel.observeEvents().subscribe(this::handleAlertDialogEvent);
         disposables.add(d);
         d = clipboardViewModel.observeSelectedItem().subscribe((item) -> {
@@ -191,22 +183,19 @@ public class AddDownloadDialog extends DialogFragment {
         disposables.add(d);
     }
 
-    private void subscribeClipboardManager()
-    {
-        ClipboardManager clipboard = (ClipboardManager)activity.getSystemService(Activity.CLIPBOARD_SERVICE);
+    private void subscribeClipboardManager() {
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Activity.CLIPBOARD_SERVICE);
         clipboard.addPrimaryClipChangedListener(clipListener);
     }
 
-    private void unsubscribeClipboardManager()
-    {
-        ClipboardManager clipboard = (ClipboardManager)activity.getSystemService(Activity.CLIPBOARD_SERVICE);
+    private void unsubscribeClipboardManager() {
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Activity.CLIPBOARD_SERVICE);
         clipboard.removePrimaryClipChangedListener(clipListener);
     }
 
     private final ClipboardManager.OnPrimaryClipChangedListener clipListener = this::switchClipboardButton;
 
-    private void switchClipboardButton()
-    {
+    private void switchClipboardButton() {
         ClipData clip = Utils.getClipData(activity.getApplicationContext());
         viewModel.showClipboardButton.set(clip != null);
     }
@@ -214,8 +203,7 @@ public class AddDownloadDialog extends DialogFragment {
     private final ViewTreeObserver.OnWindowFocusChangeListener onFocusChanged =
             (__) -> switchClipboardButton();
 
-    private void handleAlertDialogEvent(BaseAlertDialog.Event event)
-    {
+    private void handleAlertDialogEvent(BaseAlertDialog.Event event) {
         if (event.dialogTag == null) {
             return;
         }
@@ -246,8 +234,7 @@ public class AddDownloadDialog extends DialogFragment {
         }
     }
 
-    private void handleUrlClipItem(String item)
-    {
+    private void handleUrlClipItem(String item) {
         if (TextUtils.isEmpty(item))
             return;
 
@@ -255,16 +242,14 @@ public class AddDownloadDialog extends DialogFragment {
         doAutoFetch();
     }
 
-    private void handleChecksumClipItem(String item)
-    {
+    private void handleChecksumClipItem(String item) {
         if (TextUtils.isEmpty(item))
             return;
 
         viewModel.params.setChecksum(item);
     }
 
-    private void handleRefererClipItem(String item)
-    {
+    private void handleRefererClipItem(String item) {
         if (TextUtils.isEmpty(item))
             return;
 
@@ -318,8 +303,7 @@ public class AddDownloadDialog extends DialogFragment {
     };
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         ViewModelProvider provider = new ViewModelProvider(activity);
@@ -361,21 +345,20 @@ public class AddDownloadDialog extends DialogFragment {
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (activity == null)
-            activity = (AppCompatActivity)getActivity();
+            activity = (AppCompatActivity) getActivity();
 
         if (savedInstanceState != null)
             curClipboardTag = savedInstanceState.getString(TAG_CUR_CLIPBOARD_TAG);
 
         FragmentManager fm = getChildFragmentManager();
-        addUserAgentDialog = (BaseAlertDialog)fm.findFragmentByTag(TAG_ADD_USER_AGENT_DIALOG);
-        clipboardDialog = (ClipboardDialog)fm.findFragmentByTag(curClipboardTag);
-        permDeniedDialog = (PermissionDeniedDialog)fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
+        addUserAgentDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_ADD_USER_AGENT_DIALOG);
+        clipboardDialog = (ClipboardDialog) fm.findFragmentByTag(curClipboardTag);
+        permDeniedDialog = (PermissionDeniedDialog) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
 
         LayoutInflater i = LayoutInflater.from(activity);
-        binding = DataBindingUtil.inflate(i, R.layout.dialog_add_download, null, false);
+        binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_add_download, null, false);
         binding.setViewModel(viewModel);
 
         initLayoutView();
@@ -386,25 +369,21 @@ public class AddDownloadDialog extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         binding.getRoot().getViewTreeObserver().removeOnWindowFocusChangeListener(onFocusChanged);
 
         super.onDestroyView();
     }
 
-    private void initLayoutView()
-    {
+    private void initLayoutView() {
         binding.expansionHeader.setOnClickListener((View view) -> {
             binding.advancedLayout.toggle();
             binding.expansionHeader.toggleExpand();
         });
 
-        binding.piecesNumberSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
-        {
+        binding.piecesNumberSelect.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
-            {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 /* Increment because progress starts from zero */
                 viewModel.params.setNumPieces(++progress);
             }
@@ -415,17 +394,17 @@ public class AddDownloadDialog extends DialogFragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) { /* Nothing */}
         });
-        binding.piecesNumberValue.addTextChangedListener(new TextWatcher()
-        {
+        binding.piecesNumberValue.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 if (TextUtils.isEmpty(s))
                     return;
 
@@ -445,53 +424,53 @@ public class AddDownloadDialog extends DialogFragment {
             if (!hasFocus && TextUtils.isEmpty(binding.piecesNumberValue.getText()))
                 binding.piecesNumberValue.setText(String.valueOf(viewModel.params.getNumPieces()));
         });
-        binding.link.addTextChangedListener(new TextWatcher()
-        {
+        binding.link.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 binding.layoutLink.setErrorEnabled(false);
                 binding.layoutLink.setError(null);
             }
         });
-        binding.name.addTextChangedListener(new TextWatcher()
-        {
+        binding.name.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 binding.layoutName.setErrorEnabled(false);
                 binding.layoutName.setError(null);
             }
         });
-        binding.checksum.addTextChangedListener(new TextWatcher()
-        {
+        binding.checksum.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 checkChecksumField(s);
             }
         });
 
         binding.folderChooserButton.setOnClickListener((v) ->
-            chooseDir.launch(viewModel.params.getDirPath())
+                chooseDir.launch(viewModel.params.getDirPath())
         );
         binding.urlClipboardButton.setOnClickListener((v) ->
                 showClipboardDialog(TAG_URL_CLIPBOARD_DIALOG));
@@ -530,21 +509,18 @@ public class AddDownloadDialog extends DialogFragment {
         });
 
         binding.userAgent.setAdapter(userAgentAdapter);
-        binding.userAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        binding.userAgent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
-            {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 Object item = binding.userAgent.getItemAtPosition(i);
                 if (item != null) {
-                    viewModel.params.setUserAgent(((UserAgent)item).userAgent);
-                    viewModel.savePrefUserAgent(((UserAgent)item));
+                    viewModel.params.setUserAgent(((UserAgent) item).userAgent);
+                    viewModel.savePrefUserAgent(((UserAgent) item));
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
+            public void onNothingSelected(AdapterView<?> adapterView) {
                 /* Nothing */
             }
         });
@@ -557,8 +533,7 @@ public class AddDownloadDialog extends DialogFragment {
         initAlertDialog(binding.getRoot());
     }
 
-    private void initAlertDialog(View view)
-    {
+    private void initAlertDialog(View view) {
         alert = new AlertDialog.Builder(activity)
                 .setTitle(R.string.add_download)
                 .setPositiveButton(R.string.connect, null)
@@ -598,15 +573,13 @@ public class AddDownloadDialog extends DialogFragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState)
-    {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putString(TAG_CUR_CLIPBOARD_TAG, curClipboardTag);
 
         super.onSaveInstanceState(outState);
     }
 
-    private void addUserAgentDialog()
-    {
+    private void addUserAgentDialog() {
         if (!isAdded())
             return;
 
@@ -625,16 +598,14 @@ public class AddDownloadDialog extends DialogFragment {
         }
     }
 
-    private void onFetching()
-    {
+    private void onFetching() {
         hideFetchError();
         binding.link.setEnabled(false);
         binding.afterFetchLayout.setVisibility(View.GONE);
         binding.fetchProgress.show();
     }
 
-    private void onFetched()
-    {
+    private void onFetched() {
         binding.link.setEnabled(true);
         binding.fetchProgress.hide();
         binding.afterFetchLayout.setVisibility(View.VISIBLE);
@@ -643,14 +614,12 @@ public class AddDownloadDialog extends DialogFragment {
         binding.piecesNumberSelect.setEnabled(viewModel.params.isPartialSupport() && viewModel.params.getTotalBytes() > 0);
     }
 
-    private void hideFetchError()
-    {
+    private void hideFetchError() {
         binding.layoutLink.setErrorEnabled(false);
         binding.layoutLink.setError(null);
     }
 
-    private boolean checkUrlField()
-    {
+    private boolean checkUrlField() {
         if (TextUtils.isEmpty(viewModel.params.getUrl())) {
             binding.layoutLink.setErrorEnabled(true);
             binding.layoutLink.setError(getString(R.string.download_error_empty_link));
@@ -665,8 +634,7 @@ public class AddDownloadDialog extends DialogFragment {
         return true;
     }
 
-    private boolean checkNameField()
-    {
+    private boolean checkNameField() {
         String name = viewModel.params.getFileName();
         if (TextUtils.isEmpty(name)) {
             binding.layoutName.setErrorEnabled(true);
@@ -690,22 +658,20 @@ public class AddDownloadDialog extends DialogFragment {
         return true;
     }
 
-    private void checkChecksumField(Editable s)
-    {
+    private void checkChecksumField(Editable s) {
         if (!TextUtils.isEmpty(s) && !viewModel.isChecksumValid(s.toString())) {
-            binding.layoutChecksum.setErrorEnabled(true);
-            binding.layoutChecksum.setError(getString(R.string.error_invalid_checksum));
-            binding.layoutChecksum.requestFocus();
+            binding.layoutCheckSum.setErrorEnabled(true);
+            binding.layoutCheckSum.setError(getString(R.string.error_invalid_checksum));
+            binding.layoutCheckSum.requestFocus();
 
             return;
         }
 
-        binding.layoutChecksum.setErrorEnabled(false);
-        binding.layoutChecksum.setError(null);
+        binding.layoutCheckSum.setErrorEnabled(false);
+        binding.layoutCheckSum.setError(null);
     }
 
-    private void showFetchError(Throwable e)
-    {
+    private void showFetchError(Throwable e) {
         if (e == null) {
             hideFetchError();
             return;
@@ -721,7 +687,7 @@ public class AddDownloadDialog extends DialogFragment {
                     getString(R.string.fetch_error_network_disconnected));
 
         } else if (e instanceof HttpException) {
-            HttpException httpErr = (HttpException)e;
+            HttpException httpErr = (HttpException) e;
             if (httpErr.getResponseCode() > 0)
                 errorStr = getString(R.string.fetch_error_http_response, httpErr.getResponseCode());
             else
@@ -740,22 +706,19 @@ public class AddDownloadDialog extends DialogFragment {
         binding.layoutLink.requestFocus();
     }
 
-    private void doAutoFetch()
-    {
+    private void doAutoFetch() {
         if (!TextUtils.isEmpty(viewModel.params.getUrl()) && viewModel.pref.autoConnect())
             fetchLink();
     }
 
-    private void fetchLink()
-    {
+    private void fetchLink() {
         if (!checkUrlField())
             return;
 
         viewModel.startFetchTask();
     }
 
-    private void addDownload()
-    {
+    private void addDownload() {
         if (!checkUrlField())
             return;
         if (!checkNameField())
@@ -776,15 +739,14 @@ public class AddDownloadDialog extends DialogFragment {
         }
 
         Toast.makeText(activity.getApplicationContext(),
-                getString(R.string.download_ticker_notify, viewModel.params.getFileName()),
-                Toast.LENGTH_SHORT)
+                        getString(R.string.download_ticker_notify, viewModel.params.getFileName()),
+                        Toast.LENGTH_SHORT)
                 .show();
 
         finish(new Intent(), FragmentCallback.ResultCode.OK);
     }
 
-    private void showClipboardDialog(String tag)
-    {
+    private void showClipboardDialog(String tag) {
         if (!isAdded())
             return;
 
@@ -812,8 +774,7 @@ public class AddDownloadDialog extends DialogFragment {
             }
     );
 
-    private void showCreateFileErrorDialog()
-    {
+    private void showCreateFileErrorDialog() {
         if (!isAdded())
             return;
 
@@ -832,8 +793,7 @@ public class AddDownloadDialog extends DialogFragment {
         }
     }
 
-    private void showOpenDirErrorDialog()
-    {
+    private void showOpenDirErrorDialog() {
         if (!isAdded())
             return;
 
@@ -852,8 +812,7 @@ public class AddDownloadDialog extends DialogFragment {
         }
     }
 
-    private void showInvalidUrlDialog()
-    {
+    private void showInvalidUrlDialog() {
         if (!isAdded())
             return;
 
@@ -872,27 +831,24 @@ public class AddDownloadDialog extends DialogFragment {
         }
     }
 
-    private void showFreeSpaceErrorToast()
-    {
+    private void showFreeSpaceErrorToast() {
         String totalSizeStr = Formatter.formatFileSize(activity, viewModel.params.getTotalBytes());
         String availSizeStr = Formatter.formatFileSize(activity, viewModel.params.getStorageFreeSpace());
 
         Toast.makeText(activity.getApplicationContext(),
-                activity.getString(R.string.download_error_no_enough_free_space, availSizeStr, totalSizeStr),
-                Toast.LENGTH_LONG)
+                        activity.getString(R.string.download_error_no_enough_free_space, availSizeStr, totalSizeStr),
+                        Toast.LENGTH_LONG)
                 .show();
     }
 
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         finish(new Intent(), FragmentCallback.ResultCode.BACK);
     }
 
-    private void finish(Intent intent, FragmentCallback.ResultCode code)
-    {
+    private void finish(Intent intent, FragmentCallback.ResultCode code) {
         viewModel.finish();
 
         alert.dismiss();
-        ((FragmentCallback)activity).fragmentFinished(intent, code);
+        ((FragmentCallback) activity).fragmentFinished(intent, code);
     }
 }

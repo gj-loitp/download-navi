@@ -452,15 +452,15 @@ public class DownloadDetailsDialog extends DialogFragment
     private void checkChecksumField(Editable s)
     {
         if (!TextUtils.isEmpty(s) && !viewModel.isChecksumValid(s.toString())) {
-            binding.layoutChecksum.setErrorEnabled(true);
-            binding.layoutChecksum.setError(getString(R.string.error_invalid_checksum));
-            binding.layoutChecksum.requestFocus();
+            binding.layoutCheckSum.setErrorEnabled(true);
+            binding.layoutCheckSum.setError(getString(R.string.error_invalid_checksum));
+            binding.layoutCheckSum.requestFocus();
 
             return;
         }
 
-        binding.layoutChecksum.setErrorEnabled(false);
-        binding.layoutChecksum.setError(null);
+        binding.layoutCheckSum.setErrorEnabled(false);
+        binding.layoutCheckSum.setError(null);
     }
 
 

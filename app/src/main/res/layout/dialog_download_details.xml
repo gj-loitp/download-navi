@@ -50,10 +50,10 @@
                     android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/layout_link"
+                        android:id="@+id/layoutLink"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/url_clipboard_button"
+                        android:layout_toStartOf="@id/urlClipboardButton"
                         android:hint="@string/download_link">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -65,7 +65,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
-                        android:id="@+id/url_clipboard_button"
+                        android:id="@+id/urlClipboardButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:scaleType="fitCenter"
@@ -80,7 +80,7 @@
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_name"
+                    android:id="@+id/layoutName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -95,7 +95,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/layout_description"
+                    android:id="@+id/layoutDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -115,14 +115,14 @@
                     android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/layout_save_path"
+                        android:id="@+id/layoutSavePath"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/folder_chooser_button"
+                        android:layout_toStartOf="@id/folderChooserButton"
                         android:hint="@string/path" >
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/save_path"
+                            android:id="@+id/savePath"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:focusable="false"
@@ -131,7 +131,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
-                        android:id="@+id/folder_chooser_button"
+                        android:id="@+id/folderChooserButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
@@ -144,7 +144,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:id="@+id/free_space"
+                    android:id="@+id/freeSpace"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -216,7 +216,7 @@
                     style="@style/TextAppearance.MaterialComponents.Body1" />
 
                 <TextView
-                    android:id="@+id/checksum_title"
+                    android:id="@+id/checkSumTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/checksum"
@@ -228,11 +228,11 @@
                     android:layout_marginBottom="16dp">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/layout_checksum"
+                        android:id="@+id/layoutCheckSum"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hintEnabled="false"
-                        android:layout_toStartOf="@+id/checksum_clipboard_button">
+                        android:layout_toStartOf="@+id/checksumClipboardButton">
 
                         <com.tachibana.downloader.ui.customview.FixHintTextInputEditText
                             android:id="@+id/checksum"
@@ -244,7 +244,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <ImageButton
-                        android:id="@+id/checksum_clipboard_button"
+                        android:id="@+id/checksumClipboardButton"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:scaleType="fitCenter"
@@ -352,7 +352,7 @@
                         style="@style/TitleText" />
 
                     <TextView
-                        android:id="@+id/user_agent"
+                        android:id="@+id/userAgent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textIsSelectable="true"
