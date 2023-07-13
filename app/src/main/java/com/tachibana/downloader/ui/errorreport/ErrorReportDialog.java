@@ -25,11 +25,10 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 
 import com.tachibana.downloader.R;
-import com.tachibana.downloader.databinding.DialogErrorBinding;
+import com.tachibana.downloader.databinding.DlgDialogErrorBinding;
 import com.tachibana.downloader.ui.BaseAlertDialog;
 
-public class ErrorReportDialog extends BaseAlertDialog
-{
+public class ErrorReportDialog extends BaseAlertDialog {
     @SuppressWarnings("unused")
     private static final String TAG = ErrorReportDialog.class.getSimpleName();
 
@@ -38,8 +37,7 @@ public class ErrorReportDialog extends BaseAlertDialog
     /* In the absence of any parameter need set 0 or null */
 
     public static ErrorReportDialog newInstance(String title, String message,
-                                                String detailError)
-    {
+                                                String detailError) {
         ErrorReportDialog frag = new ErrorReportDialog();
 
         Bundle args = new Bundle();
@@ -54,8 +52,7 @@ public class ErrorReportDialog extends BaseAlertDialog
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
         Bundle args = getArguments();
@@ -66,7 +63,7 @@ public class ErrorReportDialog extends BaseAlertDialog
         String detailError = args.getString(TAG_DETAIL_ERROR);
 
         LayoutInflater i = LayoutInflater.from(getActivity());
-        DialogErrorBinding binding = DataBindingUtil.inflate(i, R.layout.dialog_error, null, false);
+        DlgDialogErrorBinding binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_error, null, false);
         binding.setDetailError(detailError);
 
         initLayoutView(binding);
@@ -75,8 +72,7 @@ public class ErrorReportDialog extends BaseAlertDialog
                 positiveText, negativeText, null, false);
     }
 
-    private void initLayoutView(DialogErrorBinding binding)
-    {
+    private void initLayoutView(DlgDialogErrorBinding binding) {
         binding.expansionHeader.setOnClickListener((View view) -> {
             binding.expandableLayout.toggle();
             binding.expansionHeader.toggleExpand();

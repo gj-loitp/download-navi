@@ -2,40 +2,41 @@
 <layout>
 
     <data>
+
         <variable
             name="detailError"
             type="String" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:minWidth="@dimen/min_width_dialog">
+        android:minWidth="@dimen/min_width_dialog"
+        android:orientation="vertical">
 
         <com.tachibana.downloader.ui.customview.ExpansionHeader
             android:id="@+id/expansionHeader"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
+            android:background="?attr/dialogRectRipple"
+            android:focusable="true"
             android:paddingStart="@dimen/dialog_padding"
+            android:paddingTop="8dp"
             android:paddingEnd="@dimen/dialog_padding"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            app:expansion_text="@string/more_details"
             app:expansion_expanded="false"
-            app:expansion_textAppearance="@style/TextAppearance.MaterialComponents.Body2"
-            android:background="?attr/dialogRectRipple"
-            android:focusable="true" />
+            app:expansion_text="@string/more_details"
+            app:expansion_textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <net.cachapa.expandablelayout.ExpandableLayout
-            android:id="@+id/expandable_layout"
+            android:id="@+id/expandableLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:el_duration="5"
-            app:el_parallax="0"
-            app:el_expanded="false">
+            app:el_expanded="false"
+            app:el_parallax="0">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -48,23 +49,23 @@
                     android:layout_alignParentTop="true"
                     android:background="@color/gray" />
 
-                <ScrollView
+                <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fadeScrollbars="false">
 
-                    <TextView
-                        android:id="@+id/detail_error_text"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/detailErrorText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="@dimen/dialog_padding"
+                        android:paddingTop="8dp"
                         android:paddingEnd="@dimen/dialog_padding"
                         android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        android:textIsSelectable="true"
+                        android:text="@{detailError}"
                         android:textAppearance="@style/TextCaption"
-                        android:text="@{detailError}" />
-                </ScrollView>
+                        android:textIsSelectable="true" />
+                </androidx.core.widget.NestedScrollView>
 
                 <View
                     android:id="@+id/divider2"
@@ -75,18 +76,18 @@
             </RelativeLayout>
         </net.cachapa.expandablelayout.ExpandableLayout>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dialog_padding"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="@dimen/dialog_padding"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="16dp"
             android:text="@string/error_comment_prompt"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Body2" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_comment"
+            android:id="@+id/layoutComment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -98,5 +99,5 @@
                 android:layout_marginRight="@dimen/dialog_padding"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>
