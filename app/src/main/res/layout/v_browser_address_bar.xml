@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- icons overlapping fixed -->
+<?xml version="1.0" encoding="utf-8"?><!-- icons overlapping fixed -->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -13,11 +12,13 @@
     </data>
 
     <merge>
-        <LinearLayout
+
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <ImageView
+
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/browser_secure_connection"
@@ -27,7 +28,7 @@
                 app:srcCompat="@drawable/ic_lock_outline_menu_24dp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/address_layout"
+                android:id="@+id/addressLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="none"
@@ -36,7 +37,7 @@
                 app:hintEnabled="false">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/address_input"
+                    android:id="@+id/addressInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -46,6 +47,6 @@
                     android:selectAllOnFocus="true"
                     android:text="@={viewModel.url}" />
             </com.google.android.material.textfield.TextInputLayout>
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
     </merge>
 </layout>

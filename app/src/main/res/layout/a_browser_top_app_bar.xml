@@ -35,7 +35,7 @@
 
                 <include
                     android:id="@+id/addressBar"
-                    layout="@layout/browser_address_bar"
+                    layout="@layout/v_browser_address_bar"
                     app:viewModel="@{viewModel}" />
             </androidx.appcompat.widget.Toolbar>
 

@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="-6dp"
         android:layout_marginTop="-6dp"
-        app:layout_anchor="@id/address_layout"
+        app:layout_anchor="@id/addressLayout"
         android:max="100"
         android:progress="@{viewModel.observeUrlFetchState.progress}"
         android:visibility="@{viewModel.observeUrlFetchState == UrlFetchState.FETCHING ? View.VISIBLE : View.GONE}" />
