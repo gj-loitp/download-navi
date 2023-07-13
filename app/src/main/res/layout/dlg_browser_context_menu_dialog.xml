@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.MaterialComponents.Subtitle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="@string/app_name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/share"
+            style="@style/BrowserContextMenuItem"
+            android:drawableStart="@drawable/ic_share_menu_24dp"
+            android:text="@string/share" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/downloadFromLink"
+            style="@style/BrowserContextMenuItem"
+            android:drawableStart="@drawable/ic_file_download_menu_24dp"
+            android:text="@string/browser_download_from_link" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/copyLink"
+            style="@style/BrowserContextMenuItem"
+            android:drawableStart="@drawable/ic_content_copy_menu_24dp"
+            android:text="@string/browser_copy_link" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

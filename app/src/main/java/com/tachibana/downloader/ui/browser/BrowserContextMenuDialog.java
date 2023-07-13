@@ -38,7 +38,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.tachibana.downloader.R;
-import com.tachibana.downloader.databinding.BrowserContextMenuDialogBinding;
+import com.tachibana.downloader.databinding.DlgBrowserContextMenuDialogBinding;
 import com.tachibana.downloader.ui.FragmentCallback;
 
 public class BrowserContextMenuDialog extends BottomSheetDialogFragment
@@ -52,7 +52,7 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
     public static final String TAG_ACTION_COPY = "action_copy";
 
     private AppCompatActivity activity;
-    private BrowserContextMenuDialogBinding binding;
+    private DlgBrowserContextMenuDialogBinding binding;
 
     public static BrowserContextMenuDialog newInstance(@NonNull String url)
     {
@@ -80,7 +80,7 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
-        binding = DataBindingUtil.inflate(inflater, R.layout.browser_context_menu_dialog, container, true);
+        binding = DataBindingUtil.inflate(inflater, R.layout.dlg_browser_context_menu_dialog, container, true);
 
         return binding.getRoot();
     }
@@ -124,10 +124,10 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
             case R.id.share:
                 i.setAction(TAG_ACTION_SHARE);
                 break;
-            case R.id.download_from_link:
+            case R.id.downloadFromLink:
                 i.setAction(TAG_ACTION_DOWNLOAD);
                 break;
-            case R.id.copy_link:
+            case R.id.copyLink:
                 i.setAction(TAG_ACTION_COPY);
                 break;
         }
