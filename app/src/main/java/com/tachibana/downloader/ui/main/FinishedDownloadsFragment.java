@@ -90,7 +90,7 @@ public class FinishedDownloadsFragment extends DownloadsFragment
                         case POSITIVE_BUTTON_CLICKED:
                             Dialog dialog = deleteDownloadDialog.getDialog();
                             if (dialog != null && downloadForDeletion != null) {
-                                CheckBox withFile = dialog.findViewById(R.id.delete_with_file);
+                                CheckBox withFile = dialog.findViewById(R.id.deleteWithFile);
                                 deleteDownload(downloadForDeletion, withFile.isChecked());
                             }
                         case NEGATIVE_BUTTON_CLICKED:
@@ -172,7 +172,7 @@ public class FinishedDownloadsFragment extends DownloadsFragment
             deleteDownloadDialog = BaseAlertDialog.newInstance(
                     getString(R.string.deleting),
                     getString(R.string.delete_selected_download),
-                    R.layout.dialog_delete_downloads,
+                    R.layout.dlg_dialog_delete_downloads,
                     getString(R.string.ok),
                     getString(R.string.cancel),
                     null,

@@ -208,7 +208,7 @@ public abstract class DownloadsFragment extends Fragment
                         case POSITIVE_BUTTON_CLICKED:
                             Dialog dialog = deleteDownloadsDialog.getDialog();
                             if (dialog != null) {
-                                CheckBox withFile = dialog.findViewById(R.id.delete_with_file);
+                                CheckBox withFile = dialog.findViewById(R.id.deleteWithFile);
                                 deleteDownloads(withFile.isChecked());
                             }
                             if (actionMode != null)
@@ -383,7 +383,7 @@ public abstract class DownloadsFragment extends Fragment
                     (selectionTracker.getSelection().size() > 1 ?
                             getString(R.string.delete_selected_downloads) :
                             getString(R.string.delete_selected_download)),
-                    R.layout.dialog_delete_downloads,
+                    R.layout.dlg_dialog_delete_downloads,
                     getString(R.string.ok),
                     getString(R.string.cancel),
                     null,
