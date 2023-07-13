@@ -4,45 +4,45 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="72dp"
-        android:background="?attr/defaultRectRipple">
+        android:background="?attr/defaultRectRipple"
+        android:minHeight="72dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="vertical"
             android:layout_marginEnd="56dp"
-            android:layout_marginStart="16dp">
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:textAppearance="@style/TextCaption" />
-        </LinearLayout>
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <ImageButton
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:padding="8dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
-            android:contentDescription="@string/menu"
-            android:background="?attr/transparentRoundRipple"
-            android:src="@drawable/ic_more_vert_grey600_24dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_alignParentEnd="true" />
+            android:layout_marginBottom="8dp"
+            android:background="?attr/transparentRoundRipple"
+            android:contentDescription="@string/menu"
+            android:padding="8dp"
+            android:src="@drawable/ic_more_vert_grey600_24dp" />
     </RelativeLayout>
 </layout>

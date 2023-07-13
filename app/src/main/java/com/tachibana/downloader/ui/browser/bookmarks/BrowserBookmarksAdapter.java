@@ -41,37 +41,33 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tachibana.downloader.R;
-import com.tachibana.downloader.databinding.ItemBrowserBookmarksListBinding;
+import com.tachibana.downloader.databinding.VItemBrowserBookmarksListBinding;
 import com.tachibana.downloader.ui.Selectable;
 
 import java.util.Collections;
 import java.util.List;
 
 public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, BrowserBookmarksAdapter.ViewHolder>
-        implements Selectable<BrowserBookmarkItem>
-{
+        implements Selectable<BrowserBookmarkItem> {
     private final ClickListener listener;
     private SelectionTracker<BrowserBookmarkItem> selectionTracker;
 
-    protected BrowserBookmarksAdapter(@NonNull ClickListener listener)
-    {
+    protected BrowserBookmarksAdapter(@NonNull ClickListener listener) {
         super(diffCallback);
 
         this.listener = listener;
     }
 
-    public void setSelectionTracker(SelectionTracker<BrowserBookmarkItem> selectionTracker)
-    {
+    public void setSelectionTracker(SelectionTracker<BrowserBookmarkItem> selectionTracker) {
         this.selectionTracker = selectionTracker;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        ItemBrowserBookmarksListBinding binding = DataBindingUtil.inflate(inflater,
-                R.layout.item_browser_bookmarks_list,
+        VItemBrowserBookmarksListBinding binding = DataBindingUtil.inflate(inflater,
+                R.layout.v_item_browser_bookmarks_list,
                 parent,
                 false);
 
@@ -79,8 +75,7 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BrowserBookmarkItem item = getItem(position);
 
         if (selectionTracker != null)
@@ -90,8 +85,7 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
     }
 
     @Override
-    public void submitList(@Nullable List<BrowserBookmarkItem> list)
-    {
+    public void submitList(@Nullable List<BrowserBookmarkItem> list) {
         if (list != null)
             Collections.sort(list);
 
@@ -99,8 +93,7 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
     }
 
     @Override
-    public BrowserBookmarkItem getItemKey(int position)
-    {
+    public BrowserBookmarkItem getItemKey(int position) {
         if (position < 0 || position >= getCurrentList().size())
             return null;
 
@@ -108,40 +101,34 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
     }
 
     @Override
-    public int getItemPosition(BrowserBookmarkItem key)
-    {
+    public int getItemPosition(BrowserBookmarkItem key) {
         return getCurrentList().indexOf(key);
     }
 
-    interface ViewHolderWithDetails
-    {
+    interface ViewHolderWithDetails {
         ItemDetails getItemDetails();
     }
 
-    public interface ClickListener
-    {
+    public interface ClickListener {
         void onItemClicked(@NonNull BrowserBookmarkItem item);
 
         void onItemMenuClicked(int menuId, @NonNull BrowserBookmarkItem item);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
-            implements ViewHolderWithDetails
-    {
+            implements ViewHolderWithDetails {
         /* For selection support */
-        private final ItemBrowserBookmarksListBinding binding;
+        private final VItemBrowserBookmarksListBinding binding;
         private BrowserBookmarkItem selectionKey;
         private boolean isSelected;
 
-        public ViewHolder(ItemBrowserBookmarksListBinding binding)
-        {
+        public ViewHolder(VItemBrowserBookmarksListBinding binding) {
             super(binding.getRoot());
 
             this.binding = binding;
         }
 
-        void bind(BrowserBookmarkItem item, ClickListener listener)
-        {
+        void bind(BrowserBookmarkItem item, ClickListener listener) {
             selectionKey = item;
 
             binding.menu.setOnClickListener((v) -> {
@@ -167,7 +154,7 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
             binding.name.setText(item.name);
             binding.url.setText(item.url);
 
-            TypedArray a = itemView.getContext().obtainStyledAttributes(new TypedValue().data, new int[] {
+            TypedArray a = itemView.getContext().obtainStyledAttributes(new TypedValue().data, new int[]{
                     R.attr.selectableColor,
                     R.attr.defaultRectRipple
             });
@@ -181,31 +168,26 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
             a.recycle();
         }
 
-        public void setSelected(boolean selected)
-        {
+        public void setSelected(boolean selected) {
             isSelected = selected;
         }
 
         @Override
-        public ItemDetails getItemDetails()
-        {
+        public ItemDetails getItemDetails() {
             return new ItemDetails(selectionKey, getBindingAdapterPosition());
         }
     }
 
-    public static final DiffUtil.ItemCallback<BrowserBookmarkItem> diffCallback = new DiffUtil.ItemCallback<BrowserBookmarkItem>()
-    {
+    public static final DiffUtil.ItemCallback<BrowserBookmarkItem> diffCallback = new DiffUtil.ItemCallback<BrowserBookmarkItem>() {
         @Override
         public boolean areContentsTheSame(@NonNull BrowserBookmarkItem oldItem,
-                                          @NonNull BrowserBookmarkItem newItem)
-        {
+                                          @NonNull BrowserBookmarkItem newItem) {
             return oldItem.equalsContent(newItem);
         }
 
         @Override
         public boolean areItemsTheSame(@NonNull BrowserBookmarkItem oldItem,
-                                       @NonNull BrowserBookmarkItem newItem)
-        {
+                                       @NonNull BrowserBookmarkItem newItem) {
             return oldItem.equals(newItem);
         }
     };
@@ -214,12 +196,10 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
      * Selection support stuff
      */
 
-    public static final class KeyProvider extends ItemKeyProvider<BrowserBookmarkItem>
-    {
+    public static final class KeyProvider extends ItemKeyProvider<BrowserBookmarkItem> {
         private final Selectable<BrowserBookmarkItem> selectable;
 
-        KeyProvider(Selectable<BrowserBookmarkItem> selectable)
-        {
+        KeyProvider(Selectable<BrowserBookmarkItem> selectable) {
             super(SCOPE_MAPPED);
 
             this.selectable = selectable;
@@ -227,61 +207,52 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
 
         @Nullable
         @Override
-        public BrowserBookmarkItem getKey(int position)
-        {
+        public BrowserBookmarkItem getKey(int position) {
             return selectable.getItemKey(position);
         }
 
         @Override
-        public int getPosition(@NonNull BrowserBookmarkItem key)
-        {
+        public int getPosition(@NonNull BrowserBookmarkItem key) {
             return selectable.getItemPosition(key);
         }
     }
 
-    public static final class ItemDetails extends ItemDetailsLookup.ItemDetails<BrowserBookmarkItem>
-    {
+    public static final class ItemDetails extends ItemDetailsLookup.ItemDetails<BrowserBookmarkItem> {
         private final BrowserBookmarkItem selectionKey;
         private final int adapterPosition;
 
-        ItemDetails(BrowserBookmarkItem selectionKey, int adapterPosition)
-        {
+        ItemDetails(BrowserBookmarkItem selectionKey, int adapterPosition) {
             this.selectionKey = selectionKey;
             this.adapterPosition = adapterPosition;
         }
 
         @Nullable
         @Override
-        public BrowserBookmarkItem getSelectionKey()
-        {
+        public BrowserBookmarkItem getSelectionKey() {
             return selectionKey;
         }
 
         @Override
-        public int getPosition()
-        {
+        public int getPosition() {
             return adapterPosition;
         }
     }
 
-    public static class ItemLookup extends ItemDetailsLookup<BrowserBookmarkItem>
-    {
+    public static class ItemLookup extends ItemDetailsLookup<BrowserBookmarkItem> {
         private final RecyclerView recyclerView;
 
-        ItemLookup(RecyclerView recyclerView)
-        {
+        ItemLookup(RecyclerView recyclerView) {
             this.recyclerView = recyclerView;
         }
 
         @Nullable
         @Override
-        public ItemDetails<BrowserBookmarkItem> getItemDetails(@NonNull MotionEvent e)
-        {
+        public ItemDetails<BrowserBookmarkItem> getItemDetails(@NonNull MotionEvent e) {
             View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
             if (view != null) {
                 RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
                 if (viewHolder instanceof ViewHolder)
-                    return ((ViewHolder)viewHolder).getItemDetails();
+                    return ((ViewHolder) viewHolder).getItemDetails();
             }
 
             return null;

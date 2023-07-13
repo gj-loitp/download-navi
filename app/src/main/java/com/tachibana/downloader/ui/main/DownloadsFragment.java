@@ -54,7 +54,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.tachibana.downloader.R;
 import com.tachibana.downloader.core.filter.DownloadFilter;
 import com.tachibana.downloader.core.utils.Utils;
-import com.tachibana.downloader.databinding.FragmentDownloadListBinding;
+import com.tachibana.downloader.databinding.FFragmentDownloadListBinding;
 import com.tachibana.downloader.ui.BaseAlertDialog;
 import com.tachibana.downloader.ui.details.DownloadDetailsDialog;
 
@@ -89,7 +89,7 @@ public abstract class DownloadsFragment extends Fragment
     private Parcelable downloadListState;
     private SelectionTracker<DownloadItem> selectionTracker;
     private ActionMode actionMode;
-    protected FragmentDownloadListBinding binding;
+    protected FFragmentDownloadListBinding binding;
     protected DownloadsViewModel viewModel;
     protected CompositeDisposable disposables = new CompositeDisposable();
     private BaseAlertDialog deleteDownloadsDialog;
@@ -104,7 +104,7 @@ public abstract class DownloadsFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_download_list, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.f_fragment_download_list, container, false);
 
         adapter = new DownloadListAdapter(this);
         /*

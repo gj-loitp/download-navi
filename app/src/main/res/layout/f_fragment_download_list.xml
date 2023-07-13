@@ -6,23 +6,23 @@
         android:layout_height="match_parent">
 
         <com.tachibana.downloader.ui.customview.EmptyRecyclerView
-            android:id="@+id/download_list"
+            android:id="@+id/downloadList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:focusable="true"
+            android:paddingLeft="@dimen/widget_margin"
             android:paddingTop="@dimen/widget_margin"
             android:paddingRight="@dimen/widget_margin"
-            android:paddingLeft="@dimen/widget_margin"
             android:paddingBottom="@{@dimen/fab_size + @dimen/fab_margin}"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            android:focusable="true"
-            android:scrollbarStyle="outsideOverlay" /> <!-- Need for padding -->
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical" />
 
-        <TextView
-            android:id="@+id/empty_view_download_list"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/emptyViewDownloadList"
+            style="@style/BaseTheme.EmptyView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/download_list_empty"
-            style="@style/BaseTheme.EmptyView" />
+            android:text="@string/download_list_empty" />
     </FrameLayout>
 </layout>
