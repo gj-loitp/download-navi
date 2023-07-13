@@ -42,7 +42,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.tachibana.downloader.R;
 import com.tachibana.downloader.core.model.data.entity.BrowserBookmark;
-import com.tachibana.downloader.databinding.DialogEditBookmarkBinding;
+import com.tachibana.downloader.databinding.DlgDialogEditBookmarkBinding;
 import com.tachibana.downloader.ui.FragmentCallback;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -62,7 +62,7 @@ public class EditBookmarkDialog extends DialogFragment
 
     private AlertDialog alert;
     private AppCompatActivity activity;
-    private DialogEditBookmarkBinding binding;
+    private DlgDialogEditBookmarkBinding binding;
     private EditBookmarkViewModel viewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -124,7 +124,7 @@ public class EditBookmarkDialog extends DialogFragment
         viewModel = new ViewModelProvider(this).get(EditBookmarkViewModel.class);
 
         LayoutInflater i = LayoutInflater.from(activity);
-        binding = DataBindingUtil.inflate(i, R.layout.dialog_edit_bookmark, null, false);
+        binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_edit_bookmark, null, false);
 
         BrowserBookmark bookmark = getArguments().getParcelable(TAG_BOOKMARK);
         if (bookmark != null) {
