@@ -3,16 +3,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/_expansion_header_text"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/expansionHeaderText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginEnd="16dp"
-        android:gravity="center_vertical"
-        android:layout_toStartOf="@id/_expansion_header_arrow" />
+        android:layout_toStartOf="@id/expansionHeaderArrow"
+        android:gravity="center_vertical" />
 
-    <ImageView
-        android:id="@+id/_expansion_header_arrow"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/expansionHeaderArrow"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentEnd="true"

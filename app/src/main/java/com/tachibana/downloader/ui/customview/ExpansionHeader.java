@@ -140,9 +140,9 @@ public class ExpansionHeader extends FrameLayout
             }
         }
 
-        inflate(context, R.layout.expansion_header, this);
-        textView = findViewById(R.id._expansion_header_text);
-        arrow = findViewById(R.id._expansion_header_arrow);
+        inflate(context, R.layout.v_expansion_header, this);
+        textView = findViewById(R.id.expansionHeaderText);
+        arrow = findViewById(R.id.expansionHeaderArrow);
 
         textView.setText(text);
         setTextAppearance(context, textAppearanceId);
