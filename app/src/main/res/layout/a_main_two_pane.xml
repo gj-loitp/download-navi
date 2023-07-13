@@ -46,5 +46,5 @@
             android:background="?attr/divider" />
     </RelativeLayout>
 
-    <include layout="@layout/content_main" />
+    <include layout="@layout/v_content_main" />
 </androidx.appcompat.widget.LinearLayoutCompat>

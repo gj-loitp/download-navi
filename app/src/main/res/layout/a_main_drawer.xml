@@ -17,7 +17,7 @@
 
             <include layout="@layout/toolbar" />
 
-            <include layout="@layout/content_main" />
+            <include layout="@layout/v_content_main" />
         </RelativeLayout>
 
         <com.google.android.material.navigation.NavigationView

@@ -181,8 +181,8 @@ public class MainActivity extends AppCompatActivity
         coordinatorLayout = findViewById(R.id.coordinator);
         navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawerLayout);
-        tabLayout = findViewById(R.id.download_list_tabs);
-        viewPager = findViewById(R.id.download_list_viewpager);
+        tabLayout = findViewById(R.id.downloadListTabs);
+        viewPager = findViewById(R.id.downloadListViewPager);
         fab = findViewById(R.id.addFab);
         drawerItemsList = findViewById(R.id.drawer_items_list);
         layoutManager = new LinearLayoutManager(this);
@@ -531,7 +531,7 @@ public class MainActivity extends AppCompatActivity
             aboutDialog = BaseAlertDialog.newInstance(
                     getString(R.string.about_title),
                     null,
-                    R.layout.dialog_about,
+                    R.layout.dlg_dialog_about,
                     getString(R.string.ok),
                     getString(R.string.about_changelog),
                     null,
@@ -548,7 +548,7 @@ public class MainActivity extends AppCompatActivity
         Dialog dialog = aboutDialog.getDialog();
         if (dialog != null) {
             TextView versionTextView = dialog.findViewById(R.id.about_version);
-            TextView descriptionTextView = dialog.findViewById(R.id.about_description);
+            TextView descriptionTextView = dialog.findViewById(R.id.aboutDescription);
             String versionName = Utils.getAppVersionName(this);
             if (versionName != null)
                 versionTextView.setText(versionName);
