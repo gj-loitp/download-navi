@@ -208,7 +208,7 @@
                     android:visibility="@{viewModel.enableUncompressArchive ? View.VISIBLE : View.GONE}" />
 
                 <CheckBox
-                    android:id="@+id/unmetered_connections_only"
+                    android:id="@+id/unmeteredConnectionsOnly"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="@={viewModel.params.unmeteredConnectionsOnly}"

@@ -57,13 +57,11 @@ import com.tachibana.downloader.core.exception.FreeSpaceException;
 import com.tachibana.downloader.core.model.data.entity.DownloadInfo;
 import com.tachibana.downloader.core.system.FileSystemContracts;
 import com.tachibana.downloader.core.utils.Utils;
-import com.tachibana.downloader.databinding.DialogDownloadDetailsBinding;
+import com.tachibana.downloader.databinding.DlgDialogDownloadDetailsBinding;
 import com.tachibana.downloader.ui.BaseAlertDialog;
 import com.tachibana.downloader.ui.ClipboardDialog;
 import com.tachibana.downloader.ui.adddownload.AddDownloadActivity;
 import com.tachibana.downloader.ui.adddownload.AddInitParams;
-import com.tachibana.downloader.ui.filemanager.FileManagerConfig;
-import com.tachibana.downloader.ui.filemanager.FileManagerDialog;
 
 import java.util.UUID;
 
@@ -86,7 +84,7 @@ public class DownloadDetailsDialog extends DialogFragment
 
     private AlertDialog alert;
     private AppCompatActivity activity;
-    private DialogDownloadDetailsBinding binding;
+    private DlgDialogDownloadDetailsBinding binding;
     private DownloadDetailsViewModel viewModel;
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
@@ -260,7 +258,7 @@ public class DownloadDetailsDialog extends DialogFragment
         clipboardDialog = (ClipboardDialog)fm.findFragmentByTag(curClipboardTag);
 
         LayoutInflater i = LayoutInflater.from(activity);
-        binding = DataBindingUtil.inflate(i, R.layout.dialog_download_details, null, false);
+        binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_download_details, null, false);
         binding.setViewModel(viewModel);
 
         initLayoutView();
