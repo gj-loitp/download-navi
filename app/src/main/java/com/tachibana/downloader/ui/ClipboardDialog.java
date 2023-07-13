@@ -112,7 +112,7 @@ public class ClipboardDialog extends DialogFragment
                 .setNegativeButton(R.string.cancel, (dialog, which) -> dialog.dismiss());
 
         ArrayList<CharSequence> clipboardText = getClipboardText();
-        adapter = new ArrayAdapter<>(activity, R.layout.item_clipboard_list);
+        adapter = new ArrayAdapter<>(activity, R.layout.v_item_clipboard_list);
         adapter.addAll(clipboardText);
 
         dialogBuilder.setAdapter(adapter, (dialog, which) -> {

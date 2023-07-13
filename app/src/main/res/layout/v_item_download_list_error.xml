@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/widget_margin"
@@ -14,29 +14,32 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/resume"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:contentDescription="@null"
-            android:padding="8dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentStart="true" />
+            android:background="?attr/transparentRoundRipple"
+            android:contentDescription="@string/resume"
+            android:padding="3dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/anim_play_vector" />
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:orientation="vertical"
             android:layout_centerInParent="true"
-            android:layout_toEndOf="@id/icon"
-            android:layout_toStartOf="@id/menu">
+            android:layout_margin="16dp"
+            android:layout_toStartOf="@id/menu"
+            android:layout_toEndOf="@id/resume"
+            android:orientation="vertical">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/filename"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +47,7 @@
                 android:singleLine="true"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,20 +56,31 @@
                 android:gravity="center_vertical"
                 android:maxLines="2"
                 android:textAppearance="@style/TextCaption" />
-        </LinearLayout>
 
-        <ImageButton
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="3"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:textColor="?attr/colorError" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:background="?attr/transparentRoundRipple"
             android:contentDescription="@string/menu"
             android:padding="8dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
             app:srcCompat="@drawable/ic_more_vert_grey600_24dp" />
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -83,10 +83,10 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         switch (viewType) {
             case VIEW_ERROR:
                 return new ErrorViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_download_list_error, parent, false));
+                        .inflate(R.layout.v_item_download_list_error, parent, false));
             case VIEW_FINISH:
                 return new FinishViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_download_list_finish, parent, false));
+                        .inflate(R.layout.v_item_download_list_finish, parent, false));
             default:
                 return new QueueViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.item_download_list_queue, parent, false));
