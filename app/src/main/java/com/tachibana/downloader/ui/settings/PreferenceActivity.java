@@ -57,7 +57,7 @@ public class PreferenceActivity extends AppCompatActivity
             return;
         }
 
-        setContentView(R.layout.activity_preference);
+        setContentView(R.layout.a_preference);
 
         String fragment = null;
         String title = null;
@@ -85,7 +85,7 @@ public class PreferenceActivity extends AppCompatActivity
             return;
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment).commit();
+                .replace(R.id.fragmentContainer, fragment).commit();
     }
 
     private <F extends PreferenceFragmentCompat> F getFragment(String fragment)
