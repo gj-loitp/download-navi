@@ -212,7 +212,7 @@ public class AddDownloadDialog extends DialogFragment {
                 case POSITIVE_BUTTON_CLICKED:
                     Dialog dialog = addUserAgentDialog.getDialog();
                     if (dialog != null) {
-                        TextInputEditText editText = dialog.findViewById(R.id.text_input_dialog);
+                        TextInputEditText editText = dialog.findViewById(R.id.textInputDialog);
                         Editable e = editText.getText();
                         String userAgent = (e == null ? null : e.toString());
                         if (!TextUtils.isEmpty(userAgent))
@@ -588,7 +588,7 @@ public class AddDownloadDialog extends DialogFragment {
             addUserAgentDialog = BaseAlertDialog.newInstance(
                     getString(R.string.dialog_add_user_agent_title),
                     null,
-                    R.layout.dialog_text_input,
+                    R.layout.dlg_dialog_text_input,
                     getString(R.string.ok),
                     getString(R.string.cancel),
                     null,

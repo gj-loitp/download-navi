@@ -190,7 +190,7 @@ public class FileManagerDialog extends AppCompatActivity
             inputNameDialog = BaseAlertDialog.newInstance(
                     getString(R.string.dialog_new_folder_title),
                     null,
-                    R.layout.dialog_text_input,
+                    R.layout.dlg_dialog_text_input,
                     getString(R.string.ok),
                     getString(R.string.cancel),
                     null,
@@ -296,7 +296,7 @@ public class FileManagerDialog extends AppCompatActivity
                 if (event.dialogTag.equals(TAG_INPUT_NAME_DIALOG) && inputNameDialog != null) {
                     Dialog dialog = inputNameDialog.getDialog();
                     if (dialog != null) {
-                        EditText nameField = dialog.findViewById(R.id.text_input_dialog);
+                        EditText nameField = dialog.findViewById(R.id.textInputDialog);
                         String name = nameField.getText().toString();
 
                         if (!viewModel.createDirectory(name)) {

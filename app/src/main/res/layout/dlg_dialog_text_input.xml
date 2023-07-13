@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:minWidth="@dimen/min_width_dialog">
@@ -10,9 +10,9 @@
         android:layout_margin="@dimen/dialog_padding">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/text_input_dialog"
+            android:id="@+id/textInputDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text|textNoSuggestions" />
     </com.google.android.material.textfield.TextInputLayout>
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
