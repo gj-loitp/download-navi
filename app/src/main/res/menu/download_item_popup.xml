@@ -10,7 +10,7 @@
         app:showAsAction="never"
         android:title="@string/redownload" />
 
-    <item android:id="@+id/share_menu"
+    <item android:id="@+id/shareMenu"
         app:showAsAction="never"
         android:title="@string/share" />
 

@@ -12,7 +12,7 @@
         android:title="@string/share"
         android:icon="@drawable/ic_share_menu_24dp" />
 
-    <item android:id="@+id/edit_bookmark_menu"
+    <item android:id="@+id/editBookmarkMenu"
         app:showAsAction="ifRoom"
         android:title="@string/browser_bookmark_edit_menu"
         android:icon="@drawable/ic_edit_menu_24dp" />

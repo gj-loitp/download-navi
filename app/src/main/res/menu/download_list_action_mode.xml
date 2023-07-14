@@ -7,7 +7,7 @@
         app:showAsAction="ifRoom|withText"
         android:title="@string/delete" />
 
-    <item android:id="@+id/share_menu"
+    <item android:id="@+id/shareMenu"
         android:icon="@drawable/ic_share_menu_24dp"
         app:showAsAction="ifRoom|withText"
         android:title="@string/share" />

@@ -348,7 +348,7 @@ public abstract class DownloadsFragment extends Fragment
                 case R.id.delete_menu:
                     deleteDownloadsDialog();
                     break;
-                case R.id.share_menu:
+                case R.id.shareMenu:
                     shareDownloads();
                     mode.finish();
                     break;

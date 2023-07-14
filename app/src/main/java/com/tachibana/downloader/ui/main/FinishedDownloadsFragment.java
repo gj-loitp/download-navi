@@ -144,7 +144,7 @@ public class FinishedDownloadsFragment extends DownloadsFragment
             case R.id.open_details_menu:
                 showDetailsDialog(item.info.id);
                 break;
-            case R.id.share_menu:
+            case R.id.shareMenu:
                 shareDownload(item);
                 break;
             case R.id.share_url_menu:

@@ -1,61 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- changed for the concept to fix the overlaping search bottom bar view -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/refresh_menu"
+    <item
+        android:id="@+id/refreshMenu"
         android:icon="@drawable/ic_refresh_menu_24dp"
         android:title="refresh"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/stop_menu"
+    <item
+        android:id="@+id/stopMenu"
         android:icon="@drawable/ic_close_menu_24dp"
         android:title="close"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/forward_menu"
-        android:title="@string/browser_forward_arrow"
+    <item
+        android:id="@+id/forwardMenu"
         android:icon="@drawable/ic_arrow_forward_menu_24dp"
+        android:title="@string/browser_forward_arrow"
         app:showAsAction="never" />
 
-    <item android:id="@+id/start_page_menu"
-        android:title="@string/pref_browser_start_page_title"
+    <item
+        android:id="@+id/startPageMenu"
         android:icon="@drawable/ic_home_menu_24dp"
+        android:title="@string/pref_browser_start_page_title"
         app:showAsAction="never" />
 
-    <item android:id="@+id/share_menu"
-        android:title="@string/share"
+    <item
+        android:id="@+id/shareMenu"
         android:icon="@drawable/ic_share_menu_24dp"
+        android:title="@string/share"
         app:showAsAction="never" />
 
-    <item android:id="@+id/add_bookmark_menu"
-        android:title="@string/browser_add_bookmark"
+    <item
+        android:id="@+id/addBookmarkMenu"
         android:icon="@drawable/ic_add_bookmark_menu_24dp"
+        android:title="@string/browser_add_bookmark"
         app:showAsAction="never" />
 
-    <item android:id="@+id/edit_bookmark_menu"
-        android:title="@string/browser_edit_bookmark"
+    <item
+        android:id="@+id/editBookmarkMenu"
         android:icon="@drawable/ic_added_bookmark_menu_24dp"
+        android:title="@string/browser_edit_bookmark"
         app:showAsAction="never" />
 
-    <item android:id="@+id/bookmarks_menu"
-        android:title="@string/browser_bookmarks"
+    <item
+        android:id="@+id/bookmarksMenu"
         android:icon="@drawable/ic_bookmark_border_menu_24dp"
+        android:title="@string/browser_bookmarks"
         app:showAsAction="never" />
 
-    <item android:id="@+id/desktop_version_menu"
-        android:title="@string/browser_desktop_version"
-        android:icon="@drawable/ic_desktop_menu_24dp"
+    <item
+        android:id="@+id/desktopVersionMenu"
         android:checkable="true"
+        android:icon="@drawable/ic_desktop_menu_24dp"
+        android:title="@string/browser_desktop_version"
         app:showAsAction="never" />
 
-    <item android:id="@+id/settings_menu"
-        android:title="@string/settings"
+    <item
+        android:id="@+id/settingsMenu"
         android:icon="@drawable/ic_settings_menu_24dp"
+        android:title="@string/settings"
         app:showAsAction="never" />
 
-    <item android:id="@+id/close_menu"
-        android:title="@string/close"
+    <item
+        android:id="@+id/closeMenu"
         android:icon="@drawable/ic_close_menu_24dp"
+        android:title="@string/close"
         app:showAsAction="never" />
 </menu>

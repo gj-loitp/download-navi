@@ -500,7 +500,7 @@ public class MainActivity extends AppCompatActivity
             pauseAll();
         } else if (itemId == R.id.resume_all_menu) {
             resumeAll();
-        } else if (itemId == R.id.settings_menu) {
+        } else if (itemId == R.id.settingsMenu) {
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (itemId == R.id.about_menu) {
             showAboutDialog();

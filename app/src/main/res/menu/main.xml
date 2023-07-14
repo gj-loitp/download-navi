@@ -19,7 +19,7 @@
     <item android:id="@+id/resume_all_menu"
         android:title="@string/resume_all" />
 
-    <item android:id="@+id/settings_menu"
+    <item android:id="@+id/settingsMenu"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings_menu_24dp" />
 

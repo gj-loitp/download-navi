@@ -351,7 +351,7 @@ public class BrowserActivity extends AppCompatActivity
         if (hideMenuButtons)
             return false;
 
-        getMenuInflater().inflate(R.menu.browser, menu);
+        getMenuInflater().inflate(R.menu.menu_browser, menu);
 
         if (menu instanceof MenuBuilder) {
             MenuBuilder menuBuilder = (MenuBuilder) menu;
@@ -366,8 +366,8 @@ public class BrowserActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         BrowserViewModel.UrlFetchState state = viewModel.observeUrlFetchState().getValue();
 
-        MenuItem refresh = menu.findItem(R.id.refresh_menu);
-        MenuItem stop = menu.findItem(R.id.stop_menu);
+        MenuItem refresh = menu.findItem(R.id.refreshMenu);
+        MenuItem stop = menu.findItem(R.id.stopMenu);
         if (refresh != null && stop != null) {
             boolean fetching = state == BrowserViewModel.UrlFetchState.FETCHING ||
                     state == BrowserViewModel.UrlFetchState.PAGE_STARTED;
@@ -375,18 +375,18 @@ public class BrowserActivity extends AppCompatActivity
             stop.setVisible(!fetching);
         }
 
-        MenuItem forward = menu.findItem(R.id.forward_menu);
+        MenuItem forward = menu.findItem(R.id.forwardMenu);
         if (forward != null) {
             forward.setVisible(webView.canGoForward());
         }
 
-        MenuItem desktopVersion = menu.findItem(R.id.desktop_version_menu);
+        MenuItem desktopVersion = menu.findItem(R.id.desktopVersionMenu);
         if (desktopVersion != null) {
             desktopVersion.setChecked(viewModel.isDesktopMode());
         }
 
-        MenuItem addBookmark = menu.findItem(R.id.add_bookmark_menu);
-        MenuItem editBookmark = menu.findItem(R.id.edit_bookmark_menu);
+        MenuItem addBookmark = menu.findItem(R.id.addBookmarkMenu);
+        MenuItem editBookmark = menu.findItem(R.id.editBookmarkMenu);
         if (addBookmark != null && editBookmark != null) {
             addBookmark.setVisible(!isCurrentPageBookmarked);
             editBookmark.setVisible(isCurrentPageBookmarked);
@@ -399,35 +399,35 @@ public class BrowserActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.forward_menu) {
+        if (itemId == R.id.forwardMenu) {
             if (webView.canGoForward())
                 webView.goForward();
-        } else if (itemId == R.id.stop_menu) {
+        } else if (itemId == R.id.stopMenu) {
             viewModel.stopLoading(webView);
-        } else if (itemId == R.id.refresh_menu) {
+        } else if (itemId == R.id.refreshMenu) {
             webView.reload();
-        } else if (itemId == R.id.share_menu) {
+        } else if (itemId == R.id.shareMenu) {
             makeShareDialog(viewModel.url.get());
-        } else if (itemId == R.id.settings_menu) {
+        } else if (itemId == R.id.settingsMenu) {
             showSettings();
-        } else if (itemId == R.id.desktop_version_menu) {
+        } else if (itemId == R.id.desktopVersionMenu) {
             item.setChecked(!item.isChecked());
             viewModel.enableDesktopMode(webView, item.isChecked());
             webView.reload();
-        } else if (itemId == R.id.bookmarks_menu) {
+        } else if (itemId == R.id.bookmarksMenu) {
             showBookmarks();
-        } else if (itemId == R.id.add_bookmark_menu) {
+        } else if (itemId == R.id.addBookmarkMenu) {
             addBookmark();
-        } else if (itemId == R.id.edit_bookmark_menu) {
+        } else if (itemId == R.id.editBookmarkMenu) {
             disposables.add(viewModel.getBookmarkForCurrentPage()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::showEditBookmarkDialog,
                             (e) -> Log.e(TAG, Log.getStackTraceString(e)))
             );
-        } else if (itemId == R.id.close_menu) {
+        } else if (itemId == R.id.closeMenu) {
             finish();
-        } else if (itemId == R.id.start_page_menu) {
+        } else if (itemId == R.id.startPageMenu) {
             viewModel.loadStartPage(webView);
         }
 

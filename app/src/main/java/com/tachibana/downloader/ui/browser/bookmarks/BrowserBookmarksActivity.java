@@ -223,7 +223,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     public void onItemMenuClicked(int menuId, @NonNull BrowserBookmarkItem item)
     {
         switch (menuId) {
-            case R.id.edit_bookmark_menu:
+            case R.id.editBookmarkMenu:
                 showEditDialog(item);
                 break;
             case R.id.delete_bookmark_menu:
@@ -245,7 +245,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu)
         {
-            MenuItem edit = menu.findItem(R.id.edit_bookmark_menu);
+            MenuItem edit = menu.findItem(R.id.editBookmarkMenu);
             boolean show = selectionTracker.getSelection().size() <= 1;
             edit.setVisible(show);
 
@@ -264,7 +264,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         public boolean onActionItemClicked(ActionMode mode, MenuItem item)
         {
             switch (item.getItemId()) {
-                case R.id.edit_bookmark_menu:
+                case R.id.editBookmarkMenu:
                     editSelectedBookmark();
                     mode.finish();
                     break;

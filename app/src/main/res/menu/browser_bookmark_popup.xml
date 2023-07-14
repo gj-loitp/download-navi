@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/edit_bookmark_menu"
+    <item android:id="@+id/editBookmarkMenu"
         app:showAsAction="never"
         android:title="@string/browser_bookmark_edit_menu" />
 
