@@ -352,7 +352,7 @@ public abstract class DownloadsFragment extends Fragment
                     shareDownloads();
                     mode.finish();
                     break;
-                case R.id.select_all_menu:
+                case R.id.selectAllMenu:
                     selectAllDownloads();
                     break;
                 case R.id.share_url_menu:

@@ -133,7 +133,7 @@ public class BrowserBookmarksAdapter extends ListAdapter<BrowserBookmarkItem, Br
 
             binding.menu.setOnClickListener((v) -> {
                 PopupMenu popup = new PopupMenu(v.getContext(), v);
-                popup.inflate(R.menu.browser_bookmark_popup);
+                popup.inflate(R.menu.menu_browser_bookmark_popup);
                 popup.setOnMenuItemClickListener((MenuItem menuItem) -> {
                     if (listener != null)
                         listener.onItemMenuClicked(menuItem.getItemId(), item);

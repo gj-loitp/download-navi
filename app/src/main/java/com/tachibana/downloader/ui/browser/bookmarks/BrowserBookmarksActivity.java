@@ -226,10 +226,10 @@ public class BrowserBookmarksActivity extends AppCompatActivity
             case R.id.editBookmarkMenu:
                 showEditDialog(item);
                 break;
-            case R.id.delete_bookmark_menu:
+            case R.id.deleteBookmarkMenu:
                 delete(Collections.singletonList(item));
                 break;
-            case R.id.share_bookmark_menu:
+            case R.id.shareBookmarkMenu:
                 shareBookmark(item);
                 break;
         }
@@ -255,7 +255,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu)
         {
-            mode.getMenuInflater().inflate(R.menu.browser_bookmarks_action_mode, menu);
+            mode.getMenuInflater().inflate(R.menu.menu_browser_bookmarks_action_mode, menu);
 
             return true;
         }
@@ -268,15 +268,15 @@ public class BrowserBookmarksActivity extends AppCompatActivity
                     editSelectedBookmark();
                     mode.finish();
                     break;
-                case R.id.delete_bookmark_menu:
+                case R.id.deleteBookmarkMenu:
                     deleteSelectedBookmarks();
                     mode.finish();
                     break;
-                case R.id.share_bookmark_menu:
+                case R.id.shareBookmarkMenu:
                     shareSelectedBookmarks();
                     mode.finish();
                     break;
-                case R.id.select_all_menu:
+                case R.id.selectAllMenu:
                     selectAllBookmarks();
                     break;
             }

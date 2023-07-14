@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/deleteBookmarkMenu"
+        android:icon="@drawable/ic_delete_menu_24dp"
+        android:title="@string/delete"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/shareBookmarkMenu"
+        android:icon="@drawable/ic_share_menu_24dp"
+        android:title="@string/share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/editBookmarkMenu"
+        android:icon="@drawable/ic_edit_menu_24dp"
+        android:title="@string/browser_bookmark_edit_menu"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/selectAllMenu"
+        android:icon="@drawable/ic_select_all_menu_24dp"
+        android:title="@string/select_all"
+        app:showAsAction="ifRoom|withText" />
+</menu>
