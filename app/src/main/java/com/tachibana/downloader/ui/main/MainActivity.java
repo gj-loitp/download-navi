@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout = findViewById(R.id.downloadListTabs);
         viewPager = findViewById(R.id.downloadListViewPager);
         fab = findViewById(R.id.addFab);
-        drawerItemsList = findViewById(R.id.drawer_items_list);
+        drawerItemsList = findViewById(R.id.drawerItemsList);
         layoutManager = new LinearLayoutManager(this);
 
         toolbar.setTitle(R.string.app_name);

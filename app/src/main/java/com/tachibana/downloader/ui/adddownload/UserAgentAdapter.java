@@ -39,7 +39,7 @@ public class UserAgentAdapter extends ArrayAdapter<UserAgent>
 
     public UserAgentAdapter(@NonNull Context context, DeleteListener deleteListener)
     {
-        super(context, R.layout.spinner_user_agent_item);
+        super(context, R.layout.v_spinner_user_agent_item);
 
         this.deleteListener = deleteListener;
     }
@@ -49,7 +49,7 @@ public class UserAgentAdapter extends ArrayAdapter<UserAgent>
     {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.spinner_user_agent_item, parent, false);
+            view = inflater.inflate(R.layout.v_spinner_user_agent_item, parent, false);
         }
 
         UserAgent userAgent = getItem(position);
@@ -76,7 +76,7 @@ public class UserAgentAdapter extends ArrayAdapter<UserAgent>
     {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.spinner_user_agent_view, parent, false);
+            view = inflater.inflate(R.layout.v_spinner_user_agent_view, parent, false);
         }
 
         UserAgent userAgent = getItem(position);

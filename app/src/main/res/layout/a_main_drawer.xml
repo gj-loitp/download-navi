@@ -28,7 +28,7 @@
             android:background="?attr/backgroundDialog"
             android:focusable="true">
 
-            <include layout="@layout/main_drawer_content" />
+            <include layout="@layout/v_main_drawer_content" />
         </com.google.android.material.navigation.NavigationView>
     </androidx.drawerlayout.widget.DrawerLayout>
 </FrameLayout>

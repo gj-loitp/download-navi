@@ -24,7 +24,7 @@
             android:focusable="true"
             app:elevation="0dp">
 
-            <include layout="@layout/main_drawer_content" />
+            <include layout="@layout/v_main_drawer_content" />
         </com.google.android.material.navigation.NavigationView>
     </RelativeLayout>
 
