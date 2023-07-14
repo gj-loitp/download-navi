@@ -13,7 +13,7 @@
         android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent">
 
-        <include layout="@layout/toolbar" />
+        <include layout="@layout/v_toolbar" />
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"

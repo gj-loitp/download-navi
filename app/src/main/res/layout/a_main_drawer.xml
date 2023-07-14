@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:gravity="center">
 
-            <include layout="@layout/toolbar" />
+            <include layout="@layout/v_toolbar" />
 
             <include layout="@layout/v_content_main" />
         </RelativeLayout>

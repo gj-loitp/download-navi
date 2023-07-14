@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/background">
 
-    <include layout="@layout/toolbar" />
+    <include layout="@layout/v_toolbar" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
