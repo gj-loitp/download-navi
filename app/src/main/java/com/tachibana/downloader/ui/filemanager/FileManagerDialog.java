@@ -455,7 +455,7 @@ public class FileManagerDialog extends AppCompatActivity
     {
         super.onCreateOptionsMenu(menu);
 
-        getMenuInflater().inflate(R.menu.filemanager, menu);
+        getMenuInflater().inflate(R.menu.menu_file_manager, menu);
 
         return true;
     }
@@ -466,7 +466,7 @@ public class FileManagerDialog extends AppCompatActivity
         super.onPrepareOptionsMenu(menu);
 
         if (viewModel.config.showMode == FileManagerConfig.FILE_CHOOSER_MODE)
-            menu.findItem(R.id.filemanager_ok_menu).setVisible(false);
+            menu.findItem(R.id.menuFileManagerOkMenu).setVisible(false);
 
         return true;
     }
@@ -483,9 +483,9 @@ public class FileManagerDialog extends AppCompatActivity
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
             onBackPressed();
-        } else if (itemId == R.id.filemanager_home_menu) {
+        } else if (itemId == R.id.menuFileManagerHomeMenu) {
             openHomeDirectory();
-        } else if (itemId == R.id.filemanager_ok_menu) {
+        } else if (itemId == R.id.menuFileManagerOkMenu) {
             saveCurDirectoryPath();
             if (viewModel.config.showMode == FileManagerConfig.SAVE_FILE_MODE)
                 createFile(false);

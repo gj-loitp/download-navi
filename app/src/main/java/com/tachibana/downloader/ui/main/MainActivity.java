@@ -443,7 +443,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
         searchView = (SearchView)menu.findItem(R.id.search).getActionView();
         initSearch();
@@ -487,7 +487,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.browser_menu).setVisible(!pref.browserHideMenuIcon());
+        menu.findItem(R.id.browserMenu).setVisible(!pref.browserHideMenuIcon());
 
         return true;
     }
@@ -496,18 +496,18 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int itemId = item.getItemId();
-        if (itemId == R.id.pause_all_menu) {
+        if (itemId == R.id.pauseAllMenu) {
             pauseAll();
-        } else if (itemId == R.id.resume_all_menu) {
+        } else if (itemId == R.id.resumeAllMenu) {
             resumeAll();
         } else if (itemId == R.id.settingsMenu) {
             startActivity(new Intent(this, SettingsActivity.class));
-        } else if (itemId == R.id.about_menu) {
+        } else if (itemId == R.id.aboutMenu) {
             showAboutDialog();
-        } else if (itemId == R.id.shutdown_app_menu) {
+        } else if (itemId == R.id.shutdownAppMenu) {
             closeOptionsMenu();
             shutdown();
-        } else if (itemId == R.id.browser_menu) {
+        } else if (itemId == R.id.browserMenu) {
             startActivity(new Intent(this, BrowserActivity.class));
         }
 

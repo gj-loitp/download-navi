@@ -137,20 +137,20 @@ public class FinishedDownloadsFragment extends DownloadsFragment
     public void onItemMenuClicked(int menuId, @NonNull DownloadItem item)
     {
         switch (menuId) {
-            case R.id.delete_menu:
+            case R.id.deleteMenu:
                 downloadForDeletion = item.info;
                 showDeleteDownloadDialog();
                 break;
-            case R.id.open_details_menu:
+            case R.id.openDetailsMenu:
                 showDetailsDialog(item.info.id);
                 break;
             case R.id.shareMenu:
                 shareDownload(item);
                 break;
-            case R.id.share_url_menu:
+            case R.id.shareUrlMenu:
                 shareUrl(item);
                 break;
-            case R.id.redownload_menu:
+            case R.id.reDownloadMenu:
                 showAddDownloadDialog(item.info);
                 break;
         }

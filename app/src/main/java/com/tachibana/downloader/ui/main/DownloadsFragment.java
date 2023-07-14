@@ -336,7 +336,7 @@ public abstract class DownloadsFragment extends Fragment
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu)
         {
-            mode.getMenuInflater().inflate(R.menu.download_list_action_mode, menu);
+            mode.getMenuInflater().inflate(R.menu.menu_download_list_action_mode, menu);
 
             return true;
         }
@@ -345,7 +345,7 @@ public abstract class DownloadsFragment extends Fragment
         public boolean onActionItemClicked(ActionMode mode, MenuItem item)
         {
             switch (item.getItemId()) {
-                case R.id.delete_menu:
+                case R.id.deleteMenu:
                     deleteDownloadsDialog();
                     break;
                 case R.id.shareMenu:
@@ -355,7 +355,7 @@ public abstract class DownloadsFragment extends Fragment
                 case R.id.selectAllMenu:
                     selectAllDownloads();
                     break;
-                case R.id.share_url_menu:
+                case R.id.shareUrlMenu:
                     shareUrl();
                     mode.finish();
                     break;

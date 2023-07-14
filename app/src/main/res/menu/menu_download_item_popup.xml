@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/openDetailsMenu"
+        android:title="@string/download_details"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/reDownloadMenu"
+        android:title="@string/redownload"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/shareMenu"
+        android:title="@string/share"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/shareUrlMenu"
+        android:title="@string/share_url"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/deleteMenu"
+        android:title="@string/delete"
+        app:showAsAction="never" />
+</menu>
