@@ -89,7 +89,7 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
                         .inflate(R.layout.v_item_download_list_finish, parent, false));
             default:
                 return new QueueViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.item_download_list_queue, parent, false));
+                        .inflate(R.layout.v_item_download_list_queue, parent, false));
         }
     }
 
