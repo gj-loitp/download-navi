@@ -6,11 +6,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.tachibana.downloader.ui.browser.BrowserViewModel.UrlFetchState" />
+        <import type="com.roy.downloader.ui.browser.BrowserViewModel.UrlFetchState" />
 
         <variable
             name="viewModel"
-            type="com.tachibana.downloader.ui.browser.BrowserViewModel" />
+            type="com.roy.downloader.ui.browser.BrowserViewModel" />
     </data>
 
     <ProgressBar

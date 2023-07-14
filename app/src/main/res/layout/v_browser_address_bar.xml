@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.tachibana.downloader.ui.browser.BrowserViewModel" />
+            type="com.roy.downloader.ui.browser.BrowserViewModel" />
     </data>
 
     <merge>

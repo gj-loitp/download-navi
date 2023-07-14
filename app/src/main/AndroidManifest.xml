@@ -32,7 +32,7 @@
         android:required="false" />
 
     <application
-        android:name="MainApplication"
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:banner="@drawable/ic_banner"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -1207,7 +1207,7 @@
             android:name=".receiver.NotificationReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.tachibana.downloader.receiver.NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP" />
+                <action android:name="com.roy.downloader.receiver.NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP" />
             </intent-filter>
         </receiver>
 

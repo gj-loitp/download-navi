@@ -6,15 +6,15 @@
 
         <import type="android.view.View" />
 
-        <import type="com.tachibana.downloader.core.utils.BindingAdapterUtils" />
+        <import type="com.roy.downloader.core.utils.BindingAdapterUtils" />
 
-        <import type="com.tachibana.downloader.ui.details.DownloadDetailsInfo" />
+        <import type="com.roy.downloader.ui.details.DownloadDetailsInfo" />
 
-        <import type="com.tachibana.downloader.core.model.data.StatusCode" />
+        <import type="com.roy.downloader.core.model.data.StatusCode" />
 
         <variable
             name="viewModel"
-            type="com.tachibana.downloader.ui.details.DownloadDetailsViewModel" />
+            type="com.roy.downloader.ui.details.DownloadDetailsViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -238,7 +238,7 @@
                         android:layout_toStartOf="@+id/checksumClipboardButton"
                         app:hintEnabled="false">
 
-                        <com.tachibana.downloader.ui.customview.FixHintTextInputEditText
+                        <com.roy.downloader.ui.customview.FixHintTextInputEditText
                             android:id="@+id/checksum"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

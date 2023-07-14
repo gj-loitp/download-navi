@@ -24,7 +24,7 @@
                 app:popupTheme="?attr/popupTheme" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.tachibana.downloader.ui.customview.EmptyRecyclerView
+        <com.roy.downloader.ui.customview.EmptyRecyclerView
             android:id="@+id/bookmarksList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

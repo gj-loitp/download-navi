@@ -17,7 +17,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/settingsFragmentContainer"
-            class="com.tachibana.downloader.ui.settings.SettingsFragment"
+            class="com.roy.downloader.ui.settings.SettingsFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.tachibana.downloader.ui.adddownload.AddDownloadViewModel" />
+            type="com.roy.downloader.ui.adddownload.AddDownloadViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -215,7 +215,7 @@
                     android:text="@string/unmetered_connections_only" />
             </com.google.android.material.internal.FlowLayout>
 
-            <com.tachibana.downloader.ui.customview.ExpansionHeader
+            <com.roy.downloader.ui.customview.ExpansionHeader
                 android:id="@+id/expansionHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
@@ -343,7 +343,7 @@
                             android:layout_toStartOf="@+id/checksumClipboardButton"
                             app:hintEnabled="false">
 
-                            <com.tachibana.downloader.ui.customview.FixHintTextInputEditText
+                            <com.roy.downloader.ui.customview.FixHintTextInputEditText
                                 android:id="@+id/checksum"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -385,7 +385,7 @@
                             android:layout_toStartOf="@+id/refererClipboardButton"
                             app:hintEnabled="false">
 
-                            <com.tachibana.downloader.ui.customview.FixHintTextInputEditText
+                            <com.roy.downloader.ui.customview.FixHintTextInputEditText
                                 android:id="@+id/referer"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

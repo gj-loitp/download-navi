@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.tachibana.downloader.ui.browser.BrowserViewModel" />
+            type="com.roy.downloader.ui.browser.BrowserViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -45,7 +45,7 @@
                 app:viewModel="@{viewModel}" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.tachibana.downloader.ui.customview.NestedWebView
+        <com.roy.downloader.ui.customview.NestedWebView
             android:id="@+id/webView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

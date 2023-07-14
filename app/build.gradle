@@ -2,10 +2,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace 'com.tachibana.downloader'
+    namespace 'com.roy.downloader'
     compileSdkVersion 33
     defaultConfig {
-        applicationId 'com.tachibana.downloader'
+        applicationId 'com.roy.downloader'
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 20230712

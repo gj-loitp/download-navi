@@ -8,7 +8,7 @@
         android:shortcutShortLabel="@string/add_download">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="com.tachibana.downloader.ui.adddownload.AddDownloadActivity"
-            android:targetPackage="com.tachibana.downloader" />
+            android:targetClass="com.roy.downloader.ui.adddownload.AddDownloadActivity"
+            android:targetPackage="com.roy.downloader" />
     </shortcut>
 </shortcuts>

@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.tachibana.downloader.ui.customview.EmptyRecyclerView
+        <com.roy.downloader.ui.customview.EmptyRecyclerView
             android:id="@+id/downloadList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
