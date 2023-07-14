@@ -2,20 +2,20 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
+        android:inputType="numberDecimal"
         android:key="@string/pref_key_max_active_downloads"
-        android:title="@string/pref_max_active_downloads_title"
-        android:inputType="numberDecimal"
-        android:persistent="false" />
+        android:persistent="false"
+        android:title="@string/pref_max_active_downloads_title" />
 
     <EditTextPreference
+        android:inputType="numberDecimal"
         android:key="@string/pref_key_max_download_retries"
-        android:title="@string/pref_max_download_retries_title"
-        android:inputType="numberDecimal"
-        android:persistent="false" />
+        android:persistent="false"
+        android:title="@string/pref_max_download_retries_title" />
 
     <EditTextPreference
-        android:key="@string/pref_key_speed_limit"
-        android:title="@string/pref_speed_limit_title"
         android:inputType="numberDecimal"
-        android:persistent="false" />
+        android:key="@string/pref_key_speed_limit"
+        android:persistent="false"
+        android:title="@string/pref_speed_limit_title" />
 </PreferenceScreen>

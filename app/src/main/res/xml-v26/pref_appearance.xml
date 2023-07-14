@@ -2,34 +2,32 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:title="@string/pref_theme_category">
+    <PreferenceCategory android:title="@string/pref_theme_category">
 
         <ListPreference
-            android:key="@string/pref_key_theme"
-            android:title="@string/pref_theme_title"
-            app:useSimpleSummaryProvider="true"
             android:entries="@array/pref_theme_entries"
             android:entryValues="@array/pref_theme_entries_value"
-            android:persistent="false" />
+            android:key="@string/pref_key_theme"
+            android:persistent="false"
+            android:title="@string/pref_theme_title"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/pref_notification_category">
+    <PreferenceCategory android:title="@string/pref_notification_category">
 
         <SwitchPreferenceCompat
             android:key="@string/pref_key_progress_notify"
-            android:title="@string/pref_progress_notify_title"
-            android:persistent="false" />
+            android:persistent="false"
+            android:title="@string/pref_progress_notify_title" />
 
         <SwitchPreferenceCompat
             android:key="@string/pref_key_finish_notify"
-            android:title="@string/pref_finish_notify_title"
-            android:persistent="false" />
+            android:persistent="false"
+            android:title="@string/pref_finish_notify_title" />
 
         <SwitchPreferenceCompat
             android:key="@string/pref_key_pending_notify"
-            android:title="@string/pref_pending_notify_title"
-            android:persistent="false" />
+            android:persistent="false"
+            android:title="@string/pref_pending_notify_title" />
     </PreferenceCategory>
 </PreferenceScreen>

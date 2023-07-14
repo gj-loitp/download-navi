@@ -3,32 +3,31 @@
 
     <Preference
         android:key="@string/pref_key_save_downloads_in"
-        android:title="@string/pref_save_downloads_in_title"
-        android:persistent="false" />
+        android:persistent="false"
+        android:title="@string/pref_save_downloads_in_title" />
 
     <SwitchPreferenceCompat
         android:key="@string/pref_key_delete_file_if_error"
-        android:title="@string/pref_delete_file_if_error_title"
-        android:persistent="false" />
+        android:persistent="false"
+        android:title="@string/pref_delete_file_if_error_title" />
 
     <SwitchPreferenceCompat
         android:key="@string/pref_key_preallocate_disk_space"
-        android:title="@string/pref_preallocate_disk_space_title"
+        android:persistent="false"
         android:summary="@string/pref_preallocate_disk_space_summary"
-        android:persistent="false" />
+        android:title="@string/pref_preallocate_disk_space_title" />
 
-    <PreferenceCategory
-        android:title="@string/pref_move_after_download_title">
+    <PreferenceCategory android:title="@string/pref_move_after_download_title">
 
         <SwitchPreferenceCompat
             android:key="@string/pref_key_move_after_download"
-            android:title="@string/pref_move_after_download_title"
-            android:persistent="false" />
+            android:persistent="false"
+            android:title="@string/pref_move_after_download_title" />
 
         <Preference
-            android:key="@string/pref_key_move_after_download_in"
-            android:title="@string/pref_move_after_download_in_title"
             android:dependency="@string/pref_key_move_after_download"
-            android:persistent="false" />
+            android:key="@string/pref_key_move_after_download_in"
+            android:persistent="false"
+            android:title="@string/pref_move_after_download_in_title" />
     </PreferenceCategory>
 </PreferenceScreen>
