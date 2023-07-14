@@ -1,16 +1,29 @@
 <resources>
+
     <style name="AppTheme" parent="BaseTheme" />
+
     <style name="AppTheme.Dark" parent="BaseTheme.Dark" />
+
     <style name="AppTheme.Black" parent="BaseTheme.Black" />
+
     <style name="AppTheme.Dialog" parent="BaseTheme.Dialog" />
+
     <style name="AppTheme.Dialog.Dark" parent="BaseTheme.Dialog.Dark" />
+
     <style name="AppTheme.Dialog.Black" parent="BaseTheme.Dialog.Black" />
+
     <style name="AppTheme.Translucent" parent="BaseTheme.Translucent" />
+
     <style name="AppTheme.Translucent.Dark" parent="BaseTheme.Translucent.Dark" />
+
     <style name="AppTheme.Translucent.Black" parent="BaseTheme.Translucent.Black" />
+
     <style name="AppTheme.Settings" parent="BaseTheme.Settings" />
+
     <style name="AppTheme.Settings.Dark" parent="BaseTheme.Settings.Dark" />
+
     <style name="AppTheme.Settings.Black" parent="BaseTheme.Settings.Black" />
+
     <style name="AppTheme.Launcher" parent="BaseTheme.Launcher" />
 
     <style name="BaseTheme" parent="Theme.MaterialComponents.Light">
