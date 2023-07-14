@@ -74,7 +74,7 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_filemanager, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.v_item_filemanager, parent, false);
 
         return new ViewHolder(v);
     }
@@ -121,7 +121,7 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
             super(itemView);
 
             fileName = itemView.findViewById(R.id.fileName);
-            fileIcon = itemView.findViewById(R.id.file_icon);
+            fileIcon = itemView.findViewById(R.id.fileIcon);
         }
 
         void bind(FileManagerNode item, List<String> highlightFileTypes, ClickListener listener)
