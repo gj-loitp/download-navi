@@ -107,6 +107,7 @@ public class AddInitParams implements Parcelable {
                 }
             };
 
+    @NonNull
     @Override
     public String toString() {
         return "AddInitParams{" +

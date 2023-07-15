@@ -23,7 +23,7 @@ public class UserAgentAdapter extends ArrayAdapter<UserAgent> {
     }
 
     @Override
-    public View getDropDownView(int position, View view, ViewGroup parent) {
+    public View getDropDownView(int position, View view, @NonNull ViewGroup parent) {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.v_spinner_user_agent_item, parent, false);
