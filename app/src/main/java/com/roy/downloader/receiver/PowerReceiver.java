@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.receiver;
 
 import android.content.BroadcastReceiver;
@@ -31,27 +11,19 @@ import com.roy.downloader.core.model.DownloadEngine;
  * The receiver for power monitoring.
  */
 
-public class PowerReceiver extends BroadcastReceiver
-{
+public class PowerReceiver extends BroadcastReceiver {
     @Override
-    public void onReceive(Context context, Intent intent)
-    {
+    public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         if (action == null)
             return;
         switch (action) {
-            case Intent.ACTION_BATTERY_LOW:
-            case Intent.ACTION_BATTERY_OKAY:
-            case Intent.ACTION_POWER_CONNECTED:
-            case Intent.ACTION_POWER_DISCONNECTED:
-            case Intent.ACTION_BATTERY_CHANGED:
-                DownloadEngine.getInstance(context).rescheduleDownloads();
-                break;
+            case Intent.ACTION_BATTERY_LOW, Intent.ACTION_BATTERY_OKAY, Intent.ACTION_POWER_CONNECTED, Intent.ACTION_POWER_DISCONNECTED, Intent.ACTION_BATTERY_CHANGED ->
+                    DownloadEngine.getInstance(context).rescheduleDownloads();
         }
     }
 
-    public static IntentFilter getFilter()
-    {
+    public static IntentFilter getFilter() {
         IntentFilter filter = new IntentFilter();
 
         filter.addAction(Intent.ACTION_POWER_CONNECTED);
@@ -63,8 +35,7 @@ public class PowerReceiver extends BroadcastReceiver
         return filter;
     }
 
-    public static IntentFilter getCustomFilter()
-    {
+    public static IntentFilter getCustomFilter() {
         IntentFilter filter = new IntentFilter();
 
         filter.addAction(Intent.ACTION_POWER_CONNECTED);
