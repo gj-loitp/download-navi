@@ -1,27 +1,6 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.model.data;
 
-public class StatusCode
-{
+public class StatusCode {
     /*
      * Lists the states that the download task can set on a download
      * to notify application of the download progress.
@@ -107,8 +86,7 @@ public class StatusCode
      * Returns whether the status is informational (i.e. 1xx)
      */
 
-    public static boolean isStatusInformational(int statusCode)
-    {
+    public static boolean isStatusInformational(int statusCode) {
         return statusCode >= 100 && statusCode < 200;
     }
 
@@ -116,8 +94,7 @@ public class StatusCode
      * Returns whether the status is a success (i.e. 2xx)
      */
 
-    public static boolean isStatusSuccess(int statusCode)
-    {
+    public static boolean isStatusSuccess(int statusCode) {
         return statusCode >= 200 && statusCode < 300;
     }
 
@@ -125,8 +102,7 @@ public class StatusCode
      * Returns whether the status is an error (i.e. 4xx or 5xx).
      */
 
-    public static boolean isStatusError(int statusCode)
-    {
+    public static boolean isStatusError(int statusCode) {
         return statusCode >= 400 && statusCode < 600;
     }
 
@@ -134,8 +110,7 @@ public class StatusCode
      * Returns whether the status is a client error (i.e. 4xx)
      */
 
-    public static boolean isStatusClientError(int statusCode)
-    {
+    public static boolean isStatusClientError(int statusCode) {
         return statusCode >= 400 && statusCode < 500;
     }
 
@@ -143,8 +118,7 @@ public class StatusCode
      * Returns whether the status is a server error (i.e. 5xx)
      */
 
-    public static boolean isStatusServerError(int statusCode)
-    {
+    public static boolean isStatusServerError(int statusCode) {
         return statusCode >= 500 && statusCode < 600;
     }
 
@@ -153,13 +127,11 @@ public class StatusCode
      * error)
      */
 
-    public static boolean isStatusCompleted(int statusCode)
-    {
+    public static boolean isStatusCompleted(int statusCode) {
         return statusCode >= 200 && statusCode < 300 || statusCode >= 400 && statusCode < 600;
     }
 
-    public static boolean isStatusStoppedOrPaused(int statusCode)
-    {
+    public static boolean isStatusStoppedOrPaused(int statusCode) {
         return statusCode == STATUS_PAUSED || statusCode == STATUS_STOPPED;
     }
 }

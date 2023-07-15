@@ -300,7 +300,7 @@ public class DownloadEngine {
                 .subscribeOn(Schedulers.io())
                 .filter((result) -> result != null)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> onDownloadCompleted(result.infoId),
+                .subscribe((result) -> onDownloadCompleted(result.getInfoId()),
                         (Throwable t) -> handleDownloadError(id, t)
                 )
         );
