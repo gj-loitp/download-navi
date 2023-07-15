@@ -63,7 +63,7 @@ public class DownloadEngine {
     private final ConcurrentLinkedQueue<DownloadEngineListener> listeners = new ConcurrentLinkedQueue<>();
     private final HashMap<UUID, ChangeableParams> duringChange = new HashMap<>();
     private final DownloadQueue queue = new DownloadQueue();
-    private DownloadNotifier notifier;
+    private final DownloadNotifier notifier;
 
     private final PowerReceiver powerReceiver = new PowerReceiver();
     private final ConnectionReceiver connectionReceiver = new ConnectionReceiver();
@@ -73,8 +73,7 @@ public class DownloadEngine {
     public static DownloadEngine getInstance(@NonNull Context appContext) {
         if (INSTANCE == null) {
             synchronized (DownloadEngine.class) {
-                if (INSTANCE == null)
-                    INSTANCE = new DownloadEngine(appContext);
+                if (INSTANCE == null) INSTANCE = new DownloadEngine(appContext);
             }
         }
 
@@ -91,8 +90,7 @@ public class DownloadEngine {
         switchConnectionReceiver();
         switchPowerReceiver();
 
-        disposables.add(pref.observeSettingsChanged()
-                .subscribe(this::handleSettingsChanged));
+        disposables.add(pref.observeSettingsChanged().subscribe(this::handleSettingsChanged));
     }
 
     public void addListener(DownloadEngineListener listener) {
@@ -120,60 +118,38 @@ public class DownloadEngine {
      */
 
     public void rescheduleDownloads() {
-        if (checkStopDownloads())
-            stopDownloads();
-        else
-            resumeDownloads(true);
+        if (checkStopDownloads()) stopDownloads();
+        else resumeDownloads(true);
     }
 
     public void pauseResumeDownload(@NonNull UUID id) {
-        disposables.add(repo.getInfoByIdSingle(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter((info) -> info != null)
-                .subscribe((info) -> {
-                            if (StatusCode.isStatusStoppedOrPaused(info.statusCode)) {
-                                runDownload(info);
-                            } else {
-                                DownloadThread task = activeDownloads.get(id);
-                                if (task != null && !duringChange.containsKey(id))
-                                    task.requestPause();
-                            }
-                        },
-                        (Throwable t) -> {
-                            Log.e(TAG, "Getting info " + id + " error: " +
-                                    Log.getStackTraceString(t));
-                            if (checkNoDownloads())
-                                notifyListeners(DownloadEngineListener::onDownloadsCompleted);
-                        })
-        );
+        disposables.add(repo.getInfoByIdSingle(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).filter((info) -> info != null).subscribe((info) -> {
+            if (StatusCode.isStatusStoppedOrPaused(info.statusCode)) {
+                runDownload(info);
+            } else {
+                DownloadThread task = activeDownloads.get(id);
+                if (task != null && !duringChange.containsKey(id)) task.requestPause();
+            }
+        }, (Throwable t) -> {
+            Log.e(TAG, "Getting info " + id + " error: " + Log.getStackTraceString(t));
+            if (checkNoDownloads()) notifyListeners(DownloadEngineListener::onDownloadsCompleted);
+        }));
     }
 
     public void resumeIfError(@NonNull UUID id) {
-        disposables.add(repo.getInfoByIdSingle(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter((info) -> info != null)
-                .subscribe((info) -> {
-                            if (StatusCode.isStatusError(info.statusCode))
-                                runDownload(info);
-                        },
-                        (Throwable t) -> {
-                            Log.e(TAG, "Getting info " + id + " error: " +
-                                    Log.getStackTraceString(t));
-                            if (checkNoDownloads())
-                                notifyListeners(DownloadEngineListener::onDownloadsCompleted);
-                        })
-        );
+        disposables.add(repo.getInfoByIdSingle(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).filter((info) -> info != null).subscribe((info) -> {
+            if (StatusCode.isStatusError(info.statusCode)) runDownload(info);
+        }, (Throwable t) -> {
+            Log.e(TAG, "Getting info " + id + " error: " + Log.getStackTraceString(t));
+            if (checkNoDownloads()) notifyListeners(DownloadEngineListener::onDownloadsCompleted);
+        }));
     }
 
     public synchronized void pauseAllDownloads() {
         for (Map.Entry<UUID, DownloadThread> entry : activeDownloads.entrySet()) {
-            if (duringChange.containsKey(entry.getKey()))
-                continue;
+            if (duringChange.containsKey(entry.getKey())) continue;
             DownloadThread task = entry.getValue();
-            if (task == null)
-                continue;
+            if (task == null) continue;
             task.requestPause();
         }
     }
@@ -188,19 +164,16 @@ public class DownloadEngine {
 
     public synchronized void stopDownloads() {
         for (Map.Entry<UUID, DownloadThread> entry : activeDownloads.entrySet()) {
-            if (duringChange.containsKey(entry.getKey()))
-                continue;
+            if (duringChange.containsKey(entry.getKey())) continue;
             DownloadThread task = entry.getValue();
-            if (task != null)
-                task.requestStop();
+            if (task != null) task.requestStop();
         }
     }
 
     public void deleteDownloads(boolean withFile, @NonNull UUID... idList) {
         String[] strIdList = new String[idList.length];
         for (int i = 0; i < idList.length; i++) {
-            if (idList[i] != null)
-                strIdList[i] = idList[i].toString();
+            if (idList[i] != null) strIdList[i] = idList[i].toString();
         }
 
         runDeleteDownloadsWorker(strIdList, withFile);
@@ -209,8 +182,7 @@ public class DownloadEngine {
     public void deleteDownloads(boolean withFile, @NonNull DownloadInfo... infoList) {
         String[] strIdList = new String[infoList.length];
         for (int i = 0; i < infoList.length; i++) {
-            if (infoList[i] != null)
-                strIdList[i] = infoList[i].id.toString();
+            if (infoList[i] != null) strIdList[i] = infoList[i].id.toString();
         }
 
         runDeleteDownloadsWorker(strIdList, withFile);
@@ -220,8 +192,7 @@ public class DownloadEngine {
         return !activeDownloads.isEmpty();
     }
 
-    public void changeParams(@NonNull UUID id,
-                             @NonNull ChangeableParams params) {
+    public void changeParams(@NonNull UUID id, @NonNull ChangeableParams params) {
         Intent i = new Intent(appContext, DownloadService.class);
         i.setAction(DownloadService.ACTION_CHANGE_PARAMS);
         i.putExtra(DownloadService.TAG_DOWNLOAD_ID, id);
@@ -264,8 +235,7 @@ public class DownloadEngine {
 
     private String calcHashSum(DownloadInfo info, boolean sha256Hash) throws IOException {
         Uri filePath = fs.getFileUri(info.dirPath, info.fileName);
-        if (filePath == null)
-            return null;
+        if (filePath == null) return null;
 
         try (FileDescriptorWrapper w = fs.getFD(filePath)) {
             FileDescriptor outFd = w.open("r");
@@ -280,8 +250,7 @@ public class DownloadEngine {
      */
 
     public synchronized void doRunDownload(@NonNull UUID id) {
-        if (duringChange.containsKey(id))
-            return;
+        if (duringChange.containsKey(id)) return;
 
         if (isMaxActiveDownloads()) {
             queue.push(id);
@@ -289,21 +258,11 @@ public class DownloadEngine {
         }
 
         DownloadThread task = activeDownloads.get(id);
-        if (task != null && task.isRunning())
-            return;
+        if (task != null && task.isRunning()) return;
 
-        task = new DownloadThreadImpl(id, repo, pref, fs,
-                SystemFacadeHelper.getSystemFacade(appContext),
-                this::onBeforeFinished);
+        task = new DownloadThreadImpl(id, repo, pref, fs, SystemFacadeHelper.getSystemFacade(appContext), this::onBeforeFinished);
         activeDownloads.put(id, task);
-        disposables.add(Observable.fromCallable(task)
-                .subscribeOn(Schedulers.io())
-                .filter((result) -> result != null)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((result) -> onDownloadCompleted(result.getInfoId()),
-                        (Throwable t) -> handleDownloadError(id, t)
-                )
-        );
+        disposables.add(Observable.fromCallable(task).subscribeOn(Schedulers.io()).filter((result) -> result != null).observeOn(AndroidSchedulers.mainThread()).subscribe((result) -> onDownloadCompleted(result.getInfoId()), (Throwable t) -> handleDownloadError(id, t)));
     }
 
     /*
@@ -311,27 +270,19 @@ public class DownloadEngine {
      */
 
     public synchronized void doDeleteDownload(@NonNull DownloadInfo info, boolean withFile) {
-        if (duringChange.containsKey(info.id))
-            return;
+        if (duringChange.containsKey(info.id)) return;
 
         DownloadScheduler.undone(appContext, info);
         repo.deleteInfo(info, withFile);
 
         DownloadThread task = activeDownloads.get(info.id);
-        if (task != null)
-            task.requestStop();
-        else if (checkNoDownloads())
-            notifyListeners(DownloadEngineListener::onDownloadsCompleted);
+        if (task != null) task.requestStop();
+        else if (checkNoDownloads()) notifyListeners(DownloadEngineListener::onDownloadsCompleted);
     }
 
     private void runDeleteDownloadsWorker(String[] idList, boolean withFile) {
-        Data data = new Data.Builder()
-                .putStringArray(DeleteDownloadsWorker.TAG_ID_LIST, idList)
-                .putBoolean(DeleteDownloadsWorker.TAG_WITH_FILE, withFile)
-                .build();
-        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(DeleteDownloadsWorker.class)
-                .setInputData(data)
-                .build();
+        Data data = new Data.Builder().putStringArray(DeleteDownloadsWorker.TAG_ID_LIST, idList).putBoolean(DeleteDownloadsWorker.TAG_WITH_FILE, withFile).build();
+        OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(DeleteDownloadsWorker.class).setInputData(data).build();
         WorkManager.getInstance(appContext).enqueue(work);
     }
 
@@ -339,53 +290,41 @@ public class DownloadEngine {
      * Do not call directly
      */
 
-    public synchronized void doChangeParams(@NonNull UUID id,
-                                            @NonNull ChangeableParams params) {
-        if (duringChange.containsKey(id))
-            return;
+    public synchronized void doChangeParams(@NonNull UUID id, @NonNull ChangeableParams params) {
+        if (duringChange.containsKey(id)) return;
 
         duringChange.put(id, params);
         notifyListeners((listener) -> listener.onApplyingParams(id));
 
         DownloadThread task = activeDownloads.get(id);
-        if (task != null && task.isRunning())
-            task.requestStop();
-        else
-            applyParams(id, params, false);
+        if (task != null && task.isRunning()) task.requestStop();
+        else applyParams(id, params, false);
     }
 
     private void applyParams(UUID id, ChangeableParams params, boolean runAfter) {
-        disposables.add(repo.getInfoByIdSingle(id)
-                .subscribeOn(Schedulers.io())
-                .subscribe((info) -> {
-                            Throwable[] err = new Throwable[1];
-                            boolean urlChanged = false;
-                            try {
-                                if (info == null)
-                                    throw new NullPointerException();
-                                urlChanged = doApplyParams(info, params);
+        disposables.add(repo.getInfoByIdSingle(id).subscribeOn(Schedulers.io()).subscribe((info) -> {
+            Throwable[] err = new Throwable[1];
+            boolean urlChanged = false;
+            try {
+                if (info == null) throw new NullPointerException();
+                urlChanged = doApplyParams(info, params);
 
-                            } catch (Throwable e) {
-                                err[0] = e;
-                            } finally {
-                                duringChange.remove(id);
-                                String name = (info == null ? null : info.fileName);
-                                notifyListeners((listener) -> listener.onParamsApplied(id, name, err[0]));
-                                if (runAfter || urlChanged)
-                                    runDownload(id);
-                            }
-                        },
-                        (Throwable t) -> {
-                            Log.e(TAG, "Getting info " + id + " error: " +
-                                    Log.getStackTraceString(t));
-                            duringChange.remove(id);
-                            notifyListeners((listener) -> listener.onParamsApplied(id, null, t));
-                            if (checkNoDownloads()) {
-                                notifyListeners(DownloadEngineListener::onDownloadsCompleted);
-                            }
-                        }
-                )
-        );
+            } catch (Throwable e) {
+                err[0] = e;
+            } finally {
+                duringChange.remove(id);
+                String name = (info == null ? null : info.fileName);
+                notifyListeners((listener) -> listener.onParamsApplied(id, name, err[0]));
+                if (runAfter || urlChanged) runDownload(id);
+            }
+        }, (Throwable t) -> {
+            Log.e(TAG, "Getting info " + id + " error: " + Log.getStackTraceString(t));
+            duringChange.remove(id);
+            notifyListeners((listener) -> listener.onParamsApplied(id, null, t));
+            if (checkNoDownloads()) {
+                notifyListeners(DownloadEngineListener::onDownloadsCompleted);
+            }
+        }));
     }
 
     private boolean doApplyParams(DownloadInfo info, ChangeableParams params) throws IOException, FileAlreadyExistsException {
@@ -426,18 +365,12 @@ public class DownloadEngine {
         }
         if (nameChanged || dirChanged) {
             changed = true;
-            fs.moveFile(info.dirPath, info.fileName,
-                    (dirChanged ? params.dirPath : info.dirPath),
-                    (nameChanged ? params.fileName : info.fileName),
-                    true);
-            if (nameChanged)
-                info.fileName = params.fileName;
-            if (dirChanged)
-                info.dirPath = params.dirPath;
+            fs.moveFile(info.dirPath, info.fileName, (dirChanged ? params.dirPath : info.dirPath), (nameChanged ? params.fileName : info.fileName), true);
+            if (nameChanged) info.fileName = params.fileName;
+            if (dirChanged) info.dirPath = params.dirPath;
         }
 
-        if (changed)
-            repo.updateInfo(info, true, false);
+        if (changed) repo.updateInfo(info, true, false);
 
         return urlChanged;
     }
@@ -448,8 +381,7 @@ public class DownloadEngine {
 
     private void notifyListeners(@NonNull CallListener l) {
         for (DownloadEngineListener listener : listeners) {
-            if (listener != null)
-                l.apply(listener);
+            if (listener != null) l.apply(listener);
         }
     }
 
@@ -495,27 +427,18 @@ public class DownloadEngine {
         onDownloadCompleted(id);
 
         if (t instanceof MoveFileAlreadyExistsException) {
-            getInfoByIdSingle(id, (info) ->
-                    notifier.makeMoveErrorAlreadyExistsNotify(id, info.fileName));
+            getInfoByIdSingle(id, (info) -> notifier.makeMoveErrorAlreadyExistsNotify(id, info.fileName));
         } else if (t instanceof MoveException) {
             getInfoByIdSingle(id, (info) -> notifier.makeMoveErrorNotify(id, info.fileName));
         } else if (t instanceof UncompressArchiveFormatException) {
-            getInfoByIdSingle(id, (info) ->
-                    notifier.makeUncompressArchiveUnknownTypeNotify(id, info.fileName));
-        }  else if (t instanceof UncompressArchiveException) {
-            getInfoByIdSingle(id, (info) ->
-                    notifier.makeUncompressArchiveErrorNotify(id, info.fileName));
+            getInfoByIdSingle(id, (info) -> notifier.makeUncompressArchiveUnknownTypeNotify(id, info.fileName));
+        } else if (t instanceof UncompressArchiveException) {
+            getInfoByIdSingle(id, (info) -> notifier.makeUncompressArchiveErrorNotify(id, info.fileName));
         }
     }
 
     private void getInfoByIdSingle(UUID id, Consumer<DownloadInfo> onSuccess) {
-        disposables.add(repo.getInfoByIdSingle(id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter((info) -> info != null)
-                .subscribe(onSuccess,
-                        (Throwable t) -> Log.e(TAG, "Getting info " + id + " error", t))
-        );
+        disposables.add(repo.getInfoByIdSingle(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).filter((info) -> info != null).subscribe(onSuccess, (Throwable t) -> Log.e(TAG, "Getting info " + id + " error", t)));
     }
 
     @NonNull
@@ -555,8 +478,7 @@ public class DownloadEngine {
             return;
         }
         var fileCategory = MimeTypeUtils.getCategory(info.mimeType);
-        var isPossiblyArchive = fileCategory == MimeTypeUtils.Category.ARCHIVE
-                || "application/octet-stream".equals(info.mimeType);
+        var isPossiblyArchive = fileCategory == MimeTypeUtils.Category.ARCHIVE || "application/octet-stream".equals(info.mimeType);
         if (!isPossiblyArchive) {
             return;
         }
@@ -567,8 +489,7 @@ public class DownloadEngine {
         try (var w = fs.getFD(path)) {
             var inFd = w.open("r");
             try (var is = new FileInputStream(inFd)) {
-                new ArchiveExtractor(fs, is, info.fileName, info.mimeType)
-                        .uncompress(info.dirPath, true);
+                new ArchiveExtractor(fs, is, info.fileName, info.mimeType).uncompress(info.dirPath, true);
             } catch (UnknownArchiveFormatException e) {
                 throw new UncompressArchiveFormatException(e);
             }
@@ -587,12 +508,10 @@ public class DownloadEngine {
     }
 
     private void scheduleWaitingDownload() {
-        if (isMaxActiveDownloads())
-            return;
+        if (isMaxActiveDownloads()) return;
 
         UUID id = queue.pop();
-        if (id == null)
-            return;
+        if (id == null) return;
 
         runDownload(id);
     }
@@ -600,13 +519,11 @@ public class DownloadEngine {
     private void handleSettingsChanged(String key) {
         boolean reschedule = false;
 
-        if (key.equals(appContext.getString(R.string.pref_key_umnetered_connections_only)) ||
-                key.equals(appContext.getString(R.string.pref_key_enable_roaming))) {
+        if (key.equals(appContext.getString(R.string.pref_key_umnetered_connections_only)) || key.equals(appContext.getString(R.string.pref_key_enable_roaming))) {
             reschedule = true;
             switchConnectionReceiver();
 
-        } else if (key.equals(appContext.getString(R.string.pref_key_download_only_when_charging)) ||
-                key.equals(appContext.getString(R.string.pref_key_battery_control))) {
+        } else if (key.equals(appContext.getString(R.string.pref_key_download_only_when_charging)) || key.equals(appContext.getString(R.string.pref_key_battery_control))) {
             reschedule = true;
             switchPowerReceiver();
 
@@ -665,16 +582,12 @@ public class DownloadEngine {
         SystemFacade systemFacade = SystemFacadeHelper.getSystemFacade(appContext);
 
         boolean stop = false;
-        if (roaming)
-            stop = Utils.isRoaming(systemFacade);
-        if (unmeteredOnly)
-            stop = Utils.isMetered(systemFacade);
-        if (onlyCharging)
-            stop |= !Utils.isBatteryCharging(appContext);
+        if (roaming) stop = Utils.isRoaming(systemFacade);
+        if (unmeteredOnly) stop = Utils.isMetered(systemFacade);
+        if (onlyCharging) stop |= !Utils.isBatteryCharging(appContext);
         if (customBatteryControl)
             stop |= Utils.isBatteryBelowThreshold(appContext, customBatteryControlValue);
-        else if (batteryControl)
-            stop |= Utils.isBatteryLow(appContext);
+        else if (batteryControl) stop |= Utils.isBatteryLow(appContext);
 
         return stop;
     }
