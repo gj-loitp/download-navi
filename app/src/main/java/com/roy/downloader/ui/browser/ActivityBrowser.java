@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020-2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2020-2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.browser;
 
 import android.annotation.SuppressLint;
@@ -74,10 +54,9 @@ import io.reactivex.schedulers.Schedulers;
  * A simple, WebView-based browser
  */
 
-public class BrowserActivity extends AppCompatActivity
-        implements FragmentCallback {
+public class ActivityBrowser extends AppCompatActivity implements FragmentCallback {
     @SuppressWarnings("unused")
-    private static final String TAG = BrowserActivity.class.getSimpleName();
+    private static final String TAG = ActivityBrowser.class.getSimpleName();
 
     private static final String TAG_DOUBLE_BACK_PRESSED = "double_back_pressed";
     private static final String TAG_IS_CURRENT_PAGE_BOOKMARKED = "is_current_page_bookmarked";
@@ -96,10 +75,7 @@ public class BrowserActivity extends AppCompatActivity
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         if (!Utils.isWebViewAvailable(this)) {
-            Toast.makeText(getApplicationContext(),
-                            R.string.webview_is_required,
-                            Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(getApplicationContext(), R.string.webview_is_required, Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -111,8 +87,7 @@ public class BrowserActivity extends AppCompatActivity
 
         initView();
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-            actionBar.setDisplayShowTitleEnabled(false);
+        if (actionBar != null) actionBar.setDisplayShowTitleEnabled(false);
         initAddressBar();
         initWebView();
 
@@ -146,17 +121,14 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     private void observeDownloadRequests() {
-        disposables.add(viewModel.observeDownloadRequests()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((request) -> {
-                    viewModel.stopLoading(webView);
-                    showAddDownloadDialog(request.getUrl());
-                }));
+        disposables.add(viewModel.observeDownloadRequests().observeOn(AndroidSchedulers.mainThread()).subscribe((request) -> {
+            viewModel.stopLoading(webView);
+            showAddDownloadDialog(request.getUrl());
+        }));
     }
 
     private void showAddDownloadDialog(String url) {
-        if (url == null)
-            return;
+        if (url == null) return;
 
         AddInitParams initParams = new AddInitParams();
         initParams.url = url;
@@ -175,27 +147,20 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     private void checkIsCurrentPageBookmarked() {
-        disposables.add(viewModel.isCurrentPageBookmarked()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((isBookmarked) -> {
-                            isCurrentPageBookmarked = isBookmarked;
-                            invalidateOptionsMenu();
-                        },
-                        (e) -> {
-                            isCurrentPageBookmarked = false;
-                            invalidateOptionsMenu();
-                        })
-        );
+        disposables.add(viewModel.isCurrentPageBookmarked().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((isBookmarked) -> {
+            isCurrentPageBookmarked = isBookmarked;
+            invalidateOptionsMenu();
+        }, (e) -> {
+            isCurrentPageBookmarked = false;
+            invalidateOptionsMenu();
+        }));
     }
 
     private String getUrlFromIntent() {
         Intent i = getIntent();
         if (i != null) {
-            if (i.getData() != null)
-                return i.getData().toString();
-            else
-                return i.getStringExtra(Intent.EXTRA_TEXT);
+            if (i.getData() != null) return i.getData().toString();
+            else return i.getStringExtra(Intent.EXTRA_TEXT);
         }
 
         return null;
@@ -203,8 +168,7 @@ public class BrowserActivity extends AppCompatActivity
 
     private void initView() {
         if (viewModel.pref.browserBottomAddressBar()) {
-            ABrowserBottomAppBarBinding binding =
-                    DataBindingUtil.setContentView(this, R.layout.a_browser_bottom_app_bar);
+            ABrowserBottomAppBarBinding binding = DataBindingUtil.setContentView(this, R.layout.a_browser_bottom_app_bar);
             binding.setLifecycleOwner(this);
             binding.setViewModel(viewModel);
             setSupportActionBar(binding.toolbar); // change this to toolbar instead of bottomBar
@@ -214,8 +178,7 @@ public class BrowserActivity extends AppCompatActivity
             coordinatorLayout = binding.coordinatorLayout;
 
         } else {
-            ABrowserTopAppBarBinding binding =
-                    DataBindingUtil.setContentView(this, R.layout.a_browser_top_app_bar);
+            ABrowserTopAppBarBinding binding = DataBindingUtil.setContentView(this, R.layout.a_browser_top_app_bar);
             binding.setLifecycleOwner(this);
             binding.setViewModel(viewModel);
             setSupportActionBar(binding.toolbar);
@@ -249,8 +212,7 @@ public class BrowserActivity extends AppCompatActivity
                 case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE:
                 case WebView.HitTestResult.IMAGE_TYPE:
                     String url = result.getExtra();
-                    if (url != null)
-                        showContextMenu(url);
+                    if (url != null) showContextMenu(url);
                     return true;
                 default:
                     return false;
@@ -261,8 +223,7 @@ public class BrowserActivity extends AppCompatActivity
 
     private void initAddressBar() {
         KeyboardVisibilityEvent.setEventListener(this, this, (isOpen) -> {
-            if (!isOpen)
-                addressLayout.clearFocus();
+            if (!isOpen) addressLayout.clearFocus();
         });
 
         addressLayout.setEndIconOnClickListener((v) -> viewModel.url.set(""));
@@ -270,8 +231,7 @@ public class BrowserActivity extends AppCompatActivity
 
         addressInput.setOnFocusChangeListener((v, hasFocus) -> {
             /* Move to the beginning of the address bar after keyboard hiding */
-            if (!hasFocus)
-                addressInput.setSelection(0);
+            if (!hasFocus) addressInput.setSelection(0);
             toggleMenuButtons(hasFocus);
             toggleClearButton(hasFocus && !TextUtils.isEmpty(viewModel.url.get()));
         });
@@ -324,37 +284,27 @@ public class BrowserActivity extends AppCompatActivity
 
     @Override
     public void fragmentFinished(Intent intent, ResultCode code) {
-        if (code != ResultCode.OK)
-            return;
+        if (code != ResultCode.OK) return;
 
         String action = intent.getAction();
-        if (action == null)
-            return;
+        if (action == null) return;
 
         String url = intent.getStringExtra(BrowserContextMenuDialog.TAG_URL);
         switch (action) {
-            case BrowserContextMenuDialog.TAG_ACTION_SHARE:
-                makeShareDialog(url);
-                break;
-            case BrowserContextMenuDialog.TAG_ACTION_DOWNLOAD:
-                showAddDownloadDialog(url);
-                break;
-            case BrowserContextMenuDialog.TAG_ACTION_COPY:
-                showCopyToClipboardDialog(url);
-                break;
+            case BrowserContextMenuDialog.TAG_ACTION_SHARE -> makeShareDialog(url);
+            case BrowserContextMenuDialog.TAG_ACTION_DOWNLOAD -> showAddDownloadDialog(url);
+            case BrowserContextMenuDialog.TAG_ACTION_COPY -> showCopyToClipboardDialog(url);
         }
     }
 
     @SuppressLint("RestrictedApi")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (hideMenuButtons)
-            return false;
+        if (hideMenuButtons) return false;
 
         getMenuInflater().inflate(R.menu.menu_browser, menu);
 
-        if (menu instanceof MenuBuilder) {
-            MenuBuilder menuBuilder = (MenuBuilder) menu;
+        if (menu instanceof MenuBuilder menuBuilder) {
             menuBuilder.setOptionalIconsVisible(true);
         }
 
@@ -369,8 +319,7 @@ public class BrowserActivity extends AppCompatActivity
         MenuItem refresh = menu.findItem(R.id.refreshMenu);
         MenuItem stop = menu.findItem(R.id.stopMenu);
         if (refresh != null && stop != null) {
-            boolean fetching = state == BrowserViewModel.UrlFetchState.FETCHING ||
-                    state == BrowserViewModel.UrlFetchState.PAGE_STARTED;
+            boolean fetching = state == BrowserViewModel.UrlFetchState.FETCHING || state == BrowserViewModel.UrlFetchState.PAGE_STARTED;
             refresh.setVisible(!fetching);
             stop.setVisible(!fetching);
         }
@@ -400,8 +349,7 @@ public class BrowserActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.forwardMenu) {
-            if (webView.canGoForward())
-                webView.goForward();
+            if (webView.canGoForward()) webView.goForward();
         } else if (itemId == R.id.stopMenu) {
             viewModel.stopLoading(webView);
         } else if (itemId == R.id.refreshMenu) {
@@ -419,12 +367,7 @@ public class BrowserActivity extends AppCompatActivity
         } else if (itemId == R.id.addBookmarkMenu) {
             addBookmark();
         } else if (itemId == R.id.editBookmarkMenu) {
-            disposables.add(viewModel.getBookmarkForCurrentPage()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this::showEditBookmarkDialog,
-                            (e) -> Log.e(TAG, Log.getStackTraceString(e)))
-            );
+            disposables.add(viewModel.getBookmarkForCurrentPage().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(this::showEditBookmarkDialog, (e) -> Log.e(TAG, Log.getStackTraceString(e))));
         } else if (itemId == R.id.closeMenu) {
             finish();
         } else if (itemId == R.id.startPageMenu) {
@@ -435,17 +378,13 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     private void makeShareDialog(String url) {
-        if (url == null)
-            return;
+        if (url == null) return;
 
-        startActivity(Intent.createChooser(
-                Utils.makeShareUrlIntent(url),
-                getString(R.string.share_via)));
+        startActivity(Intent.createChooser(Utils.makeShareUrlIntent(url), getString(R.string.share_via)));
     }
 
     private void showCopyToClipboardDialog(String url) {
-        if (url == null)
-            return;
+        if (url == null) return;
 
         Intent i = new Intent(this, SendTextToClipboard.class);
         i.putExtra(Intent.EXTRA_TEXT, url);
@@ -463,20 +402,14 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     private void addBookmark() {
-        disposables.add(viewModel.addBookmark()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe((bookmark) -> {
-                            showBookmarkAddedSnackbar(bookmark);
-                            isCurrentPageBookmarked = bookmark.url.equals(viewModel.url.get());
-                        },
-                        this::showAddBookmarkFailedSnackbar)
-        );
+        disposables.add(viewModel.addBookmark().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe((bookmark) -> {
+            showBookmarkAddedSnackbar(bookmark);
+            isCurrentPageBookmarked = bookmark.url.equals(viewModel.url.get());
+        }, this::showAddBookmarkFailedSnackbar));
     }
 
     private void showEditBookmarkDialog(BrowserBookmark bookmark) {
-        if (bookmark == null)
-            return;
+        if (bookmark == null) return;
 
         Intent i = new Intent(this, ActivityEditBookmark.class);
         i.putExtra(ActivityEditBookmark.TAG_BOOKMARK, bookmark);
@@ -484,77 +417,54 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     private void showBookmarkAddedSnackbar(BrowserBookmark bookmark) {
-        Snackbar.make(coordinatorLayout,
-                        R.string.browser_bookmark_added,
-                        Snackbar.LENGTH_SHORT)
-                .setAction(R.string.browser_bookmark_edit_menu,
-                        (v) -> showEditBookmarkDialog(bookmark))
-                .show();
+        Snackbar.make(coordinatorLayout, R.string.browser_bookmark_added, Snackbar.LENGTH_SHORT).setAction(R.string.browser_bookmark_edit_menu, (v) -> showEditBookmarkDialog(bookmark)).show();
     }
 
     private void showAddBookmarkFailedSnackbar(Throwable e) {
         Log.e(TAG, Log.getStackTraceString(e));
 
-        Snackbar.make(coordinatorLayout,
-                        R.string.browser_bookmark_add_failed,
-                        Snackbar.LENGTH_SHORT)
-                .show();
+        Snackbar.make(coordinatorLayout, R.string.browser_bookmark_add_failed, Snackbar.LENGTH_SHORT).show();
     }
 
-    final ActivityResultLauncher<Intent> settings = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                /*
-                 * Lazy applying settings
-                 * TODO: consider other options for applying settings
-                 */
-                recreate();
-            }
-    );
+    final ActivityResultLauncher<Intent> settings = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        /*
+         * Lazy applying settings
+         * TODO: consider other options for applying settings
+         */
+        recreate();
+    });
 
-    final ActivityResultLauncher<Intent> editBookmark = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Intent data = result.getData();
-                handleEditBookmarkRequest(result.getResultCode(), data);
-            }
-    );
+    final ActivityResultLauncher<Intent> editBookmark = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Intent data = result.getData();
+        handleEditBookmarkRequest(result.getResultCode(), data);
+    });
 
-    final ActivityResultLauncher<Intent> bookmarks = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                Intent data = result.getData();
-                handleBookmarksRequest(data);
-            }
-    );
+    final ActivityResultLauncher<Intent> bookmarks = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        Intent data = result.getData();
+        handleBookmarksRequest(data);
+    });
 
     private void handleEditBookmarkRequest(int resultCode, @Nullable Intent data) {
-        if (resultCode != RESULT_OK || data == null)
-            return;
+        if (resultCode != RESULT_OK || data == null) return;
 
         String action = data.getAction();
-        if (action == null)
-            return;
+        if (action == null) return;
 
         BrowserBookmark bookmark = data.getParcelableExtra(ActivityEditBookmark.TAG_BOOKMARK);
 
         String message = null;
         switch (action) {
-            case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK:
+            case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK -> {
                 message = getResources().getQuantityString(R.plurals.browser_bookmark_deleted, 1);
                 if (bookmark != null && bookmark.url.equals(viewModel.url.get()))
                     isCurrentPageBookmarked = false;
-                break;
-            case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED:
-                message = getResources().getQuantityString(R.plurals.browser_bookmark_delete_failed, 1);
-                break;
-            case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED:
-                message = getString(R.string.browser_bookmark_change_failed);
-                break;
-            case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES:
-                isCurrentPageBookmarked = bookmark != null &&
-                        bookmark.url.equals(viewModel.url.get());
-                break;
+            }
+            case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED ->
+                    message = getResources().getQuantityString(R.plurals.browser_bookmark_delete_failed, 1);
+            case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED ->
+                    message = getString(R.string.browser_bookmark_change_failed);
+            case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES ->
+                    isCurrentPageBookmarked = bookmark != null && bookmark.url.equals(viewModel.url.get());
         }
         if (message != null)
             Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
@@ -564,8 +474,7 @@ public class BrowserActivity extends AppCompatActivity
         String action = (data == null ? null : data.getAction());
         if (ActivityBrowserBookmarks.TAG_ACTION_OPEN_BOOKMARK.equals(action)) {
             BrowserBookmark bookmark = data.getParcelableExtra(ActivityBrowserBookmarks.TAG_BOOKMARK);
-            if (bookmark == null)
-                return;
+            if (bookmark == null) return;
             viewModel.url.set(bookmark.url);
             viewModel.loadUrl(webView);
         } else {
@@ -584,10 +493,7 @@ public class BrowserActivity extends AppCompatActivity
                 super.onBackPressed();
             } else {
                 doubleBackPressed = true;
-                Toast.makeText(this,
-                                R.string.browser_back_pressed,
-                                Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(this, R.string.browser_back_pressed, Toast.LENGTH_SHORT).show();
             }
         }
     }

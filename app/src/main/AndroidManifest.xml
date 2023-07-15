@@ -1151,7 +1151,7 @@
         </activity>
 
         <activity
-            android:name=".ui.browser.BrowserActivity"
+            android:name=".ui.browser.ActivityBrowser"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="true"
             android:label="@string/browser"
@@ -1168,7 +1168,7 @@
             android:enabled="false"
             android:exported="true"
             android:label="@string/browser_app"
-            android:targetActivity=".ui.browser.BrowserActivity">
+            android:targetActivity=".ui.browser.ActivityBrowser">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -1181,7 +1181,7 @@
             android:name=".ui.browser.Browser"
             android:enabled="true"
             android:exported="true"
-            android:targetActivity=".ui.browser.BrowserActivity">
+            android:targetActivity=".ui.browser.ActivityBrowser">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

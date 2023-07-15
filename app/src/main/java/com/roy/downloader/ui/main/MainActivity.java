@@ -69,7 +69,7 @@ import com.roy.downloader.service.DownloadService;
 import com.roy.downloader.ui.BaseAlertDialog;
 import com.roy.downloader.ui.PermissionManager;
 import com.roy.downloader.ui.adddownload.ActivityAddDownload;
-import com.roy.downloader.ui.browser.BrowserActivity;
+import com.roy.downloader.ui.browser.ActivityBrowser;
 import com.roy.downloader.ui.main.drawer.DrawerExpandableAdapter;
 import com.roy.downloader.ui.main.drawer.DrawerGroup;
 import com.roy.downloader.ui.main.drawer.DrawerGroupItem;
@@ -509,7 +509,7 @@ public class MainActivity extends AppCompatActivity
             closeOptionsMenu();
             shutdown();
         } else if (itemId == R.id.browserMenu) {
-            startActivity(new Intent(this, BrowserActivity.class));
+            startActivity(new Intent(this, ActivityBrowser.class));
         }
 
         return true;
