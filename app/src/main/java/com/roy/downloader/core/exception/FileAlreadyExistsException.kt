@@ -1,15 +1,9 @@
-package com.roy.downloader.core.exception;
+package com.roy.downloader.core.exception
 
-public class FileAlreadyExistsException extends Exception {
-    public FileAlreadyExistsException() {
-    }
-
-    public FileAlreadyExistsException(String message) {
-        super(message);
-    }
-
-    public FileAlreadyExistsException(Exception e) {
-        super(e.getMessage());
-        super.setStackTrace(e.getStackTrace());
+class FileAlreadyExistsException : Exception {
+    constructor()
+    constructor(message: String?) : super(message)
+    constructor(e: Exception) : super(e.message) {
+        super.setStackTrace(e.stackTrace)
     }
 }

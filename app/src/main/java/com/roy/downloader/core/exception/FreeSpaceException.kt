@@ -1,19 +1,12 @@
-package com.roy.downloader.core.exception;
+package com.roy.downloader.core.exception
 
 /*
- * Not enough free space exception.
- */
-
-public class FreeSpaceException extends Exception {
-    public FreeSpaceException() {
-    }
-
-    public FreeSpaceException(String message) {
-        super(message);
-    }
-
-    public FreeSpaceException(Exception e) {
-        super(e.getMessage());
-        super.setStackTrace(e.getStackTrace());
+* Not enough free space exception.
+*/
+class FreeSpaceException : Exception {
+    constructor()
+    constructor(message: String?) : super(message)
+    constructor(e: Exception) : super(e.message) {
+        super.setStackTrace(e.stackTrace)
     }
 }

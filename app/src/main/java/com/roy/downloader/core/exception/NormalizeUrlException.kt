@@ -1,12 +1,9 @@
-package com.roy.downloader.core.exception;
+package com.roy.downloader.core.exception
 
-public class NormalizeUrlException extends Exception {
-    public NormalizeUrlException(String message, Exception e) {
-        super(message);
-        initCause(e);
+class NormalizeUrlException : Exception {
+    constructor(message: String?, e: Exception?) : super(message) {
+        initCause(e)
     }
 
-    public NormalizeUrlException(String message) {
-        super(message);
-    }
+    constructor(message: String?) : super(message)
 }
