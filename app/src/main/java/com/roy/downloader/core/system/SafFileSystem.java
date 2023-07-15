@@ -1,25 +1,5 @@
-/*
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of LibreTorrent.
- *
- * LibreTorrent is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * LibreTorrent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with LibreTorrent.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.system;
 
-import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
@@ -58,8 +38,7 @@ import java.io.FileNotFoundException;
  *                     normal system format.
  */
 
-public class SafFileSystem
-{
+public class SafFileSystem {
     @SuppressWarnings("unused")
     private static final String TAG = SafFileSystem.class.getSimpleName();
 
@@ -69,8 +48,7 @@ public class SafFileSystem
     private final Context appContext;
     private static final LruCache<String, DocumentFile> CACHE = new LruCache<>(CACHE_MAX_SIZE);
 
-    public static SafFileSystem getInstance(@NonNull Context appContext)
-    {
+    public static SafFileSystem getInstance(@NonNull Context appContext) {
         if (INSTANCE == null) {
             synchronized (SafFileSystem.class) {
                 if (INSTANCE == null)
@@ -81,13 +59,11 @@ public class SafFileSystem
         return INSTANCE;
     }
 
-    private SafFileSystem(Context appContext)
-    {
+    private SafFileSystem(Context appContext) {
         this.appContext = appContext;
     }
 
-    public static class FakePath
-    {
+    public static class FakePath {
         private static final String SAF_ROOT_TAG_OPEN = "saf_root(";
         private static final String SAF_ROOT_TAG_CLOSE = ");";
         private static final String SCHEME = "content://";
@@ -95,14 +71,12 @@ public class SafFileSystem
         private final Uri safRoot;
         private final String relativePath;
 
-        public FakePath(@NonNull Uri safRoot, @NonNull String relativePath)
-        {
+        public FakePath(@NonNull Uri safRoot, @NonNull String relativePath) {
             this.safRoot = safRoot;
             this.relativePath = normalizeRelativePath(relativePath);
         }
 
-        private String normalizeRelativePath(String path)
-        {
+        private String normalizeRelativePath(String path) {
             if (path.equals(File.separator) || !path.startsWith(File.separator))
                 return path;
             else
@@ -115,8 +89,7 @@ public class SafFileSystem
          * or null if the path is invalid
          */
 
-        public static FakePath deserialize(@NonNull String fakePath)
-        {
+        public static FakePath deserialize(@NonNull String fakePath) {
             int openTagIdx = fakePath.lastIndexOf(SAF_ROOT_TAG_OPEN);
             int closeTagIdx = fakePath.lastIndexOf(SAF_ROOT_TAG_CLOSE);
             if (openTagIdx < 0 || closeTagIdx < 0 || closeTagIdx <= openTagIdx)
@@ -129,54 +102,46 @@ public class SafFileSystem
             return new FakePath(safRoot, relativePath);
         }
 
-        private String serialize()
-        {
+        private String serialize() {
             /* Remove 'content://' scheme */
             String safRootStr = safRoot.toString().substring(SCHEME.length());
 
             return SAF_ROOT_TAG_OPEN + safRootStr + SAF_ROOT_TAG_CLOSE + relativePath;
         }
 
-        public String[] makeRelativePathNodes()
-        {
+        public String[] makeRelativePathNodes() {
             return (TextUtils.isEmpty(relativePath) ?
                     new String[0] :
                     relativePath.split(File.separator));
         }
 
-        public Uri safRoot()
-        {
+        public Uri safRoot() {
             return safRoot;
         }
 
-        public String relativePath()
-        {
+        public String relativePath() {
             return relativePath;
         }
 
-        public static boolean isFakePath(@NonNull String path)
-        {
+        public static boolean isFakePath(@NonNull String path) {
             return path.startsWith("/" + SAF_ROOT_TAG_OPEN) || path.startsWith(SAF_ROOT_TAG_OPEN);
         }
 
         @NonNull
         @Override
-        public String toString()
-        {
+        public String toString() {
             return serialize();
         }
     }
 
-    public static class Stat
-    {
+    public static class Stat {
         public String name;
         public boolean isDir;
         public long length;
         public long lastModified;
 
         public Stat(String name, boolean isDir,
-                    long length, long lastModified)
-        {
+                    long length, long lastModified) {
             this.name = name;
             this.isDir = isDir;
             this.length = length;
@@ -188,8 +153,7 @@ public class SafFileSystem
      * Return true if the uri is a SAF path
      */
 
-    public boolean isSafPath(@NonNull Uri path)
-    {
+    public boolean isSafPath(@NonNull Uri path) {
         String scheme = path.getScheme();
         if (scheme == null)
             throw new IllegalArgumentException("Scheme of " + path + " is null");
@@ -202,11 +166,9 @@ public class SafFileSystem
      * null if the file doesn't exists
      */
 
-    @TargetApi(21)
     @Nullable
-    public Uri getFileUri(@NonNull Uri safRoot, @NonNull String fileName, boolean create)
-    {
-        String cacheKey = safRoot.toString() + File.separator + fileName;
+    public Uri getFileUri(@NonNull Uri safRoot, @NonNull String fileName, boolean create) {
+        String cacheKey = safRoot + File.separator + fileName;
         DocumentFile f = CACHE.get(cacheKey);
 
         if (f == null) {
@@ -230,10 +192,8 @@ public class SafFileSystem
      * doesn't exists or one of the directories in the path doesn't exist.
      */
 
-    @TargetApi(21)
     @Nullable
-    public Uri getFileUri(@NonNull FakePath path, boolean create)
-    {
+    public Uri getFileUri(@NonNull FakePath path, boolean create) {
         String cacheKey = path.toString();
         DocumentFile f = CACHE.get(cacheKey);
         if (f == null) {
@@ -245,8 +205,7 @@ public class SafFileSystem
         return (f == null ? null : f.getUri());
     }
 
-    private DocumentFile getFile(DocumentFile tree, String fileName, boolean create)
-    {
+    private DocumentFile getFile(DocumentFile tree, String fileName, boolean create) {
         try {
             DocumentFile f = tree.findFile(fileName);
             if (f == null && create)
@@ -259,8 +218,7 @@ public class SafFileSystem
         }
     }
 
-    private DocumentFile getFile(FakePath path, boolean create)
-    {
+    private DocumentFile getFile(FakePath path, boolean create) {
         DocumentFile currNode = DocumentFile.fromTreeUri(appContext, path.safRoot());
         if (currNode == null)
             return null;
@@ -288,8 +246,7 @@ public class SafFileSystem
         return currNode;
     }
 
-    private DocumentFile getDir(DocumentFile tree, String dirName, boolean create)
-    {
+    private DocumentFile getDir(DocumentFile tree, String dirName, boolean create) {
         try {
             DocumentFile f = tree.findFile(dirName);
             if (f == null && create)
@@ -306,15 +263,11 @@ public class SafFileSystem
      * Returns true if the file was deleted successfully
      */
 
-    @TargetApi(19)
-    public boolean delete(@NonNull Uri filePath) throws FileNotFoundException
-    {
+    public boolean delete(@NonNull Uri filePath) throws FileNotFoundException {
         return DocumentsContract.deleteDocument(appContext.getContentResolver(), filePath);
     }
 
-    @TargetApi(19)
-    public boolean delete(@NonNull FakePath path) throws FileNotFoundException
-    {
+    public boolean delete(@NonNull FakePath path) throws FileNotFoundException {
         Uri filePath = getFileUri(path, false);
         if (filePath == null)
             return false;
@@ -326,9 +279,7 @@ public class SafFileSystem
      * Returns true if the file is exists
      */
 
-    @TargetApi(19)
-    public boolean exists(@NonNull Uri filePath)
-    {
+    public boolean exists(@NonNull Uri filePath) {
         String cacheKey = filePath.toString();
         DocumentFile f = CACHE.get(cacheKey);
         if (f == null) {
@@ -340,9 +291,7 @@ public class SafFileSystem
         return f != null && f.exists();
     }
 
-    @TargetApi(21)
-    public boolean exists(@NonNull FakePath path)
-    {
+    public boolean exists(@NonNull FakePath path) {
         String cacheKey = path.toString();
         DocumentFile cached = CACHE.get(cacheKey);
         if (cached != null)
@@ -365,9 +314,7 @@ public class SafFileSystem
         return true;
     }
 
-    @TargetApi(21)
-    public Uri makeSafRootDir(@NonNull Uri dir)
-    {
+    public Uri makeSafRootDir(@NonNull Uri dir) {
         return DocumentsContract.buildDocumentUriUsingTree(dir,
                 DocumentsContract.getTreeDocumentId(dir));
     }
@@ -378,11 +325,9 @@ public class SafFileSystem
      * reading and writing (mode='rw') by the given name
      */
 
-    @TargetApi(21)
     public int openFD(@NonNull Uri dir,
                       @NonNull String fileName,
-                      @NonNull String mode)
-    {
+                      @NonNull String mode) {
         Uri filePath = getFileUri(dir, fileName, true);
         if (filePath == null)
             return -1;
@@ -390,10 +335,8 @@ public class SafFileSystem
         return openFD(filePath, mode);
     }
 
-    @TargetApi(21)
     public int openFD(@NonNull FakePath path,
-                      @NonNull String mode)
-    {
+                      @NonNull String mode) {
         Uri filePath = getFileUri(path, true);
         if (filePath == null)
             return -1;
@@ -401,8 +344,7 @@ public class SafFileSystem
         return openFD(filePath, mode);
     }
 
-    public int openFD(@NonNull Uri filePath, String mode)
-    {
+    public int openFD(@NonNull Uri filePath, String mode) {
         if (!("r".equals(mode) || "w".equals(mode) || "rw".equals(mode))) {
             Log.e(TAG, "Only r, w or rw modes supported");
             return -1;
@@ -421,11 +363,9 @@ public class SafFileSystem
         }
     }
 
-    @TargetApi(21)
     @Nullable
-    public Stat stat(@NonNull Uri safRoot, @NonNull String fileName)
-    {
-        String cacheKey = safRoot.toString() + File.separator + fileName;
+    public Stat stat(@NonNull Uri safRoot, @NonNull String fileName) {
+        String cacheKey = safRoot + File.separator + fileName;
         DocumentFile f = CACHE.get(cacheKey);
         if (f == null) {
             DocumentFile tree = DocumentFile.fromTreeUri(appContext, safRoot);
@@ -439,10 +379,8 @@ public class SafFileSystem
         return stat(f);
     }
 
-    @TargetApi(21)
     @Nullable
-    public Stat statSafRoot(@NonNull Uri safRoot)
-    {
+    public Stat statSafRoot(@NonNull Uri safRoot) {
         String cacheKey = safRoot.toString();
         DocumentFile tree = CACHE.get(cacheKey);
         if (tree == null) {
@@ -454,10 +392,8 @@ public class SafFileSystem
         return stat(tree);
     }
 
-    @TargetApi(19)
     @Nullable
-    public Stat stat(@NonNull Uri filePath)
-    {
+    public Stat stat(@NonNull Uri filePath) {
         String cacheKey = filePath.toString();
         DocumentFile f = CACHE.get(cacheKey);
         if (f == null) {
@@ -469,10 +405,8 @@ public class SafFileSystem
         return stat(f);
     }
 
-    @TargetApi(21)
     @Nullable
-    public Stat stat(@NonNull FakePath path)
-    {
+    public Stat stat(@NonNull FakePath path) {
         String cacheKey = path.toString();
         DocumentFile f = CACHE.get(cacheKey);
         if (f == null) {
@@ -484,12 +418,11 @@ public class SafFileSystem
         return stat(f);
     }
 
-    private Stat stat(DocumentFile f)
-    {
+    private Stat stat(DocumentFile f) {
         return (f == null ?
                 null :
                 new Stat(f.getName(), f.isDirectory(),
-                    f.length(), f.lastModified()));
+                        f.length(), f.lastModified()));
     }
 
     /*
@@ -501,9 +434,7 @@ public class SafFileSystem
      * the directory `foo.txt` will be created, not the file
      */
 
-    @TargetApi(21)
-    public boolean mkdirs(@NonNull FakePath path)
-    {
+    public boolean mkdirs(@NonNull FakePath path) {
         String cacheKey = path.toString();
         DocumentFile cached = CACHE.get(cacheKey);
         if (cached != null && cached.exists())
