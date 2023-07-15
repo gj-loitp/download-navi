@@ -1,99 +1,57 @@
-/*
- * Copyright (C) 2016 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+package com.roy.downloader.ui.customview
 
-package com.roy.downloader.ui.customview;
-
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
-
-import androidx.recyclerview.widget.RecyclerView;
+import android.content.Context
+import android.util.AttributeSet
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 /*
  * A RecyclerView with empty view.
  */
-
-public class EmptyRecyclerView extends RecyclerView
-{
-    private View emptyView;
-
-    final private AdapterDataObserver observer = new AdapterDataObserver()
-    {
-        @Override
-        public void onChanged()
-        {
-            checkEmpty();
+class EmptyRecyclerView : RecyclerView {
+    private var emptyView: View? = null
+    private val observer: AdapterDataObserver = object : AdapterDataObserver() {
+        override fun onChanged() {
+            checkEmpty()
         }
 
-        @Override
-        public void onItemRangeInserted(int positionStart, int itemCount)
-        {
-            checkEmpty();
+        override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+            checkEmpty()
         }
 
-        @Override
-        public void onItemRangeRemoved(int positionStart, int itemCount)
-        {
-            checkEmpty();
-        }
-    };
-
-    public EmptyRecyclerView(Context context)
-    {
-        super(context);
-    }
-
-    public EmptyRecyclerView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-
-    public EmptyRecyclerView(Context context, AttributeSet attrs, int defStyle)
-    {
-        super(context, attrs, defStyle);
-    }
-
-    void checkEmpty()
-    {
-        if (emptyView != null && getAdapter() != null) {
-            boolean isEmptyViewVisible = getAdapter().getItemCount() == 0;
-
-            emptyView.setVisibility((isEmptyViewVisible ? VISIBLE : GONE));
-            setVisibility((isEmptyViewVisible ? GONE : VISIBLE));
+        override fun onItemRangeRemoved(positionStart: Int, itemCount: Int) {
+            checkEmpty()
         }
     }
 
-    @Override
-    public void setAdapter(Adapter adapter)
-    {
-        Adapter oldAdapter = getAdapter();
-        if (oldAdapter != null)
-            oldAdapter.unregisterAdapterDataObserver(observer);
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(
+        context, attrs
+    )
 
-        super.setAdapter(adapter);
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(
+        context, attrs, defStyle
+    )
 
-        if (adapter != null)
-            adapter.registerAdapterDataObserver(observer);
-
-        checkEmpty();
+    fun checkEmpty() {
+        if (emptyView != null && adapter != null) {
+            val isEmptyViewVisible = adapter?.itemCount == 0
+            emptyView?.visibility =
+                if (isEmptyViewVisible) VISIBLE else GONE
+            visibility = if (isEmptyViewVisible) GONE else VISIBLE
+        }
     }
 
-    public void setEmptyView(View emptyView)
-    {
-        this.emptyView = emptyView;
-        checkEmpty();
+    override fun setAdapter(adapter: Adapter<*>?) {
+        val oldAdapter = getAdapter()
+        oldAdapter?.unregisterAdapterDataObserver(observer)
+        super.setAdapter(adapter)
+        adapter?.registerAdapterDataObserver(observer)
+        checkEmpty()
+    }
+
+    fun setEmptyView(emptyView: View?) {
+        this.emptyView = emptyView
+        checkEmpty()
     }
 }
