@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.adddownload;
 
 import android.net.Uri;
@@ -27,8 +7,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class AddInitParams implements Parcelable
-{
+public class AddInitParams implements Parcelable {
     public String url;
     public String fileName;
     public String description;
@@ -45,10 +24,10 @@ public class AddInitParams implements Parcelable
     @Nullable
     public Boolean uncompressArchive;
 
-    public AddInitParams() {}
+    public AddInitParams() {
+    }
 
-    public AddInitParams(@NonNull Parcel source)
-    {
+    public AddInitParams(@NonNull Parcel source) {
         dirPath = source.readParcelable(Uri.class.getClassLoader());
         url = source.readString();
         fileName = source.readString();
@@ -77,33 +56,31 @@ public class AddInitParams implements Parcelable
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeParcelable(dirPath, flags);
         dest.writeString(url);
         dest.writeString(fileName);
         dest.writeString(description);
         dest.writeString(userAgent);
         if (unmeteredConnectionsOnly == null) {
-            dest.writeByte((byte)-1);
+            dest.writeByte((byte) -1);
         } else {
-            dest.writeByte((byte)(unmeteredConnectionsOnly ? 1 : 0));
+            dest.writeByte((byte) (unmeteredConnectionsOnly ? 1 : 0));
         }
         if (retry == null) {
-            dest.writeByte((byte)-1);
+            dest.writeByte((byte) -1);
         } else {
-            dest.writeByte((byte)(retry ? 1 : 0));
+            dest.writeByte((byte) (retry ? 1 : 0));
         }
         if (replaceFile == null) {
-            dest.writeByte((byte)-1);
+            dest.writeByte((byte) -1);
         } else {
-            dest.writeByte((byte)(replaceFile ? 1 : 0));
+            dest.writeByte((byte) (replaceFile ? 1 : 0));
         }
         if (numPieces == null) {
             dest.writeInt(-1);
@@ -111,24 +88,21 @@ public class AddInitParams implements Parcelable
             dest.writeInt(numPieces);
         }
         if (uncompressArchive == null) {
-            dest.writeByte((byte)-1);
+            dest.writeByte((byte) -1);
         } else {
-            dest.writeByte((byte)(uncompressArchive ? 1 : 0));
+            dest.writeByte((byte) (uncompressArchive ? 1 : 0));
         }
     }
 
     public static final Parcelable.Creator<AddInitParams> CREATOR =
-            new Parcelable.Creator<AddInitParams>()
-            {
+            new Parcelable.Creator<AddInitParams>() {
                 @Override
-                public AddInitParams createFromParcel(Parcel source)
-                {
+                public AddInitParams createFromParcel(Parcel source) {
                     return new AddInitParams(source);
                 }
 
                 @Override
-                public AddInitParams[] newArray(int size)
-                {
+                public AddInitParams[] newArray(int size) {
                     return new AddInitParams[size];
                 }
             };

@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.adddownload;
 
 import android.content.Intent;
@@ -44,8 +24,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public class AddDownloadActivity extends AppCompatActivity
-    implements FragmentCallback
-{
+        implements FragmentCallback {
     public static final String TAG_INIT_PARAMS = "init_params";
 
     private static final String TAG_DOWNLOAD_DIALOG = "add_download_dialog";
@@ -58,8 +37,7 @@ public class AddDownloadActivity extends AppCompatActivity
     private SettingsRepository pref;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(Utils.getTranslucentAppTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
@@ -68,7 +46,7 @@ public class AddDownloadActivity extends AppCompatActivity
         dialogViewModel = provider.get(BaseAlertDialog.SharedViewModel.class);
 
         FragmentManager fm = getSupportFragmentManager();
-        addDownloadDialog = (AddDownloadDialog)fm.findFragmentByTag(TAG_DOWNLOAD_DIALOG);
+        addDownloadDialog = (AddDownloadDialog) fm.findFragmentByTag(TAG_DOWNLOAD_DIALOG);
         if (addDownloadDialog == null) {
             AddInitParams initParams = null;
             Intent i = getIntent();
@@ -81,7 +59,7 @@ public class AddDownloadActivity extends AppCompatActivity
             addDownloadDialog = AddDownloadDialog.newInstance(initParams);
             addDownloadDialog.show(fm, TAG_DOWNLOAD_DIALOG);
         }
-        batteryDialog = (BatteryOptimizationDialog)fm.findFragmentByTag(TAG_BATTERY_DIALOG);
+        batteryDialog = (BatteryOptimizationDialog) fm.findFragmentByTag(TAG_BATTERY_DIALOG);
         if (Utils.shouldShowBatteryOptimizationDialog(this)) {
             showBatteryOptimizationDialog();
         }
@@ -101,8 +79,7 @@ public class AddDownloadActivity extends AppCompatActivity
         disposables.clear();
     }
 
-    private void subscribeAlertDialog()
-    {
+    private void subscribeAlertDialog() {
         Disposable d = dialogViewModel.observeEvents()
                 .subscribe((event) -> {
                     if (event.dialogTag == null) {
@@ -121,8 +98,7 @@ public class AddDownloadActivity extends AppCompatActivity
         disposables.add(d);
     }
 
-    private void fillInitParams(AddInitParams params)
-    {
+    private void fillInitParams(AddInitParams params) {
         SettingsRepository pref = RepositoryHelper.getSettingsRepository(getApplicationContext());
         SharedPreferences localPref = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -164,8 +140,7 @@ public class AddDownloadActivity extends AppCompatActivity
         }
     }
 
-    private String getUrlFromIntent()
-    {
+    private String getUrlFromIntent() {
         Intent i = getIntent();
         if (i != null) {
             if (i.getData() != null)
@@ -188,14 +163,12 @@ public class AddDownloadActivity extends AppCompatActivity
     }
 
     @Override
-    public void fragmentFinished(Intent intent, ResultCode code)
-    {
+    public void fragmentFinished(Intent intent, ResultCode code) {
         finish();
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         addDownloadDialog.onBackPressed();
     }
 }

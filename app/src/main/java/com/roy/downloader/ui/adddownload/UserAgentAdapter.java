@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.adddownload;
 
 import android.content.Context;
@@ -33,20 +13,17 @@ import androidx.annotation.NonNull;
 import com.roy.downloader.R;
 import com.roy.downloader.core.model.data.entity.UserAgent;
 
-public class UserAgentAdapter extends ArrayAdapter<UserAgent>
-{
+public class UserAgentAdapter extends ArrayAdapter<UserAgent> {
     private final DeleteListener deleteListener;
 
-    public UserAgentAdapter(@NonNull Context context, DeleteListener deleteListener)
-    {
+    public UserAgentAdapter(@NonNull Context context, DeleteListener deleteListener) {
         super(context, R.layout.v_spinner_user_agent_item);
 
         this.deleteListener = deleteListener;
     }
 
     @Override
-    public View getDropDownView(int position, View view, ViewGroup parent)
-    {
+    public View getDropDownView(int position, View view, ViewGroup parent) {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.v_spinner_user_agent_item, parent, false);
@@ -72,8 +49,7 @@ public class UserAgentAdapter extends ArrayAdapter<UserAgent>
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
-    {
+    public View getView(int position, View view, ViewGroup parent) {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.v_spinner_user_agent_view, parent, false);
@@ -88,8 +64,7 @@ public class UserAgentAdapter extends ArrayAdapter<UserAgent>
         return view;
     }
 
-    public interface DeleteListener
-    {
+    public interface DeleteListener {
         void onDelete(UserAgent userAgent);
     }
 }

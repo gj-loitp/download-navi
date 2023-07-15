@@ -1,24 +1,3 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- * Copyright (C) 2020 8176135 <elsecaller@8176135.xyz>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.adddownload;
 
 import android.app.Application;
@@ -73,8 +52,7 @@ import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class AddDownloadViewModel extends AndroidViewModel
-{
+public class AddDownloadViewModel extends AndroidViewModel {
     @SuppressWarnings("unused")
     private static final String TAG = AddDownloadViewModel.class.getSimpleName();
 
@@ -91,32 +69,28 @@ public class AddDownloadViewModel extends AndroidViewModel
     private final CompositeDisposable disposables = new CompositeDisposable();
     public ObservableBoolean enableUncompressArchive = new ObservableBoolean();
 
-    public enum Status
-    {
+    public enum Status {
         UNKNOWN,
         FETCHING,
         FETCHED,
         ERROR
     }
 
-    public static class FetchState
-    {
+    public static class FetchState {
         public Status status;
         public Throwable error;
 
-        public FetchState(Status status, Throwable error)
-        {
+        public FetchState(Status status, Throwable error) {
             this.status = status;
             this.error = error;
         }
-        public FetchState(Status status)
-        {
+
+        public FetchState(Status status) {
             this(status, null);
         }
     }
 
-    public AddDownloadViewModel(@NonNull Application application)
-    {
+    public AddDownloadViewModel(@NonNull Application application) {
         super(application);
 
         repo = RepositoryHelper.getDataRepository(application);
@@ -130,16 +104,14 @@ public class AddDownloadViewModel extends AndroidViewModel
     }
 
     @Override
-    protected void onCleared()
-    {
+    protected void onCleared() {
         super.onCleared();
 
         disposables.clear();
         params.removeOnPropertyChangedCallback(paramsCallback);
     }
 
-    public void initParams(AddInitParams initParams)
-    {
+    public void initParams(AddInitParams initParams) {
         if (TextUtils.isEmpty(initParams.url)) {
             /* Inserting a link from the clipboard */
             List<CharSequence> clipboard = Utils.getClipboardText(getApplication());
@@ -179,13 +151,11 @@ public class AddDownloadViewModel extends AndroidViewModel
         );
     }
 
-    public LiveData<List<UserAgent>> observeUserAgents()
-    {
+    public LiveData<List<UserAgent>> observeUserAgents() {
         return repo.observeUserAgents();
     }
 
-    public Completable deleteUserAgent(UserAgent userAgent)
-    {
+    public Completable deleteUserAgent(UserAgent userAgent) {
         if (userAgent.userAgent.equals(params.getUserAgent())) {
             String systemUserAgent = systemFacade.getSystemUserAgent();
             if (systemUserAgent == null)
@@ -196,26 +166,22 @@ public class AddDownloadViewModel extends AndroidViewModel
         return Completable.fromAction(() -> repo.deleteUserAgent(userAgent));
     }
 
-    public Completable addUserAgent(UserAgent userAgent)
-    {
+    public Completable addUserAgent(UserAgent userAgent) {
         return Completable.fromAction(() -> repo.addUserAgent(userAgent));
     }
 
-    public UserAgent getPrefUserAgent()
-    {
+    public UserAgent getPrefUserAgent() {
         return new UserAgent(pref.userAgent());
     }
 
-    public void savePrefUserAgent(UserAgent userAgent)
-    {
+    public void savePrefUserAgent(UserAgent userAgent) {
         if (userAgent == null)
             return;
 
         pref.userAgent(userAgent.userAgent);
     }
 
-    public void startFetchTask()
-    {
+    public void startFetchTask() {
         if (TextUtils.isEmpty(params.getUrl()) || fetchTask != null && fetchTask.getStatus() != FetchLinkTask.Status.FINISHED)
             return;
 
@@ -231,25 +197,21 @@ public class AddDownloadViewModel extends AndroidViewModel
         fetchTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, params.getUrl(), params.getReferer());
     }
 
-    private static class FetchLinkTask extends AsyncTask<String, Void, Throwable>
-    {
+    private static class FetchLinkTask extends AsyncTask<String, Void, Throwable> {
         private final WeakReference<AddDownloadViewModel> viewModel;
 
-        private FetchLinkTask(AddDownloadViewModel viewModel)
-        {
+        private FetchLinkTask(AddDownloadViewModel viewModel) {
             this.viewModel = new WeakReference<>(viewModel);
         }
 
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             if (viewModel.get() != null)
                 viewModel.get().fetchState.setValue(new FetchState(AddDownloadViewModel.Status.FETCHING));
         }
 
         @Override
-        protected Throwable doInBackground(String... params)
-        {
+        protected Throwable doInBackground(String... params) {
             if (viewModel.get() == null || isCancelled())
                 return null;
 
@@ -262,7 +224,7 @@ public class AddDownloadViewModel extends AndroidViewModel
                 return new MalformedURLException(Utils.getScheme(url));
 
             final Exception[] err = new Exception[1];
-            final boolean[] connectWithReferer = new boolean[] {false};
+            final boolean[] connectWithReferer = new boolean[]{false};
             do {
                 HttpConnection connection;
                 try {
@@ -284,8 +246,7 @@ public class AddDownloadViewModel extends AndroidViewModel
 
                 connection.setListener(new HttpConnection.Listener() {
                     @Override
-                    public void onConnectionCreated(HttpURLConnection conn)
-                    {
+                    public void onConnectionCreated(HttpURLConnection conn) {
                         String userAgent = viewModel.get().params.getUserAgent();
                         if (conn.getRequestProperty("User-Agent") == null && !TextUtils.isEmpty(userAgent)) {
                             conn.addRequestProperty("User-Agent", userAgent);
@@ -293,13 +254,12 @@ public class AddDownloadViewModel extends AndroidViewModel
                     }
 
                     @Override
-                    public void onResponseHandle(HttpURLConnection conn, int code, String message)
-                    {
+                    public void onResponseHandle(HttpURLConnection conn, int code, String message) {
                         if (viewModel.get() == null)
                             return;
 
                         if (code == HttpURLConnection.HTTP_OK ||
-                            code == HttpURLConnection.HTTP_PARTIAL) {
+                                code == HttpURLConnection.HTTP_PARTIAL) {
                             connectWithReferer[0] = viewModel.get()
                                     .parseOkHeaders(conn, connectWithReferer[0]);
                         } else {
@@ -308,8 +268,7 @@ public class AddDownloadViewModel extends AndroidViewModel
                     }
 
                     @Override
-                    public void onMoved(String newUrl, boolean permanently)
-                    {
+                    public void onMoved(String newUrl, boolean permanently) {
                         if (viewModel.get() == null)
                             return;
 
@@ -322,14 +281,12 @@ public class AddDownloadViewModel extends AndroidViewModel
                     }
 
                     @Override
-                    public void onIOException(IOException e)
-                    {
+                    public void onIOException(IOException e) {
                         err[0] = e;
                     }
 
                     @Override
-                    public void onTooManyRedirects()
-                    {
+                    public void onTooManyRedirects() {
                         err[0] = new HttpException("Too many redirects");
                     }
                 });
@@ -341,8 +298,7 @@ public class AddDownloadViewModel extends AndroidViewModel
         }
 
         @Override
-        protected void onPostExecute(Throwable e)
-        {
+        protected void onPostExecute(Throwable e) {
             if (viewModel.get() == null)
                 return;
 
@@ -355,8 +311,7 @@ public class AddDownloadViewModel extends AndroidViewModel
         }
     }
 
-    private boolean parseOkHeaders(HttpURLConnection conn, boolean needsRefererPrevValue)
-    {
+    private boolean parseOkHeaders(HttpURLConnection conn, boolean needsRefererPrevValue) {
         String contentDisposition = conn.getHeaderField("Content-Disposition");
         String contentLocation = conn.getHeaderField("Content-Location");
         String tmpUrl = conn.getURL().toString();
@@ -416,13 +371,13 @@ public class AddDownloadViewModel extends AndroidViewModel
         }
         params.setPartialSupport(
                 "bytes".equalsIgnoreCase(conn.getHeaderField("Accept-Ranges")) ||
-                conn.getHeaderField("Content-Range") != null
+                        conn.getHeaderField("Content-Range") != null
         );
 
         /* The number of pieces can't be more than the number of bytes */
         long total = params.getTotalBytes();
         if (total > 0)
-            maxNumPieces.set(total < maxNumPieces.get() ? (int)total : DownloadInfo.MAX_PIECES);
+            maxNumPieces.set(total < maxNumPieces.get() ? (int) total : DownloadInfo.MAX_PIECES);
 
         return false;
     }
@@ -431,8 +386,7 @@ public class AddDownloadViewModel extends AndroidViewModel
      * Throws FileNotFoundException if the stub file doesn't created or doesn't exists
      */
 
-    public void addDownload() throws IOException, FreeSpaceException, NormalizeUrlException
-    {
+    public void addDownload() throws IOException, FreeSpaceException, NormalizeUrlException {
         if (TextUtils.isEmpty(params.getUrl()) || TextUtils.isEmpty(params.getFileName()))
             return;
 
@@ -470,8 +424,7 @@ public class AddDownloadViewModel extends AndroidViewModel
         engine.runDownload(info);
     }
 
-    private DownloadInfo makeDownloadInfo(Uri dirPath) throws NormalizeUrlException
-    {
+    private DownloadInfo makeDownloadInfo(Uri dirPath) throws NormalizeUrlException {
         FetchState state = fetchState.getValue();
 
         String url = params.getUrl();
@@ -493,7 +446,7 @@ public class AddDownloadViewModel extends AndroidViewModel
             try {
                 fs.truncate(filePath, 0);
             } catch (IOException e) {
-                Log.w(TAG, "Unable to truncate file size: " +  Log.getStackTraceString(e));
+                Log.w(TAG, "Unable to truncate file size: " + Log.getStackTraceString(e));
             }
         } else {
             fileName = fs.makeFilename(params.getDirPath(), fileName);
@@ -524,43 +477,38 @@ public class AddDownloadViewModel extends AndroidViewModel
         return info;
     }
 
-    private boolean checkFreeSpace()
-    {
+    private boolean checkFreeSpace() {
         long storageFreeSpace = params.getStorageFreeSpace();
 
         return storageFreeSpace == -1 || storageFreeSpace >= params.getTotalBytes();
     }
 
-    public boolean isChecksumValid(String checksum)
-    {
+    public boolean isChecksumValid(String checksum) {
         if (checksum == null)
             return false;
 
         return DigestUtils.isMd5Hash(checksum) || DigestUtils.isSha256Hash(checksum);
     }
 
-    private final Observable.OnPropertyChangedCallback paramsCallback = new Observable.OnPropertyChangedCallback()
-    {
+    private final Observable.OnPropertyChangedCallback paramsCallback = new Observable.OnPropertyChangedCallback() {
         @Override
-        public void onPropertyChanged(Observable sender, int propertyId)
-        {
+        public void onPropertyChanged(Observable sender, int propertyId) {
             if (propertyId == BR.dirPath) {
                 Uri dirPath = params.getDirPath();
                 if (dirPath == null)
                     return;
 
                 disposables.add(Completable.fromRunnable(() -> {
-                    params.setStorageFreeSpace(fs.getDirAvailableBytes(dirPath));
-                    params.setDirName(fs.getDirName(dirPath));
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe());
+                            params.setStorageFreeSpace(fs.getDirAvailableBytes(dirPath));
+                            params.setDirName(fs.getDirName(dirPath));
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe());
             }
         }
     };
 
-    public void finish()
-    {
+    public void finish() {
         if (fetchTask != null)
             fetchTask.cancel(true);
     }

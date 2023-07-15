@@ -1,24 +1,3 @@
-/*
- * Copyright (C) 2018-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- * Copyright (C) 2020 8176135 <elsecaller@8176135.xyz>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.adddownload;
 
 import android.net.Uri;
@@ -29,8 +8,7 @@ import androidx.databinding.library.baseAdapters.BR;
 
 import com.roy.downloader.core.model.data.entity.DownloadInfo;
 
-public class AddDownloadParams extends BaseObservable
-{
+public class AddDownloadParams extends BaseObservable {
     private String url;
     /* SAF or filesystem storage */
     private Uri dirPath;
@@ -53,197 +31,163 @@ public class AddDownloadParams extends BaseObservable
     private boolean uncompressArchive;
 
     @Bindable
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url)
-    {
+    public void setUrl(String url) {
         this.url = url;
         notifyPropertyChanged(BR.url);
     }
 
     @Bindable
-    public Uri getDirPath()
-    {
+    public Uri getDirPath() {
         return dirPath;
     }
 
-    public void setDirPath(Uri dirPath)
-    {
+    public void setDirPath(Uri dirPath) {
         this.dirPath = dirPath;
         notifyPropertyChanged(BR.dirPath);
     }
 
     @Bindable
-    public String getDirName()
-    {
+    public String getDirName() {
         return dirName;
     }
 
-    public void setDirName(String dirName)
-    {
+    public void setDirName(String dirName) {
         this.dirName = dirName;
         notifyPropertyChanged(BR.dirName);
     }
 
     @Bindable
-    public long getStorageFreeSpace()
-    {
+    public long getStorageFreeSpace() {
         return storageFreeSpace;
     }
 
-    public void setStorageFreeSpace(long storageFreeSpace)
-    {
+    public void setStorageFreeSpace(long storageFreeSpace) {
         this.storageFreeSpace = storageFreeSpace;
         notifyPropertyChanged(BR.storageFreeSpace);
     }
 
     @Bindable
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName)
-    {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
         notifyPropertyChanged(BR.fileName);
     }
 
     @Bindable
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
         notifyPropertyChanged(BR.description);
     }
 
-    public String getMimeType()
-    {
+    public String getMimeType() {
         return mimeType;
     }
 
-    public void setMimeType(String mimeType)
-    {
+    public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
     }
 
-    public String getEtag()
-    {
+    public String getEtag() {
         return etag;
     }
 
-    public void setEtag(String etag)
-    {
+    public void setEtag(String etag) {
         this.etag = etag;
     }
 
     @Bindable
-    public String getReferer()
-    {
+    public String getReferer() {
         return referer;
     }
 
-    public void setReferer(String referer)
-    {
+    public void setReferer(String referer) {
         this.referer = referer;
         notifyPropertyChanged(BR.referer);
     }
 
-    public String getUserAgent()
-    {
+    public String getUserAgent() {
         return userAgent;
     }
 
-    public void setUserAgent(String userAgent)
-    {
+    public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 
     @Bindable
-    public int getNumPieces()
-    {
+    public int getNumPieces() {
         return numPieces;
     }
 
-    public void setNumPieces(int numPieces)
-    {
+    public void setNumPieces(int numPieces) {
         this.numPieces = numPieces;
         notifyPropertyChanged(BR.numPieces);
     }
 
     @Bindable
-    public long getTotalBytes()
-    {
+    public long getTotalBytes() {
         return totalBytes;
     }
 
-    public void setTotalBytes(long totalBytes)
-    {
+    public void setTotalBytes(long totalBytes) {
         this.totalBytes = totalBytes;
         notifyPropertyChanged(BR.totalBytes);
     }
 
     @Bindable
-    public boolean isUnmeteredConnectionsOnly()
-    {
+    public boolean isUnmeteredConnectionsOnly() {
         return unmeteredConnectionsOnly;
     }
 
-    public void setUnmeteredConnectionsOnly(boolean unmeteredConnectionsOnly)
-    {
+    public void setUnmeteredConnectionsOnly(boolean unmeteredConnectionsOnly) {
         this.unmeteredConnectionsOnly = unmeteredConnectionsOnly;
         notifyPropertyChanged(BR.unmeteredConnectionsOnly);
     }
 
-    public boolean isPartialSupport()
-    {
+    public boolean isPartialSupport() {
         return partialSupport;
     }
 
-    public void setPartialSupport(boolean partialSupport)
-    {
+    public void setPartialSupport(boolean partialSupport) {
         this.partialSupport = partialSupport;
     }
 
     @Bindable
-    public boolean isRetry()
-    {
+    public boolean isRetry() {
         return retry;
     }
 
-    public void setRetry(boolean retry)
-    {
+    public void setRetry(boolean retry) {
         this.retry = retry;
         notifyPropertyChanged(BR.retry);
     }
 
     @Bindable
-    public boolean isReplaceFile()
-    {
+    public boolean isReplaceFile() {
         return replaceFile;
     }
 
-    public void setReplaceFile(boolean replaceFile)
-    {
+    public void setReplaceFile(boolean replaceFile) {
         this.replaceFile = replaceFile;
         notifyPropertyChanged(BR.replaceFile);
     }
 
     @Bindable
-    public String getChecksum()
-    {
+    public String getChecksum() {
         return checksum;
     }
 
-    public void setChecksum(String checksum)
-    {
+    public void setChecksum(String checksum) {
         this.checksum = checksum;
         notifyPropertyChanged(BR.checksum);
     }
