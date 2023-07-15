@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018-2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.system;
 
 import android.content.Context;
@@ -46,8 +26,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-class FileSystemFacadeImpl implements FileSystemFacade
-{
+class FileSystemFacadeImpl implements FileSystemFacade {
     @SuppressWarnings("unused")
     private static final String TAG = FileSystemFacadeImpl.class.getSimpleName();
 
@@ -58,7 +37,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
 
     private final SysCall sysCall;
     private final FsModuleResolver fsResolver;
-    private Context appContext;
+    private final Context appContext;
 
     public FileSystemFacadeImpl(
             @NonNull SysCall sysCall,
@@ -75,8 +54,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     @Override
-    public void seek(@NonNull FileOutputStream fout, long offset) throws IOException
-    {
+    public void seek(@NonNull FileOutputStream fout, long offset) throws IOException {
         try {
             sysCall.lseek(fout.getFD(), offset);
 
@@ -90,14 +68,12 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     @Override
-    public void allocate(@NonNull FileDescriptor fd, long length) throws IOException
-    {
+    public void allocate(@NonNull FileDescriptor fd, long length) throws IOException {
         sysCall.fallocate(fd, length);
     }
 
     @Override
-    public void closeQuietly(Closeable closeable)
-    {
+    public void closeQuietly(Closeable closeable) {
         try {
             if (closeable != null)
                 closeable.close();
@@ -116,8 +92,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     public String makeFilename(@NonNull Uri dir,
-                               @NonNull String desiredFileName)
-    {
+                               @NonNull String desiredFileName) {
         while (true) {
             /* File doesn't exists, return */
             Uri filePath = getFileUri(dir, desiredFileName);
@@ -170,8 +145,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
                          @NonNull String srcFileName,
                          @NonNull Uri destDir,
                          @NonNull String destFileName,
-                         boolean replace) throws IOException, FileAlreadyExistsException
-    {
+                         boolean replace) throws IOException, FileAlreadyExistsException {
         FsModule fsModule;
         Uri srcFileUri, destFileUri;
 
@@ -203,8 +177,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
 
     public void copyFile(@NonNull Uri srcFile,
                          @NonNull Uri destFile,
-                         boolean truncateDestFile) throws IOException
-    {
+                         boolean truncateDestFile) throws IOException {
 
         if (srcFile.equals(destFile))
             throw new IllegalArgumentException("Uri points to the same file");
@@ -212,49 +185,48 @@ class FileSystemFacadeImpl implements FileSystemFacade
         try (FileDescriptorWrapper wSrc = getFD(srcFile);
              FileDescriptorWrapper wDest = getFD(destFile)) {
 
-            try (FileInputStream fin = new FileInputStream(wSrc.open("r"));
-                 FileOutputStream fout = new FileOutputStream(wDest.open((truncateDestFile ? "rwt" : "rw")));
-                 FileChannel input = fin.getChannel();
-                 FileChannel output = fout.getChannel())
-            {
-                long size = input.size();
-                long pos = 0;
-                long count;
-                while (pos < size) {
-                    long remain = size - pos;
-                    count = Math.min(remain, FILE_COPY_BUFFER_SIZE);
-                    long bytesCopied = output.transferFrom(input, pos, count);
-                    if (bytesCopied == 0)
-                        break;
-                    pos += bytesCopied;
-                }
+            assert wSrc != null;
+            try (FileInputStream fin = new FileInputStream(wSrc.open("r"))) {
+                assert wDest != null;
+                try (FileOutputStream fout = new FileOutputStream(wDest.open((truncateDestFile ? "rwt" : "rw")));
+                     FileChannel input = fin.getChannel();
+                     FileChannel output = fout.getChannel()) {
+                    long size = input.size();
+                    long pos = 0;
+                    long count;
+                    while (pos < size) {
+                        long remain = size - pos;
+                        count = Math.min(remain, FILE_COPY_BUFFER_SIZE);
+                        long bytesCopied = output.transferFrom(input, pos, count);
+                        if (bytesCopied == 0)
+                            break;
+                        pos += bytesCopied;
+                    }
 
-                long srcLen = input.size();
-                long dstLen = output.size();
-                if (srcLen != dstLen)
-                    throw new IOException("Failed to copy full contents from '" +
-                            srcFile + "' to '" + destFile + "' Expected length: " + srcLen + " Actual: " + dstLen);
+                    long srcLen = input.size();
+                    long dstLen = output.size();
+                    if (srcLen != dstLen)
+                        throw new IOException("Failed to copy full contents from '" +
+                                srcFile + "' to '" + destFile + "' Expected length: " + srcLen + " Actual: " + dstLen);
+                }
             }
         }
     }
 
     @Override
-    public FileDescriptorWrapper getFD(@NonNull Uri path)
-    {
+    public FileDescriptorWrapper getFD(@NonNull Uri path) {
         FsModule fsModule = fsResolver.resolveFsByUri(path);
 
         return fsModule.openFD(path);
     }
 
     @Override
-    public String getExtensionSeparator()
-    {
+    public String getExtensionSeparator() {
         return EXTENSION_SEPARATOR;
     }
 
     @Override
-    public String appendExtension(@NonNull String fileName, @NonNull String mimeType)
-    {
+    public String appendExtension(@NonNull String fileName, @NonNull String mimeType) {
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         String extension = getExtension(fileName);
 
@@ -279,8 +251,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
 
     @Override
     @Nullable
-    public String getDefaultDownloadPath()
-    {
+    public String getDefaultDownloadPath() {
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
                 .getAbsolutePath();
 
@@ -297,8 +268,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
 
     @Override
     @Nullable
-    public String getUserDirPath()
-    {
+    public String getUserDirPath() {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
 
         File dir = new File(path);
@@ -309,8 +279,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
     }
 
     @Override
-    public boolean deleteFile(@NonNull Uri path) throws FileNotFoundException
-    {
+    public boolean deleteFile(@NonNull Uri path) throws FileNotFoundException {
         FsModule fsModule = fsResolver.resolveFsByUri(path);
 
         return fsModule.delete(path);
@@ -322,8 +291,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
 
     @Override
     public Uri getFileUri(@NonNull Uri dir,
-                          @NonNull String fileName)
-    {
+                          @NonNull String fileName) {
         FsModule fsModule = fsResolver.resolveFsByUri(dir);
 
         Uri path = null;
@@ -364,8 +332,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
     @Override
     public Uri createFile(@NonNull Uri dir,
                           @NonNull String fileName,
-                          boolean replace) throws IOException
-    {
+                          boolean replace) throws IOException {
         FsModule fsModule = fsResolver.resolveFsByUri(dir);
         try {
             Uri path = fsModule.getFileUri(dir, fileName, false);
@@ -418,8 +385,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     @Override
-    public long getDirAvailableBytes(@NonNull Uri dir)
-    {
+    public long getDirAvailableBytes(@NonNull Uri dir) {
         long availableBytes = -1;
 
         FsModule fsModule = fsResolver.resolveFsByUri(dir);
@@ -435,8 +401,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
     }
 
     @Override
-    public String getExtension(String fileName)
-    {
+    public String getExtension(String fileName) {
         if (fileName == null)
             return null;
 
@@ -462,6 +427,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
             if (mimeType == null) {
                 break;
             } else {
+                assert extension != null;
                 var extensionPos = name.lastIndexOf(extension) - 1;
                 if (extensionPos < 0 || extensionPos + 1 > name.length()) {
                     break;
@@ -479,8 +445,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     @Override
-    public boolean isValidFatFilename(String name)
-    {
+    public boolean isValidFatFilename(String name) {
         return name != null && name.equals(buildValidFatFilename(name));
     }
 
@@ -490,8 +455,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     @Override
-    public String buildValidFatFilename(String name)
-    {
+    public String buildValidFatFilename(String name) {
         if (TextUtils.isEmpty(name) || ".".equals(name) || "..".equals(name))
             return "(invalid)";
 
@@ -512,29 +476,16 @@ class FileSystemFacadeImpl implements FileSystemFacade
         return res.toString();
     }
 
-    private boolean isValidFatFilenameChar(char c)
-    {
-        if ((0x00 <= c && c <= 0x1f))
+    private boolean isValidFatFilenameChar(char c) {
+        if (c <= 0x1f)
             return false;
-        switch (c) {
-            case '"':
-            case '*':
-            case '/':
-            case ':':
-            case '<':
-            case '>':
-            case '?':
-            case '\\':
-            case '|':
-            case 0x7F:
-                return false;
-            default:
-                return true;
-        }
+        return switch (c) {
+            case '"', '*', '/', ':', '<', '>', '?', '\\', '|', 0x7F -> false;
+            default -> true;
+        };
     }
 
-    private void trimFilename(StringBuilder res, int maxBytes)
-    {
+    private void trimFilename(StringBuilder res, int maxBytes) {
         byte[] raw = res.toString().getBytes(StandardCharsets.UTF_8);
         if (raw.length > maxBytes) {
             maxBytes -= 3;
@@ -552,8 +503,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
      */
 
     @Override
-    public String getDirName(@NonNull Uri dir)
-    {
+    public String getDirName(@NonNull Uri dir) {
         FsModule fsModule = fsResolver.resolveFsByUri(dir);
 
         return fsModule.getDirName(dir);
@@ -569,6 +519,7 @@ class FileSystemFacadeImpl implements FileSystemFacade
     @Override
     public void truncate(@NonNull Uri filePath, long newSize) throws IOException {
         try (FileDescriptorWrapper w = getFD(filePath)) {
+            assert w != null;
             FileDescriptor fd = w.open("rw");
             try (FileChannel chan = new FileOutputStream(fd).getChannel()) {
                 chan.truncate(newSize);
