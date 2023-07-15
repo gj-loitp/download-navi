@@ -27,7 +27,7 @@ public class InputFilterMinMax implements InputFilter {
             return null;
 
         try {
-            int input = Integer.parseInt(spanned.toString() + charSequence.toString());
+            int input = Integer.parseInt(spanned.toString() + charSequence);
             if (inRange(min, max, input))
                 return null;
 

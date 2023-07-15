@@ -113,11 +113,7 @@ public class HttpConnection implements Runnable {
 
                 int responseCode = conn.getResponseCode();
                 switch (responseCode) {
-                    case HTTP_MOVED_PERM:
-                    case HTTP_MOVED_TEMP:
-                    case HTTP_SEE_OTHER:
-                    case HTTP_TEMPORARY_REDIRECT:
-                    case HTTP_PERMANENT_REDIRECT:
+                    case HTTP_MOVED_PERM, HTTP_MOVED_TEMP, HTTP_SEE_OTHER, HTTP_TEMPORARY_REDIRECT, HTTP_PERMANENT_REDIRECT -> {
                         String location = conn.getHeaderField("Location");
                         url = new URL(url, location);
                         if (listener != null)
@@ -127,7 +123,8 @@ public class HttpConnection implements Runnable {
                                             || responseCode == HTTP_PERMANENT_REDIRECT
                             );
                         continue;
-                    default:
+                    }
+                    default -> {
                         if (requestContentRange) {
                             if (responseCode != HttpURLConnection.HTTP_OK &&
                                     responseCode != HttpURLConnection.HTTP_PARTIAL) {
@@ -149,6 +146,7 @@ public class HttpConnection implements Runnable {
                         if (listener != null)
                             listener.onResponseHandle(conn, responseCode, conn.getResponseMessage());
                         return;
+                    }
                 }
 
             } catch (IOException e) {

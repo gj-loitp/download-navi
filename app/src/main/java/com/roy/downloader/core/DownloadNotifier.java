@@ -85,7 +85,7 @@ public class DownloadNotifier {
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final FileSystemFacade fs;
 
-    private class Notification {
+    private static class Notification {
         public UUID downloadId;
         public String tag;
         public long timestamp;
@@ -167,9 +167,7 @@ public class DownloadNotifier {
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setCategory(android.app.Notification.CATEGORY_ERROR);
-        }
+        builder.setCategory(android.app.Notification.CATEGORY_ERROR);
 
         notifyManager.notify(MOVE_ERROR_TAG, id.hashCode(), builder.build());
     }
@@ -185,9 +183,7 @@ public class DownloadNotifier {
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setCategory(android.app.Notification.CATEGORY_ERROR);
-        }
+        builder.setCategory(android.app.Notification.CATEGORY_ERROR);
 
         notifyManager.notify(MOVE_ERROR_TAG, id.hashCode(), builder.build());
     }
@@ -203,9 +199,7 @@ public class DownloadNotifier {
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setCategory(android.app.Notification.CATEGORY_ERROR);
-        }
+        builder.setCategory(android.app.Notification.CATEGORY_ERROR);
 
         notifyManager.notify(UNCOMPRESS_ARCHIVE_ERROR_TAG, id.hashCode(), builder.build());
     }
@@ -221,9 +215,7 @@ public class DownloadNotifier {
                 .setAutoCancel(true)
                 .setWhen(System.currentTimeMillis());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setCategory(android.app.Notification.CATEGORY_ERROR);
-        }
+        builder.setCategory(android.app.Notification.CATEGORY_ERROR);
 
         notifyManager.notify(UNCOMPRESS_ARCHIVE_ERROR_TAG, id.hashCode(), builder.build());
     }
@@ -269,16 +261,13 @@ public class DownloadNotifier {
     }
 
     private boolean checkShowNotification(int type) {
-        switch (type) {
-            case TYPE_ACTIVE:
-                return pref.progressNotify();
-            case TYPE_PENDING:
-                return pref.pendingNotify();
-            case TYPE_COMPLETE:
-                return pref.finishNotify();
-        }
+        return switch (type) {
+            case TYPE_ACTIVE -> pref.progressNotify();
+            case TYPE_PENDING -> pref.pendingNotify();
+            case TYPE_COMPLETE -> pref.finishNotify();
+            default -> false;
+        };
 
-        return false;
     }
 
     private boolean checkUpdateTime(DownloadInfo info) {
@@ -459,7 +448,7 @@ public class DownloadNotifier {
             }
         }
 
-        int progress = 0;
+        int progress;
         long ETA = Utils.calcETA(info.totalBytes, downloadBytes, speed);
         if (type == TYPE_ACTIVE) {
             if (info.statusCode == StatusCode.STATUS_FETCH_METADATA) {
@@ -493,18 +482,13 @@ public class DownloadNotifier {
                                     DateUtils.formatElapsedTime(appContext, ETA)),
                             Formatter.formatFileSize(appContext, speed)));
                 } else {
-                    String statusStr = "";
-                    switch (info.statusCode) {
-                        case StatusCode.STATUS_PAUSED:
-                            statusStr = appContext.getString(R.string.pause);
-                            break;
-                        case StatusCode.STATUS_STOPPED:
-                            statusStr = appContext.getString(R.string.stopped);
-                            break;
-                        case StatusCode.STATUS_FETCH_METADATA:
-                            statusStr = appContext.getString(R.string.downloading_metadata);
-                            break;
-                    }
+                    String statusStr = switch (info.statusCode) {
+                        case StatusCode.STATUS_PAUSED -> appContext.getString(R.string.pause);
+                        case StatusCode.STATUS_STOPPED -> appContext.getString(R.string.stopped);
+                        case StatusCode.STATUS_FETCH_METADATA ->
+                                appContext.getString(R.string.downloading_metadata);
+                        default -> "";
+                    };
                     progressBigText.bigText(appContext.getString(R.string.download_queued_template,
                             Formatter.formatFileSize(appContext, downloadBytes),
                             (info.totalBytes == -1 ? appContext.getString(R.string.not_available) :
@@ -522,18 +506,13 @@ public class DownloadNotifier {
                 String totalBytesStr = (info.totalBytes == -1 ?
                         appContext.getString(R.string.not_available) :
                         Formatter.formatFileSize(appContext, info.totalBytes));
-                String statusStr;
-                switch (info.statusCode) {
-                    case StatusCode.STATUS_WAITING_FOR_NETWORK:
-                        statusStr = appContext.getString(R.string.waiting_for_network);
-                        break;
-                    case StatusCode.STATUS_WAITING_TO_RETRY:
-                        statusStr = appContext.getString(R.string.waiting_for_retry);
-                        break;
-                    default:
-                        statusStr = appContext.getString(R.string.pending);
-                        break;
-                }
+                String statusStr = switch (info.statusCode) {
+                    case StatusCode.STATUS_WAITING_FOR_NETWORK ->
+                            appContext.getString(R.string.waiting_for_network);
+                    case StatusCode.STATUS_WAITING_TO_RETRY ->
+                            appContext.getString(R.string.waiting_for_retry);
+                    default -> appContext.getString(R.string.pending);
+                };
                 pendingBigText.bigText(appContext.getString(R.string.download_queued_template,
                         downloadBytesStr,
                         totalBytesStr,
@@ -554,21 +533,19 @@ public class DownloadNotifier {
         }
 
         /* Set category */
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            switch (type) {
-                case TYPE_ACTIVE:
-                    builder.setCategory(android.app.Notification.CATEGORY_PROGRESS);
-                    break;
-                case TYPE_PENDING:
+        switch (type) {
+            case TYPE_ACTIVE:
+                builder.setCategory(android.app.Notification.CATEGORY_PROGRESS);
+                break;
+            case TYPE_PENDING:
+                builder.setCategory(android.app.Notification.CATEGORY_STATUS);
+                break;
+            case TYPE_COMPLETE:
+                if (isError)
+                    builder.setCategory(android.app.Notification.CATEGORY_ERROR);
+                else
                     builder.setCategory(android.app.Notification.CATEGORY_STATUS);
-                    break;
-                case TYPE_COMPLETE:
-                    if (isError)
-                        builder.setCategory(android.app.Notification.CATEGORY_ERROR);
-                    else
-                        builder.setCategory(android.app.Notification.CATEGORY_STATUS);
-                    break;
-            }
+                break;
         }
 
         if (prevTag != null && !prevTag.equals(notify.tag)) {
