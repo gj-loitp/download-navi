@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.settings.sections;
 
 import android.os.Bundle;
@@ -38,14 +18,13 @@ import com.roy.downloader.core.RepositoryHelper;
 import com.roy.downloader.core.settings.SettingsRepository;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.BaseAlertDialog;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public class BehaviorSettingsFragment extends PreferenceFragmentCompat
-        implements Preference.OnPreferenceChangeListener
-{
+public class FragmentBehaviorSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
-    private static final String TAG = BehaviorSettingsFragment.class.getSimpleName();
+    private static final String TAG = FragmentBehaviorSettings.class.getSimpleName();
 
     private static final String TAG_CUSTOM_BATTERY_DIALOG = "custom_battery_dialog";
 
@@ -53,17 +32,15 @@ public class BehaviorSettingsFragment extends PreferenceFragmentCompat
     private final CompositeDisposable disposables = new CompositeDisposable();
     private BaseAlertDialog.SharedViewModel dialogViewModel;
 
-    public static BehaviorSettingsFragment newInstance()
-    {
-        BehaviorSettingsFragment fragment = new BehaviorSettingsFragment();
+    public static FragmentBehaviorSettings newInstance() {
+        FragmentBehaviorSettings fragment = new FragmentBehaviorSettings();
         fragment.setArguments(new Bundle());
 
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         dialogViewModel = new ViewModelProvider(getActivity()).get(BaseAlertDialog.SharedViewModel.class);
@@ -94,8 +71,7 @@ public class BehaviorSettingsFragment extends PreferenceFragmentCompat
         String keyBatteryControl = getString(R.string.pref_key_battery_control);
         SwitchPreferenceCompat batteryControl = findPreference(keyBatteryControl);
         if (batteryControl != null) {
-            batteryControl.setSummary(getString(R.string.pref_battery_control_summary,
-                    Utils.getDefaultBatteryLowLevel()));
+            batteryControl.setSummary(getString(R.string.pref_battery_control_summary, Utils.getDefaultBatteryLowLevel()));
             batteryControl.setChecked(pref.batteryControl());
             bindOnPreferenceChangeListener(batteryControl);
         }
@@ -103,8 +79,7 @@ public class BehaviorSettingsFragment extends PreferenceFragmentCompat
         String keyCustomBatteryControl = getString(R.string.pref_key_custom_battery_control);
         SwitchPreferenceCompat customBatteryControl = findPreference(keyCustomBatteryControl);
         if (customBatteryControl != null) {
-            customBatteryControl.setSummary(getString(R.string.pref_custom_battery_control_summary,
-                    Utils.getDefaultBatteryLowLevel()));
+            customBatteryControl.setSummary(getString(R.string.pref_custom_battery_control_summary, Utils.getDefaultBatteryLowLevel()));
             customBatteryControl.setChecked(pref.customBatteryControl());
             bindOnPreferenceChangeListener(customBatteryControl);
         }
@@ -151,8 +126,7 @@ public class BehaviorSettingsFragment extends PreferenceFragmentCompat
         if (timeout != null) {
             timeout.setDialogMessage(R.string.pref_timeout_summary);
             String value = Integer.toString(pref.timeout());
-            timeout.setOnBindEditTextListener((editText) ->
-                    editText.setFilters(new InputFilter[]{new InputFilterMinMax(0, Integer.MAX_VALUE)}));
+            timeout.setOnBindEditTextListener((editText) -> editText.setFilters(new InputFilter[]{new InputFilterMinMax(0, Integer.MAX_VALUE)}));
             timeout.setSummary(value);
             timeout.setText(value);
             bindOnPreferenceChangeListener(timeout);
@@ -160,88 +134,77 @@ public class BehaviorSettingsFragment extends PreferenceFragmentCompat
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         disposables.clear();
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         subscribeAlertDialog();
     }
 
-    private void subscribeAlertDialog()
-    {
-        Disposable d = dialogViewModel.observeEvents()
-                .subscribe((event) -> {
-                    if (event.dialogTag == null || !event.dialogTag.equals(TAG_CUSTOM_BATTERY_DIALOG))
-                        return;
-                    if (event.type == BaseAlertDialog.EventType.NEGATIVE_BUTTON_CLICKED)
-                        disableCustomBatteryControl();
-                });
+    private void subscribeAlertDialog() {
+        Disposable d = dialogViewModel.observeEvents().subscribe((event) -> {
+            if (event.dialogTag == null || !event.dialogTag.equals(TAG_CUSTOM_BATTERY_DIALOG))
+                return;
+            if (event.type == BaseAlertDialog.EventType.NEGATIVE_BUTTON_CLICKED)
+                disableCustomBatteryControl();
+        });
         disposables.add(d);
     }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
-    {
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.pref_behavior, rootKey);
     }
 
-    private void bindOnPreferenceChangeListener(Preference preference)
-    {
+    private void bindOnPreferenceChangeListener(Preference preference) {
         preference.setOnPreferenceChangeListener(this);
     }
 
     @Override
-    public boolean onPreferenceChange(final Preference preference, Object newValue)
-    {
+    public boolean onPreferenceChange(final Preference preference, Object newValue) {
         if (preference.getKey().equals(getString(R.string.pref_key_autostart))) {
-            pref.autostart((boolean)newValue);
-            Utils.enableBootReceiver(getActivity(), (boolean)newValue);
+            pref.autostart((boolean) newValue);
+            Utils.enableBootReceiver(getActivity(), (boolean) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_cpu_do_not_sleep))) {
-            pref.cpuDoNotSleep((boolean)newValue);
+        } else if (preference.getKey().equals(getString(R.string.pref_key_cpu_do_not_sleep))) {
+            pref.cpuDoNotSleep((boolean) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_download_only_when_charging))) {
-            pref.onlyCharging((boolean)newValue);
-            if(!((SwitchPreferenceCompat) preference).isChecked())
-                disableBatteryControl();
+        } else if (preference.getKey().equals(getString(R.string.pref_key_download_only_when_charging))) {
+            pref.onlyCharging((boolean) newValue);
+            if (!((SwitchPreferenceCompat) preference).isChecked()) disableBatteryControl();
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_battery_control))) {
-            pref.batteryControl((boolean)newValue);
-            if(((SwitchPreferenceCompat) preference).isChecked())
-                disableCustomBatteryControl();
+        } else if (preference.getKey().equals(getString(R.string.pref_key_battery_control))) {
+            pref.batteryControl((boolean) newValue);
+            if (((SwitchPreferenceCompat) preference).isChecked()) disableCustomBatteryControl();
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_custom_battery_control))) {
-            pref.customBatteryControl((boolean)newValue);
-            if (!((SwitchPreferenceCompat) preference).isChecked())
-                showCustomBatteryDialog();
+        } else if (preference.getKey().equals(getString(R.string.pref_key_custom_battery_control))) {
+            pref.customBatteryControl((boolean) newValue);
+            if (!((SwitchPreferenceCompat) preference).isChecked()) showCustomBatteryDialog();
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_custom_battery_control_value))) {
-            pref.customBatteryControlValue((int)newValue);
+        } else if (preference.getKey().equals(getString(R.string.pref_key_custom_battery_control_value))) {
+            pref.customBatteryControlValue((int) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_umnetered_connections_only))) {
-            pref.unmeteredConnectionsOnly((boolean)newValue);
+        } else if (preference.getKey().equals(getString(R.string.pref_key_umnetered_connections_only))) {
+            pref.unmeteredConnectionsOnly((boolean) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_enable_roaming))) {
-            pref.enableRoaming((boolean)newValue);
+        } else if (preference.getKey().equals(getString(R.string.pref_key_enable_roaming))) {
+            pref.enableRoaming((boolean) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_replace_duplicate_downloads))) {
-            pref.replaceDuplicateDownloads((boolean)newValue);
+        } else if (preference.getKey().equals(getString(R.string.pref_key_replace_duplicate_downloads))) {
+            pref.replaceDuplicateDownloads((boolean) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_auto_connect))) {
-            pref.autoConnect((boolean)newValue);
+        } else if (preference.getKey().equals(getString(R.string.pref_key_auto_connect))) {
+            pref.autoConnect((boolean) newValue);
 
-        } else if(preference.getKey().equals(getString(R.string.pref_key_timeout))) {
+        } else if (preference.getKey().equals(getString(R.string.pref_key_timeout))) {
             int value = 0;
-            if (!TextUtils.isEmpty((String)newValue))
-                value = Integer.parseInt((String)newValue);
+            if (!TextUtils.isEmpty((String) newValue)) value = Integer.parseInt((String) newValue);
             pref.timeout(value);
             preference.setSummary(Integer.toString(value));
         }
@@ -249,39 +212,27 @@ public class BehaviorSettingsFragment extends PreferenceFragmentCompat
         return true;
     }
 
-    private void showCustomBatteryDialog()
-    {
+    private void showCustomBatteryDialog() {
         FragmentManager fm = getChildFragmentManager();
         if (fm.findFragmentByTag(TAG_CUSTOM_BATTERY_DIALOG) == null) {
-            BaseAlertDialog customBatteryDialog = BaseAlertDialog.newInstance(
-                    getString(R.string.warning),
-                    getString(R.string.pref_custom_battery_control_dialog_summary),
-                    0,
-                    getString(R.string.yes),
-                    getString(R.string.no),
-                    null,
-                    true);
+            BaseAlertDialog customBatteryDialog = BaseAlertDialog.newInstance(getString(R.string.warning), getString(R.string.pref_custom_battery_control_dialog_summary), 0, getString(R.string.yes), getString(R.string.no), null, true);
 
             customBatteryDialog.show(fm, TAG_CUSTOM_BATTERY_DIALOG);
         }
     }
 
-    private void disableBatteryControl()
-    {
+    private void disableBatteryControl() {
         String keyBatteryControl = getString(R.string.pref_key_battery_control);
         SwitchPreferenceCompat batteryControl = findPreference(keyBatteryControl);
-        if (batteryControl != null)
-            batteryControl.setChecked(false);
+        if (batteryControl != null) batteryControl.setChecked(false);
         pref.batteryControl(false);
         disableCustomBatteryControl();
     }
 
-    private void disableCustomBatteryControl()
-    {
+    private void disableCustomBatteryControl() {
         String keyCustomBatteryControl = getString(R.string.pref_key_custom_battery_control);
         SwitchPreferenceCompat batteryControl = findPreference(keyCustomBatteryControl);
-        if (batteryControl != null)
-            batteryControl.setChecked(false);
+        if (batteryControl != null) batteryControl.setChecked(false);
         pref.customBatteryControl(false);
     }
 }

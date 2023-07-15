@@ -31,7 +31,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
-import com.roy.downloader.ui.settings.sections.BehaviorSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
 import com.roy.downloader.ui.settings.sections.BrowserSettingsFragment;
 import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
 import com.roy.downloader.ui.settings.sections.StorageSettingsFragment;
@@ -93,8 +93,8 @@ public class PreferenceActivity extends AppCompatActivity
         if (fragment != null) {
             if (fragment.equals(FragmentAppearanceSettings.class.getSimpleName()))
                 return (F) FragmentAppearanceSettings.newInstance();
-            else if (fragment.equals(BehaviorSettingsFragment.class.getSimpleName()))
-                return (F)BehaviorSettingsFragment.newInstance();
+            else if (fragment.equals(FragmentBehaviorSettings.class.getSimpleName()))
+                return (F) FragmentBehaviorSettings.newInstance();
             else if (fragment.equals(StorageSettingsFragment.class.getSimpleName()))
                 return (F)StorageSettingsFragment.newInstance();
             else if (fragment.equals(BrowserSettingsFragment.class.getSimpleName()))

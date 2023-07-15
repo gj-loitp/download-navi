@@ -37,7 +37,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
-import com.roy.downloader.ui.settings.sections.BehaviorSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
 import com.roy.downloader.ui.settings.sections.BrowserSettingsFragment;
 import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
 import com.roy.downloader.ui.settings.sections.StorageSettingsFragment;
@@ -99,7 +99,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Preference appearance = findPreference(FragmentAppearanceSettings.class.getSimpleName());
         appearance.setOnPreferenceClickListener(prefClickListener);
 
-        Preference behavior = findPreference(BehaviorSettingsFragment.class.getSimpleName());
+        Preference behavior = findPreference(FragmentBehaviorSettings.class.getSimpleName());
         behavior.setOnPreferenceClickListener(prefClickListener);
 
         Preference storage = findPreference(StorageSettingsFragment.class.getSimpleName());
@@ -131,10 +131,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 break;
             case BehaviorSettings:
                 if (Utils.isLargeScreenDevice(activity)) {
-                    setFragment(BehaviorSettingsFragment.newInstance(),
+                    setFragment(FragmentBehaviorSettings.newInstance(),
                             getString(R.string.pref_header_behavior));
                 } else {
-                    startActivity(BehaviorSettingsFragment.class,
+                    startActivity(FragmentBehaviorSettings.class,
                             getString(R.string.pref_header_behavior));
                 }
                 break;
