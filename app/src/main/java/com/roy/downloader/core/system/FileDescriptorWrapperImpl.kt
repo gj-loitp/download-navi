@@ -1,60 +1,31 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
+package com.roy.downloader.core.system
 
-package com.roy.downloader.core.system;
+import android.content.ContentResolver
+import android.content.Context
+import android.net.Uri
+import android.os.ParcelFileDescriptor
+import java.io.FileDescriptor
+import java.io.FileNotFoundException
+import java.io.IOException
 
-import android.content.ContentResolver;
-import android.content.Context;
-import android.net.Uri;
-import android.os.ParcelFileDescriptor;
+internal class FileDescriptorWrapperImpl(appContext: Context, path: Uri) : FileDescriptorWrapper {
+    private val contentResolver: ContentResolver
+    private val path: Uri
+    private var pfd: ParcelFileDescriptor? = null
 
-import androidx.annotation.NonNull;
-
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-class FileDescriptorWrapperImpl implements FileDescriptorWrapper
-{
-    private final ContentResolver contentResolver;
-    private final Uri path;
-    private ParcelFileDescriptor pfd;
-
-    public FileDescriptorWrapperImpl(@NonNull Context appContext, @NonNull Uri path)
-    {
-        contentResolver = appContext.getContentResolver();
-        this.path = path;
+    init {
+        contentResolver = appContext.contentResolver
+        this.path = path
     }
 
-    @Override
-    public FileDescriptor open(@NonNull String mode) throws FileNotFoundException
-    {
-        pfd = contentResolver.openFileDescriptor(path, mode);
-
-        return (pfd == null ? null : pfd.getFileDescriptor());
+    @Throws(FileNotFoundException::class)
+    override fun open(mode: String): FileDescriptor? {
+        pfd = contentResolver.openFileDescriptor(path, mode)
+        return if (pfd == null) null else pfd?.fileDescriptor
     }
 
-    @Override
-    public void close() throws IOException
-    {
-        if (pfd != null)
-            pfd.close();
+    @Throws(IOException::class)
+    override fun close() {
+        pfd?.close()
     }
 }
