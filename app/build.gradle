@@ -124,4 +124,6 @@ dependencies {
     api 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 }

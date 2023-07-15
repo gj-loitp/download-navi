@@ -16,15 +16,15 @@ import org.acra.data.StringFormat;
 //TODO firebase analytic
 //TODO ad applovin
 
-//TODO proguard
 //TODO keystore
 //TODO rename app
 //TODO rate, more app, share app
-//TODO leak canary
 //TODO policy
 
 //done
 //ic_launcher
+//proguard
+//leak canary
 
 public class MainApplication extends MultiDexApplication {
     public static final String TAG = MainApplication.class.getSimpleName();
