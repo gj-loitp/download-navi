@@ -409,21 +409,21 @@ public class MainActivity extends AppCompatActivity
         if (group.id == res.getInteger(R.integer.drawer_category_id)) {
             prefKey = getString(R.string.drawer_category_selected_item);
             fragmentViewModel.setCategoryFilter(
-                    Utils.getDrawerGroupCategoryFilter(this, item.id), true);
+                    Utils.getDrawerGroupCategoryFilter(this, item.getId()), true);
 
         } else if (group.id == res.getInteger(R.integer.drawer_status_id)) {
             prefKey = getString(R.string.drawer_status_selected_item);
             fragmentViewModel.setStatusFilter(
-                    Utils.getDrawerGroupStatusFilter(this, item.id), true);
+                    Utils.getDrawerGroupStatusFilter(this, item.getId()), true);
 
         } else if (group.id == res.getInteger(R.integer.drawer_date_added_id)) {
             prefKey = getString(R.string.drawer_time_selected_item);
             fragmentViewModel.setDateAddedFilter(
-                    Utils.getDrawerGroupDateAddedFilter(this, item.id), true);
+                    Utils.getDrawerGroupDateAddedFilter(this, item.getId()), true);
 
         } else if (group.id == res.getInteger(R.integer.drawer_sorting_id)) {
             prefKey = getString(R.string.drawer_sorting_selected_item);
-            fragmentViewModel.setSort(Utils.getDrawerGroupItemSorting(this, item.id), true);
+            fragmentViewModel.setSort(Utils.getDrawerGroupItemSorting(this, item.getId()), true);
         }
 
         if (prefKey != null)
@@ -437,7 +437,7 @@ public class MainActivity extends AppCompatActivity
     {
         PreferenceManager.getDefaultSharedPreferences(this)
                 .edit()
-                .putLong(prefKey, item.id)
+                .putLong(prefKey, item.getId())
                 .apply();
     }
 

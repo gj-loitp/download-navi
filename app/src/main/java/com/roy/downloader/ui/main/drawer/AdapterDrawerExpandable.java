@@ -78,8 +78,8 @@ public class AdapterDrawerExpandable extends AbstractExpandableItemAdapter<Adapt
 
         holder.bind(group, item);
         holder.itemView.setOnClickListener((v) -> {
-            if (group.isItemSelected(item.id)) return;
-            group.selectItem(item.id);
+            if (group.isItemSelected(item.getId())) return;
+            group.selectItem(item.getId());
             drawerItemManager.notifyChildrenOfGroupItemChanged(groupPosition);
             if (listener != null) listener.onItemSelected(group, item);
         });
@@ -120,7 +120,7 @@ public class AdapterDrawerExpandable extends AbstractExpandableItemAdapter<Adapt
         DrawerGroupItem item = group.items.get(childPosition);
         if (item == null) return RecyclerView.NO_ID;
 
-        return item.id;
+        return item.getId();
     }
 
     @Override
@@ -170,10 +170,10 @@ public class AdapterDrawerExpandable extends AbstractExpandableItemAdapter<Adapt
         void bind(DrawerGroup group, DrawerGroupItem item) {
             Context context = itemView.getContext();
 
-            name.setText(item.name);
-            if (item.iconResId != -1) icon.setImageResource(item.iconResId);
+            name.setText(item.getName());
+            if (item.getIconResId() != -1) icon.setImageResource(item.getIconResId());
 
-            if (group.isItemSelected(item.id)) {
+            if (group.isItemSelected(item.getId())) {
                 itemView.setBackgroundColor(Utils.getAttributeColor(context, R.attr.selectableDrawer));
             } else {
                 TypedArray a = context.obtainStyledAttributes(new TypedValue().data, new int[]{R.attr.dialogRectRipple});
