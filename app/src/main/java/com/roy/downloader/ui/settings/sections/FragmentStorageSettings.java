@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -17,6 +18,7 @@ import com.roy.downloader.core.system.FileSystemContracts;
 import com.roy.downloader.core.system.FileSystemFacade;
 import com.roy.downloader.core.system.SystemFacadeHelper;
 
+@Keep
 public class FragmentStorageSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
     private static final String TAG = FragmentStorageSettings.class.getSimpleName();

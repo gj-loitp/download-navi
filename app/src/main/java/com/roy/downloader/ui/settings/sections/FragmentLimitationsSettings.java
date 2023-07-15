@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 
+import androidx.annotation.Keep;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -13,6 +14,7 @@ import com.roy.downloader.core.InputFilterMinMax;
 import com.roy.downloader.core.RepositoryHelper;
 import com.roy.downloader.core.settings.SettingsRepository;
 
+@Keep
 public class FragmentLimitationsSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
     private static final String TAG = FragmentLimitationsSettings.class.getSimpleName();

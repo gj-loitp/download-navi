@@ -4,18 +4,15 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import androidx.annotation.Keep;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
-import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
-import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
-import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
-import com.roy.downloader.ui.settings.sections.FragmentLimitationsSettings;
-import com.roy.downloader.ui.settings.sections.FragmentStorageSettings;
 
+@Keep
 public class ActivitySettings extends AppCompatActivity {
     @SuppressWarnings("unused")
     private static final String TAG = ActivitySettings.class.getSimpleName();

@@ -12,6 +12,7 @@ import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -27,6 +28,7 @@ import com.roy.downloader.core.RepositoryHelper;
 import com.roy.downloader.core.settings.SettingsRepository;
 import com.roy.downloader.ui.main.MainActivity;
 
+@Keep
 public class FragmentAppearanceSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
     private static final String TAG = FragmentAppearanceSettings.class.getSimpleName();

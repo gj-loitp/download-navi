@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebStorage;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -21,6 +22,7 @@ import com.roy.downloader.core.RepositoryHelper;
 import com.roy.downloader.core.settings.SettingsRepository;
 import com.roy.downloader.core.utils.Utils;
 
+@Keep
 public class FragmentBrowserSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
     private static final String TAG = FragmentBrowserSettings.class.getSimpleName();

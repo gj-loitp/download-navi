@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 
+import androidx.annotation.Keep;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.EditTextPreference;
@@ -22,6 +23,7 @@ import com.roy.downloader.ui.BaseAlertDialog;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
+@Keep
 public class FragmentBehaviorSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
     private static final String TAG = FragmentBehaviorSettings.class.getSimpleName();
