@@ -27,13 +27,13 @@ public class DataRepositoryImpl implements DataRepository {
     @SuppressWarnings("unused")
     private static final String TAG = DataRepositoryImpl.class.getSimpleName();
 
-    private final Context appContext;
+    //    private final Context appContext;
     private final AppDatabase db;
     private final MediatorLiveData<List<UserAgent>> userAgents;
     private final FileSystemFacade fs;
 
     public DataRepositoryImpl(@NonNull Context appContext, @NonNull AppDatabase db) {
-        this.appContext = appContext;
+//        this.appContext = appContext;
         this.db = db;
         fs = SystemFacadeHelper.getFileSystemFacade(appContext);
         userAgents = new MediatorLiveData<>();
