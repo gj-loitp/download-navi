@@ -55,7 +55,7 @@ import com.roy.downloader.core.filter.DownloadFilter;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.databinding.FFragmentDownloadListBinding;
 import com.roy.downloader.ui.BaseAlertDialog;
-import com.roy.downloader.ui.details.DownloadDetailsDialog;
+import com.roy.downloader.ui.details.DialogDownloadDetails;
 
 import java.util.UUID;
 
@@ -453,7 +453,7 @@ public abstract class DownloadsFragment extends Fragment
 
         FragmentManager fm = getChildFragmentManager();
         if (fm.findFragmentByTag(TAG_DOWNLOAD_DETAILS) == null) {
-            DownloadDetailsDialog details = DownloadDetailsDialog.newInstance(id);
+            DialogDownloadDetails details = DialogDownloadDetails.newInstance(id);
             details.show(fm, TAG_DOWNLOAD_DETAILS);
         }
     }

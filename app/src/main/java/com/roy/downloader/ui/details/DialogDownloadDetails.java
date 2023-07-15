@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019-2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.details;
 
 import android.app.Activity;
@@ -70,10 +50,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class DownloadDetailsDialog extends DialogFragment
-{
+public class DialogDownloadDetails extends DialogFragment {
     @SuppressWarnings("unused")
-    private static final String TAG = DownloadDetailsDialog.class.getSimpleName();
+    private static final String TAG = DialogDownloadDetails.class.getSimpleName();
 
     private static final String TAG_OPEN_DIR_ERROR_DIALOG = "open_dir_error_dialog";
     private static final String TAG_REPLACE_FILE_DIALOG = "replace_file_dialog";
@@ -92,9 +71,8 @@ public class DownloadDetailsDialog extends DialogFragment
     private ClipboardDialog.SharedViewModel clipboardViewModel;
     private String curClipboardTag;
 
-    public static DownloadDetailsDialog newInstance(UUID downloadId)
-    {
-        DownloadDetailsDialog frag = new DownloadDetailsDialog();
+    public static DialogDownloadDetails newInstance(UUID downloadId) {
+        DialogDownloadDetails frag = new DialogDownloadDetails();
 
         Bundle args = new Bundle();
         args.putSerializable(TAG_ID, downloadId);
@@ -104,17 +82,15 @@ public class DownloadDetailsDialog extends DialogFragment
     }
 
     @Override
-    public void onAttach(@NonNull Context context)
-    {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         if (context instanceof AppCompatActivity)
-            activity = (AppCompatActivity)context;
+            activity = (AppCompatActivity) context;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         /* Back button handle */
@@ -133,8 +109,7 @@ public class DownloadDetailsDialog extends DialogFragment
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         unsubscribeClipboardManager();
@@ -142,8 +117,7 @@ public class DownloadDetailsDialog extends DialogFragment
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         observeDownload();
@@ -151,9 +125,8 @@ public class DownloadDetailsDialog extends DialogFragment
         subscribeClipboardManager();
     }
 
-    private void observeDownload()
-    {
-        UUID id = (UUID)getArguments().getSerializable(TAG_ID);
+    private void observeDownload() {
+        UUID id = (UUID) getArguments().getSerializable(TAG_ID);
 
         disposables.add(viewModel.observeInfoAndPieces(id)
                 .subscribeOn(Schedulers.io())
@@ -171,8 +144,7 @@ public class DownloadDetailsDialog extends DialogFragment
                         }));
     }
 
-    private void subscribeAlertDialog()
-    {
+    private void subscribeAlertDialog() {
         Disposable d = dialogViewModel.observeEvents().subscribe(this::handleAlertDialogEvent);
         disposables.add(d);
         d = clipboardViewModel.observeSelectedItem().subscribe((item) -> {
@@ -187,20 +159,20 @@ public class DownloadDetailsDialog extends DialogFragment
         });
         disposables.add(d);
     }
+
     private void subscribeClipboardManager() {
-        ClipboardManager clipboard = (ClipboardManager)activity.getSystemService(Activity.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Activity.CLIPBOARD_SERVICE);
         clipboard.addPrimaryClipChangedListener(clipListener);
     }
 
     private void unsubscribeClipboardManager() {
-        ClipboardManager clipboard = (ClipboardManager)activity.getSystemService(Activity.CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Activity.CLIPBOARD_SERVICE);
         clipboard.removePrimaryClipChangedListener(clipListener);
     }
 
     private final ClipboardManager.OnPrimaryClipChangedListener clipListener = this::switchClipboardButton;
 
-    private void switchClipboardButton()
-    {
+    private void switchClipboardButton() {
         ClipData clip = Utils.getClipData(activity.getApplicationContext());
         viewModel.showClipboardButton.set(clip != null);
     }
@@ -208,24 +180,21 @@ public class DownloadDetailsDialog extends DialogFragment
     private final ViewTreeObserver.OnWindowFocusChangeListener onFocusChanged =
             (__) -> switchClipboardButton();
 
-    private void handleAlertDialogEvent(BaseAlertDialog.Event event)
-    {
+    private void handleAlertDialogEvent(BaseAlertDialog.Event event) {
         if (event.dialogTag == null || !event.dialogTag.equals(TAG_REPLACE_FILE_DIALOG))
             return;
         if (event.type == BaseAlertDialog.EventType.POSITIVE_BUTTON_CLICKED)
             applyChangedParams(true);
     }
 
-    private void handleUrlClipItem(String item)
-    {
+    private void handleUrlClipItem(String item) {
         if (TextUtils.isEmpty(item))
             return;
 
         viewModel.mutableParams.setUrl(item);
     }
 
-    private void handleChecksumClipItem(String item)
-    {
+    private void handleChecksumClipItem(String item) {
         if (TextUtils.isEmpty(item))
             return;
 
@@ -234,8 +203,7 @@ public class DownloadDetailsDialog extends DialogFragment
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         viewModel = new ViewModelProvider(this).get(DownloadDetailsViewModel.class);
@@ -246,16 +214,15 @@ public class DownloadDetailsDialog extends DialogFragment
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (activity == null)
-            activity = (AppCompatActivity)getActivity();
+            activity = (AppCompatActivity) getActivity();
 
         if (savedInstanceState != null)
             curClipboardTag = savedInstanceState.getString(TAG_CUR_CLIPBOARD_TAG);
 
         FragmentManager fm = getChildFragmentManager();
-        clipboardDialog = (ClipboardDialog)fm.findFragmentByTag(curClipboardTag);
+        clipboardDialog = (ClipboardDialog) fm.findFragmentByTag(curClipboardTag);
 
         LayoutInflater i = LayoutInflater.from(activity);
         binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_download_details, null, false);
@@ -269,56 +236,54 @@ public class DownloadDetailsDialog extends DialogFragment
     }
 
     @Override
-    public void onDestroyView()
-    {
+    public void onDestroyView() {
         binding.getRoot().getViewTreeObserver().removeOnWindowFocusChangeListener(onFocusChanged);
 
         super.onDestroyView();
     }
 
-    private void initLayoutView()
-    {
-        binding.link.addTextChangedListener(new TextWatcher()
-        {
+    private void initLayoutView() {
+        binding.link.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 binding.layoutLink.setErrorEnabled(false);
                 binding.layoutLink.setError(null);
             }
         });
-        binding.name.addTextChangedListener(new TextWatcher()
-        {
+        binding.name.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 binding.layoutName.setErrorEnabled(false);
                 binding.layoutName.setError(null);
             }
         });
-        binding.checksum.addTextChangedListener(new TextWatcher()
-        {
+        binding.checksum.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 checkChecksumField(s);
             }
         });
@@ -336,8 +301,7 @@ public class DownloadDetailsDialog extends DialogFragment
         initAlertDialog(binding.getRoot());
     }
 
-    private void initAlertDialog(View view)
-    {
+    private void initAlertDialog(View view) {
         alert = new AlertDialog.Builder(activity)
                 .setTitle(R.string.download_details)
                 .setPositiveButton(R.string.close, null)
@@ -357,8 +321,7 @@ public class DownloadDetailsDialog extends DialogFragment
         });
     }
 
-    private void showAddDownloadDialog()
-    {
+    private void showAddDownloadDialog() {
         DownloadInfo downloadInfo = viewModel.info.getDownloadInfo();
         if (downloadInfo == null)
             return;
@@ -380,8 +343,7 @@ public class DownloadDetailsDialog extends DialogFragment
         finish();
     }
 
-    private void applyChangedParams(boolean checkFileExists)
-    {
+    private void applyChangedParams(boolean checkFileExists) {
         if (!checkUrlField(binding.link.getText()))
             return;
         if (!checkNameField(binding.name.getText()))
@@ -402,8 +364,7 @@ public class DownloadDetailsDialog extends DialogFragment
         finish();
     }
 
-    private boolean checkUrlField(Editable s)
-    {
+    private boolean checkUrlField(Editable s) {
         if (s == null)
             return false;
 
@@ -421,8 +382,7 @@ public class DownloadDetailsDialog extends DialogFragment
         return true;
     }
 
-    private boolean checkNameField(Editable s)
-    {
+    private boolean checkNameField(Editable s) {
         if (s == null)
             return false;
 
@@ -447,8 +407,8 @@ public class DownloadDetailsDialog extends DialogFragment
 
         return true;
     }
-    private void checkChecksumField(Editable s)
-    {
+
+    private void checkChecksumField(Editable s) {
         if (!TextUtils.isEmpty(s) && !viewModel.isChecksumValid(s.toString())) {
             binding.layoutCheckSum.setErrorEnabled(true);
             binding.layoutCheckSum.setError(getString(R.string.error_invalid_checksum));
@@ -462,8 +422,7 @@ public class DownloadDetailsDialog extends DialogFragment
     }
 
 
-    private void showFreeSpaceErrorToast()
-    {
+    private void showFreeSpaceErrorToast() {
         DownloadInfo downloadInfo = viewModel.info.getDownloadInfo();
         if (downloadInfo == null)
             return;
@@ -472,13 +431,12 @@ public class DownloadDetailsDialog extends DialogFragment
         String availSizeStr = Formatter.formatFileSize(activity, viewModel.info.getStorageFreeSpace());
 
         Toast.makeText(activity.getApplicationContext(),
-                activity.getString(R.string.download_error_no_enough_free_space, availSizeStr, totalSizeStr),
-                Toast.LENGTH_LONG)
+                        activity.getString(R.string.download_error_no_enough_free_space, availSizeStr, totalSizeStr),
+                        Toast.LENGTH_LONG)
                 .show();
     }
 
-    private void showClipboardDialog(String tag)
-    {
+    private void showClipboardDialog(String tag) {
         if (!isAdded())
             return;
 
@@ -506,8 +464,7 @@ public class DownloadDetailsDialog extends DialogFragment
             }
     );
 
-    private void showOpenDirErrorDialog()
-    {
+    private void showOpenDirErrorDialog() {
         if (!isAdded())
             return;
 
@@ -526,8 +483,7 @@ public class DownloadDetailsDialog extends DialogFragment
         }
     }
 
-    private void showReplaceFileDialog()
-    {
+    private void showReplaceFileDialog() {
         if (!isAdded())
             return;
 
@@ -546,13 +502,11 @@ public class DownloadDetailsDialog extends DialogFragment
         }
     }
 
-    private void onBackPressed()
-    {
+    private void onBackPressed() {
         finish();
     }
 
-    private void finish()
-    {
+    private void finish() {
         alert.dismiss();
     }
 }
