@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2016, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.roy.downloader.ui;
 
 import android.app.Dialog;
@@ -37,8 +21,7 @@ import io.reactivex.subjects.PublishSubject;
  * Don't dismiss when changing the device configuration, unlike the AlertDialog.
  */
 
-public class BaseAlertDialog extends DialogFragment
-{
+public class BaseAlertDialog extends DialogFragment {
     @SuppressWarnings("unused")
     private static final String TAG = BaseAlertDialog.class.getSimpleName();
 
@@ -51,37 +34,28 @@ public class BaseAlertDialog extends DialogFragment
     protected static final String TAG_AUTO_DISMISS = "auto_dismiss";
     protected SharedViewModel viewModel;
 
-    public static class SharedViewModel extends androidx.lifecycle.ViewModel
-    {
+    public static class SharedViewModel extends androidx.lifecycle.ViewModel {
         private final PublishSubject<Event> dialogEvents = PublishSubject.create();
 
-        public Observable<Event> observeEvents()
-        {
+        public Observable<Event> observeEvents() {
             return dialogEvents;
         }
 
-        public void sendEvent(Event event)
-        {
+        public void sendEvent(Event event) {
             dialogEvents.onNext(event);
         }
     }
 
-    public enum EventType
-    {
-        POSITIVE_BUTTON_CLICKED,
-        NEGATIVE_BUTTON_CLICKED,
-        NEUTRAL_BUTTON_CLICKED,
-        DIALOG_SHOWN
+    public enum EventType {
+        POSITIVE_BUTTON_CLICKED, NEGATIVE_BUTTON_CLICKED, NEUTRAL_BUTTON_CLICKED, DIALOG_SHOWN
     }
 
-    public static class Event
-    {
+    public static class Event {
         @Nullable
         public String dialogTag;
         public EventType type;
 
-        public Event(@Nullable String dialogTag, EventType type)
-        {
+        public Event(@Nullable String dialogTag, EventType type) {
             this.dialogTag = dialogTag;
             this.type = type;
         }
@@ -89,10 +63,7 @@ public class BaseAlertDialog extends DialogFragment
 
     /* In the absence of any parameter need set 0 or null */
 
-    public static BaseAlertDialog newInstance(String title, String message, int resIdView,
-                                              String positiveText, String negativeText,
-                                              String neutralText, boolean autoDismiss)
-    {
+    public static BaseAlertDialog newInstance(String title, String message, int resIdView, String positiveText, String negativeText, String neutralText, boolean autoDismiss) {
         BaseAlertDialog frag = new BaseAlertDialog();
 
         Bundle args = new Bundle();
@@ -110,8 +81,7 @@ public class BaseAlertDialog extends DialogFragment
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         viewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
@@ -119,8 +89,7 @@ public class BaseAlertDialog extends DialogFragment
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle args = getArguments();
         String title = args.getString(TAG_TITLE);
         String message = args.getString(TAG_MESSAGE);
@@ -132,41 +101,28 @@ public class BaseAlertDialog extends DialogFragment
 
         LayoutInflater i = LayoutInflater.from(getActivity());
         View v = null;
-        if (resIdView != 0)
-            v = i.inflate(resIdView, null);
+        if (resIdView != 0) v = i.inflate(resIdView, null);
 
-        return buildDialog(title, message, v, positiveText,
-                negativeText, neutralText, autoDismiss);
+        return buildDialog(title, message, v, positiveText, negativeText, neutralText, autoDismiss);
     }
 
-    private Event makeEvent(EventType type)
-    {
+    private Event makeEvent(EventType type) {
         return new Event(getTag(), type);
     }
 
-    protected AlertDialog buildDialog(String title, String message,
-                                      View view, String positiveText,
-                                      String negativeText, String neutralText,
-                                      boolean autoDismiss)
-    {
+    protected AlertDialog buildDialog(String title, String message, View view, String positiveText, String negativeText, String neutralText, boolean autoDismiss) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-        if (title != null)
-            dialog.setTitle(title);
+        if (title != null) dialog.setTitle(title);
 
-        if (message != null)
-            dialog.setMessage(message);
+        if (message != null) dialog.setMessage(message);
 
-        if (view != null)
-            dialog.setView(view);
+        if (view != null) dialog.setView(view);
 
-        if (positiveText != null)
-            dialog.setPositiveButton(positiveText, null);
+        if (positiveText != null) dialog.setPositiveButton(positiveText, null);
 
-        if (negativeText != null)
-            dialog.setNegativeButton(negativeText, null);
+        if (negativeText != null) dialog.setNegativeButton(negativeText, null);
 
-        if (neutralText != null)
-            dialog.setNeutralButton(neutralText, null);
+        if (neutralText != null) dialog.setNeutralButton(neutralText, null);
 
         final AlertDialog alert = dialog.create();
         alert.setOnShowListener((DialogInterface dialogInterface) -> {
@@ -176,22 +132,19 @@ public class BaseAlertDialog extends DialogFragment
             if (positiveButton != null) {
                 positiveButton.setOnClickListener((v) -> {
                     viewModel.sendEvent(makeEvent(EventType.POSITIVE_BUTTON_CLICKED));
-                    if (autoDismiss)
-                        dismiss();
+                    if (autoDismiss) dismiss();
                 });
             }
             if (negativeButton != null) {
                 negativeButton.setOnClickListener((v) -> {
                     viewModel.sendEvent(makeEvent(EventType.NEGATIVE_BUTTON_CLICKED));
-                    if (autoDismiss)
-                        dismiss();
+                    if (autoDismiss) dismiss();
                 });
             }
             if (neutralButton != null) {
                 neutralButton.setOnClickListener((v) -> {
                     viewModel.sendEvent(makeEvent(EventType.NEUTRAL_BUTTON_CLICKED));
-                    if (autoDismiss)
-                        dismiss();
+                    if (autoDismiss) dismiss();
                 });
             }
 
