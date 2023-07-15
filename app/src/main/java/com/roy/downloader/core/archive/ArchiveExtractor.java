@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.archive;
 
 import android.net.Uri;
@@ -49,6 +29,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import kotlin.Suppress;
+
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class ArchiveExtractor {
     private static final int SEVEN_Z_MAX_MEMORY_LIMIT_KB = 10240; /* 10 MB */
@@ -62,18 +44,9 @@ public class ArchiveExtractor {
     String fileName;
     String mimeType;
 
-    private final SevenZFileOptions sevenZOptions = new SevenZFileOptions.Builder()
-            .withMaxMemoryLimitInKb(SEVEN_Z_MAX_MEMORY_LIMIT_KB)
-            .withUseDefaultNameForUnnamedEntries(true)
-            .withTryToRecoverBrokenArchives(true)
-            .build();
+    private final SevenZFileOptions sevenZOptions = new SevenZFileOptions.Builder().withMaxMemoryLimitInKb(SEVEN_Z_MAX_MEMORY_LIMIT_KB).withUseDefaultNameForUnnamedEntries(true).withTryToRecoverBrokenArchives(true).build();
 
-    public ArchiveExtractor(
-            FileSystemFacade fs,
-            FileInputStream source,
-            String fileName,
-            String mimeType
-    ) {
+    public ArchiveExtractor(FileSystemFacade fs, FileInputStream source, String fileName, String mimeType) {
         this.fs = fs;
         this.source = source;
         this.fileName = fileName;
@@ -101,18 +74,14 @@ public class ArchiveExtractor {
         try {
             try {
                 // InputStream must be buffered for markSupported()
-                compressorIs = new BufferedInputStream(
-                        new CompressorStreamFactory().createCompressorInputStream(bufIs)
-                );
+                compressorIs = new BufferedInputStream(new CompressorStreamFactory().createCompressorInputStream(bufIs));
             } catch (CompressorException e) {
                 // Ignore
             }
 
             try {
                 // InputStream must be buffered for markSupported()
-                archiveIs = new ArchiveStreamFactory().createArchiveInputStream(
-                        compressorIs == null ? bufIs : compressorIs
-                );
+                archiveIs = new ArchiveStreamFactory().createArchiveInputStream(compressorIs == null ? bufIs : compressorIs);
             } catch (StreamingNotSupportedException e) {
                 Log.e(TAG, "Unable to read format from stream", e);
             } catch (ArchiveException e) {
@@ -163,12 +132,7 @@ public class ArchiveExtractor {
         }
     }
 
-    private void uncompressEntry(
-            ArchiveEntry entry,
-            Uri outputDir,
-            String subDirName,
-            OnSaveFileEntryListener listener
-    ) throws IOException {
+    private void uncompressEntry(ArchiveEntry entry, Uri outputDir, String subDirName, OnSaveFileEntryListener listener) throws IOException {
         var name = entry.getName();
         if (name == null) {
             name = File.separator + fs.buildValidFatFilename(null);
@@ -214,13 +178,11 @@ public class ArchiveExtractor {
     }
 
     private enum ArchiveType {
-        other,
-        sevenZ;
+        other, sevenZ;
 
         static ArchiveType getByMimeType(String mimeType) {
-            switch (mimeType) {
-                case "application/x-7z-compressed":
-                    return ArchiveType.sevenZ;
+            if ("application/x-7z-compressed".equals(mimeType)) {
+                return ArchiveType.sevenZ;
             }
             return ArchiveType.other;
         }
