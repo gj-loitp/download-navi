@@ -1,7 +1,6 @@
-package com.roy.downloader.ui;
+package com.roy.downloader.ui
 
-public interface Selectable<T> {
-    T getItemKey(int position);
-
-    int getItemPosition(T key);
+interface Selectable<T> {
+    fun getItemKey(position: Int): T
+    fun getItemPosition(key: T): Int
 }
