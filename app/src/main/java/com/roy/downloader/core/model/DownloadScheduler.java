@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.model;
 
 import android.content.Context;
@@ -45,8 +25,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class DownloadScheduler
-{
+public class DownloadScheduler {
     @SuppressWarnings("unused")
     private static final String TAG = DownloadScheduler.class.getSimpleName();
 
@@ -70,8 +49,7 @@ public class DownloadScheduler
      * If there is existing pending (uncompleted) work, cancel it
      */
 
-    public static void run(@NonNull Context appContext, @NonNull DownloadInfo info)
-    {
+    public static void run(@NonNull Context appContext, @NonNull DownloadInfo info) {
         String downloadTag = getDownloadTag(info.id);
         Data data = new Data.Builder()
                 .putString(RunDownloadWorker.TAG_ID, info.id.toString())
@@ -87,8 +65,7 @@ public class DownloadScheduler
                 ExistingWorkPolicy.REPLACE, work);
     }
 
-    public static void run(@NonNull Context appContext, @NonNull UUID id)
-    {
+    public static void run(@NonNull Context appContext, @NonNull UUID id) {
         Data data = new Data.Builder()
                 .putString(GetAndRunDownloadWorker.TAG_ID, id.toString())
                 .build();
@@ -99,21 +76,18 @@ public class DownloadScheduler
         WorkManager.getInstance(appContext).enqueue(work);
     }
 
-    public static void undone(@NonNull Context context, @NonNull DownloadInfo info)
-    {
+    public static void undone(@NonNull Context context, @NonNull DownloadInfo info) {
         WorkManager.getInstance(context).cancelAllWorkByTag(getDownloadTag(info.id));
     }
 
-    public static void rescheduleAll(@NonNull Context appContext)
-    {
+    public static void rescheduleAll(@NonNull Context appContext) {
         OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(RescheduleAllWorker.class)
                 .addTag(TAG_WORK_RESCHEDULE_TYPE)
                 .build();
         WorkManager.getInstance(appContext).enqueue(work);
     }
 
-    public static void runAll(@NonNull Context appContext, boolean ignorePaused)
-    {
+    public static void runAll(@NonNull Context appContext, boolean ignorePaused) {
         Data data = new Data.Builder()
                 .putBoolean(RunAllWorker.TAG_IGNORE_PAUSED, ignorePaused)
                 .build();
@@ -128,26 +102,22 @@ public class DownloadScheduler
      * Run stopped (and with running status) downloads after starting app
      */
 
-    public static void restoreDownloads(@NonNull Context appContext)
-    {
+    public static void restoreDownloads(@NonNull Context appContext) {
         OneTimeWorkRequest work = new OneTimeWorkRequest.Builder(RestoreDownloadsWorker.class)
                 .addTag(TAG_WORK_RESTORE_DOWNLOADS_TYPE)
                 .build();
         WorkManager.getInstance(appContext).enqueue(work);
     }
 
-    public static String getDownloadTag(UUID downloadId)
-    {
+    public static String getDownloadTag(UUID downloadId) {
         return TAG_WORK_RUN_TYPE + ":" + downloadId;
     }
 
-    public static String extractDownloadIdFromTag(String tag)
-    {
+    public static String extractDownloadIdFromTag(String tag) {
         return tag.substring(tag.indexOf(":") + 1);
     }
 
-    private static Constraints getConstraints(Context context, DownloadInfo info)
-    {
+    private static Constraints getConstraints(Context context, DownloadInfo info) {
         SettingsRepository pref = RepositoryHelper.getSettingsRepository(context);
 
         NetworkType netType = NetworkType.CONNECTED;
@@ -170,8 +140,7 @@ public class DownloadScheduler
      * allowed to start again
      */
 
-    private static long getInitialDelay(DownloadInfo info)
-    {
+    private static long getInitialDelay(DownloadInfo info) {
         if (info.statusCode == StatusCode.STATUS_WAITING_TO_RETRY) {
             long now = System.currentTimeMillis();
             long startAfter;
@@ -194,8 +163,7 @@ public class DownloadScheduler
      * requested delay.
      */
 
-    private static long fuzzDelay(long delay)
-    {
-        return delay + random.nextInt((int)(delay / 2));
+    private static long fuzzDelay(long delay) {
+        return delay + random.nextInt((int) (delay / 2));
     }
 }
