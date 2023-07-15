@@ -14,16 +14,17 @@ import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
 //TODO firebase analytic
+//TODO ad applovin
 
-//TODO ic_launcher
 //TODO proguard
 //TODO keystore
 //TODO rename app
 //TODO rate, more app, share app
 //TODO leak canary
 //TODO policy
-//TODO ad applovin
+
 //done
+//ic_launcher
 
 public class MainApplication extends MultiDexApplication {
     public static final String TAG = MainApplication.class.getSimpleName();
