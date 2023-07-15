@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020 Tachibana General Laboratories, LLC
- * Copyright (C) 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.browser.bookmarks;
 
 import android.content.Intent;
@@ -31,9 +11,8 @@ import com.roy.downloader.core.model.data.entity.BrowserBookmark;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.FragmentCallback;
 
-public class EditBookmarkActivity extends AppCompatActivity
-        implements FragmentCallback
-{
+public class ActivityEditBookmark extends AppCompatActivity
+        implements FragmentCallback {
     public static final String TAG_BOOKMARK = "bookmark";
     public static final String TAG_RESULT_ACTION_APPLY_CHANGES = "result_action_apply_changes";
     public static final String TAG_RESULT_ACTION_APPLY_CHANGES_FAILED = "result_action_apply_changes_failed";
@@ -44,13 +23,12 @@ public class EditBookmarkActivity extends AppCompatActivity
     private EditBookmarkDialog editBookmarkDialog;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(Utils.getTranslucentAppTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
         FragmentManager fm = getSupportFragmentManager();
-        editBookmarkDialog = (EditBookmarkDialog)fm.findFragmentByTag(TAG_EDIT_BOOKMARK_DIALOG);
+        editBookmarkDialog = (EditBookmarkDialog) fm.findFragmentByTag(TAG_EDIT_BOOKMARK_DIALOG);
         if (editBookmarkDialog == null) {
             Intent i = getIntent();
             if (i == null)
@@ -64,8 +42,7 @@ public class EditBookmarkActivity extends AppCompatActivity
     }
 
     @Override
-    public void fragmentFinished(Intent intent, ResultCode code)
-    {
+    public void fragmentFinished(Intent intent, ResultCode code) {
         int resultCode = (intent.getAction() == null || code != ResultCode.OK ?
                 RESULT_CANCELED :
                 RESULT_OK);
@@ -75,8 +52,7 @@ public class EditBookmarkActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         editBookmarkDialog.onBackPressed();
     }
 }

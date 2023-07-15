@@ -1198,7 +1198,7 @@
             android:label="@string/browser_bookmarks" />
 
         <activity
-            android:name=".ui.browser.bookmarks.EditBookmarkActivity"
+            android:name=".ui.browser.bookmarks.ActivityEditBookmark"
             android:theme="@style/AppTheme.Translucent" />
 
         <service android:name=".service.DownloadService" />

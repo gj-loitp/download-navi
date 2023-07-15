@@ -61,7 +61,7 @@ import com.roy.downloader.ui.SendTextToClipboard;
 import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
 import com.roy.downloader.ui.browser.bookmarks.ActivityBrowserBookmarks;
-import com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity;
+import com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark;
 import com.roy.downloader.ui.settings.SettingsActivity;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -478,8 +478,8 @@ public class BrowserActivity extends AppCompatActivity
         if (bookmark == null)
             return;
 
-        Intent i = new Intent(this, EditBookmarkActivity.class);
-        i.putExtra(EditBookmarkActivity.TAG_BOOKMARK, bookmark);
+        Intent i = new Intent(this, ActivityEditBookmark.class);
+        i.putExtra(ActivityEditBookmark.TAG_BOOKMARK, bookmark);
         editBookmark.launch(i);
     }
 
@@ -536,22 +536,22 @@ public class BrowserActivity extends AppCompatActivity
         if (action == null)
             return;
 
-        BrowserBookmark bookmark = data.getParcelableExtra(EditBookmarkActivity.TAG_BOOKMARK);
+        BrowserBookmark bookmark = data.getParcelableExtra(ActivityEditBookmark.TAG_BOOKMARK);
 
         String message = null;
         switch (action) {
-            case EditBookmarkActivity.TAG_RESULT_ACTION_DELETE_BOOKMARK:
+            case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK:
                 message = getResources().getQuantityString(R.plurals.browser_bookmark_deleted, 1);
                 if (bookmark != null && bookmark.url.equals(viewModel.url.get()))
                     isCurrentPageBookmarked = false;
                 break;
-            case EditBookmarkActivity.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED:
+            case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED:
                 message = getResources().getQuantityString(R.plurals.browser_bookmark_delete_failed, 1);
                 break;
-            case EditBookmarkActivity.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED:
+            case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED:
                 message = getString(R.string.browser_bookmark_change_failed);
                 break;
-            case EditBookmarkActivity.TAG_RESULT_ACTION_APPLY_CHANGES:
+            case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES:
                 isCurrentPageBookmarked = bookmark != null &&
                         bookmark.url.equals(viewModel.url.get());
                 break;

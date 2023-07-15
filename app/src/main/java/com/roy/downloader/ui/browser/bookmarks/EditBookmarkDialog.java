@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020 Tachibana General Laboratories, LLC
- * Copyright (C) 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.browser.bookmarks;
 
 import android.app.Dialog;
@@ -49,14 +29,13 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity.TAG_BOOKMARK;
-import static com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity.TAG_RESULT_ACTION_APPLY_CHANGES;
-import static com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED;
-import static com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity.TAG_RESULT_ACTION_DELETE_BOOKMARK;
-import static com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED;
+import static com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark.TAG_BOOKMARK;
+import static com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES;
+import static com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED;
+import static com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK;
+import static com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED;
 
-public class EditBookmarkDialog extends DialogFragment
-{
+public class EditBookmarkDialog extends DialogFragment {
     @SuppressWarnings("unused")
     private static final String TAG = EditBookmarkDialog.class.getSimpleName();
 
@@ -66,8 +45,7 @@ public class EditBookmarkDialog extends DialogFragment
     private EditBookmarkViewModel viewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public static EditBookmarkDialog newInstance(@NonNull BrowserBookmark bookmark)
-    {
+    public static EditBookmarkDialog newInstance(@NonNull BrowserBookmark bookmark) {
         EditBookmarkDialog frag = new EditBookmarkDialog();
 
         Bundle args = new Bundle();
@@ -78,17 +56,15 @@ public class EditBookmarkDialog extends DialogFragment
     }
 
     @Override
-    public void onAttach(@NonNull Context context)
-    {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         if (context instanceof AppCompatActivity)
-            activity = (AppCompatActivity)context;
+            activity = (AppCompatActivity) context;
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
 
         /* Back button handle */
@@ -107,8 +83,7 @@ public class EditBookmarkDialog extends DialogFragment
     }
 
     @Override
-    public void onStop()
-    {
+    public void onStop() {
         super.onStop();
 
         disposables.clear();
@@ -116,10 +91,9 @@ public class EditBookmarkDialog extends DialogFragment
 
     @NonNull
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
-    {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (activity == null)
-            activity = (AppCompatActivity)getActivity();
+            activity = (AppCompatActivity) getActivity();
 
         viewModel = new ViewModelProvider(this).get(EditBookmarkViewModel.class);
 
@@ -131,32 +105,32 @@ public class EditBookmarkDialog extends DialogFragment
             binding.name.setText(bookmark.name);
             binding.url.setText(bookmark.url);
         }
-        binding.url.addTextChangedListener(new TextWatcher()
-        {
+        binding.url.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 binding.layoutUrl.setErrorEnabled(false);
                 binding.layoutUrl.setError(null);
             }
         });
-        binding.name.addTextChangedListener(new TextWatcher()
-        {
+        binding.name.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
                 binding.layoutName.setErrorEnabled(false);
                 binding.layoutName.setError(null);
             }
@@ -183,8 +157,7 @@ public class EditBookmarkDialog extends DialogFragment
         return alert;
     }
 
-    private boolean checkUrlField()
-    {
+    private boolean checkUrlField() {
         if (TextUtils.isEmpty(binding.url.getText())) {
             binding.layoutUrl.setErrorEnabled(true);
             binding.layoutUrl.setError(getString(R.string.browser_bookmark_error_empty_url));
@@ -199,8 +172,7 @@ public class EditBookmarkDialog extends DialogFragment
         return true;
     }
 
-    private boolean checkNameField()
-    {
+    private boolean checkNameField() {
         if (TextUtils.isEmpty(binding.name.getText())) {
             binding.layoutName.setErrorEnabled(true);
             binding.layoutName.setError(getString(R.string.browser_bookmark_error_empty_name));
@@ -215,11 +187,11 @@ public class EditBookmarkDialog extends DialogFragment
         return true;
     }
 
-    private void applyChanges()
-    {
+    private void applyChanges() {
         if (!(checkNameField() & checkUrlField()))
             return;
 
+        assert getArguments() != null;
         BrowserBookmark oldBookmark = getArguments().getParcelable(TAG_BOOKMARK);
         if (oldBookmark == null)
             return;
@@ -239,15 +211,13 @@ public class EditBookmarkDialog extends DialogFragment
         );
     }
 
-    private void onChangesApplied(BrowserBookmark bookmark)
-    {
+    private void onChangesApplied(BrowserBookmark bookmark) {
         Intent i = new Intent(TAG_RESULT_ACTION_APPLY_CHANGES);
         i.putExtra(TAG_BOOKMARK, bookmark);
         finish(i, FragmentCallback.ResultCode.OK);
     }
 
-    private void onApplyChangesFailed(BrowserBookmark bookmark, Throwable e)
-    {
+    private void onApplyChangesFailed(BrowserBookmark bookmark, Throwable e) {
         Log.e(TAG, Log.getStackTraceString(e));
 
         Intent i = new Intent(TAG_RESULT_ACTION_APPLY_CHANGES_FAILED);
@@ -255,8 +225,7 @@ public class EditBookmarkDialog extends DialogFragment
         finish(i, FragmentCallback.ResultCode.OK);
     }
 
-    private void deleteBookmark()
-    {
+    private void deleteBookmark() {
         BrowserBookmark bookmark = getArguments().getParcelable(TAG_BOOKMARK);
         if (bookmark == null)
             return;
@@ -269,15 +238,13 @@ public class EditBookmarkDialog extends DialogFragment
         );
     }
 
-    private void onBookmarkDeleted(BrowserBookmark bookmark)
-    {
+    private void onBookmarkDeleted(BrowserBookmark bookmark) {
         Intent i = new Intent(TAG_RESULT_ACTION_DELETE_BOOKMARK);
         i.putExtra(TAG_BOOKMARK, bookmark);
         finish(i, FragmentCallback.ResultCode.OK);
     }
 
-    private void onBookmarkDeleteFailed(BrowserBookmark bookmark, Throwable e)
-    {
+    private void onBookmarkDeleteFailed(BrowserBookmark bookmark, Throwable e) {
         Log.e(TAG, Log.getStackTraceString(e));
 
         Intent i = new Intent(TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED);
@@ -285,14 +252,12 @@ public class EditBookmarkDialog extends DialogFragment
         finish(i, FragmentCallback.ResultCode.OK);
     }
 
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         finish(new Intent(), FragmentCallback.ResultCode.BACK);
     }
 
-    private void finish(Intent intent, FragmentCallback.ResultCode code)
-    {
+    private void finish(Intent intent, FragmentCallback.ResultCode code) {
         alert.dismiss();
-        ((FragmentCallback)activity).fragmentFinished(intent, code);
+        ((FragmentCallback) activity).fragmentFinished(intent, code);
     }
 }

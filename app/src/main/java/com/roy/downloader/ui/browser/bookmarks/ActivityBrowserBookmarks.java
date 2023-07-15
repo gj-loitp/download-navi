@@ -257,8 +257,8 @@ public class ActivityBrowserBookmarks extends AppCompatActivity
     }
 
     private void showEditDialog(BrowserBookmark bookmark) {
-        Intent i = new Intent(this, EditBookmarkActivity.class);
-        i.putExtra(EditBookmarkActivity.TAG_BOOKMARK, bookmark);
+        Intent i = new Intent(this, ActivityEditBookmark.class);
+        i.putExtra(ActivityEditBookmark.TAG_BOOKMARK, bookmark);
         editBookmark.launch(i);
     }
 
@@ -341,13 +341,13 @@ public class ActivityBrowserBookmarks extends AppCompatActivity
 
                     String message = null;
                     switch (action) {
-                        case EditBookmarkActivity.TAG_RESULT_ACTION_DELETE_BOOKMARK:
+                        case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK:
                             message = getResources().getQuantityString(R.plurals.browser_bookmark_deleted, 1);
                             break;
-                        case EditBookmarkActivity.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED:
+                        case ActivityEditBookmark.TAG_RESULT_ACTION_DELETE_BOOKMARK_FAILED:
                             message = getResources().getQuantityString(R.plurals.browser_bookmark_delete_failed, 1);
                             break;
-                        case EditBookmarkActivity.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED:
+                        case ActivityEditBookmark.TAG_RESULT_ACTION_APPLY_CHANGES_FAILED:
                             message = getString(R.string.browser_bookmark_change_failed);
                             break;
                     }
