@@ -1,19 +1,3 @@
-/*
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.roy.downloader.ui.customview;
 
 import android.animation.ObjectAnimator;
@@ -41,8 +25,7 @@ import com.roy.downloader.R;
  * Represent only clickable header.
  */
 
-public class ExpansionHeader extends FrameLayout
-{
+public class ExpansionHeader extends FrameLayout {
     private static final String TAG_SUPER = "super";
     private static final String TAG_EXPANDED = "expanded";
 
@@ -54,49 +37,41 @@ public class ExpansionHeader extends FrameLayout
     private ImageView arrow;
     private TextView textView;
 
-    public ExpansionHeader(@NonNull Context context)
-    {
+    public ExpansionHeader(@NonNull Context context) {
         super(context);
 
         init(context, null);
     }
 
-    public ExpansionHeader(@NonNull Context context, @Nullable AttributeSet attrs)
-    {
+    public ExpansionHeader(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         init(context, attrs);
     }
 
-    public ExpansionHeader(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr)
-    {
+    public ExpansionHeader(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         init(context, attrs);
     }
 
-    public void toggleExpand()
-    {
+    public void toggleExpand() {
         setExpanded(!expanded, true);
     }
 
-    public void setExpanded(boolean expanded)
-    {
+    public void setExpanded(boolean expanded) {
         setExpanded(expanded, true);
     }
 
-    public void setText(CharSequence charSequence)
-    {
+    public void setText(CharSequence charSequence) {
         textView.setText(charSequence);
     }
 
-    public void setText(int resId)
-    {
+    public void setText(int resId) {
         textView.setText(resId);
     }
 
-    public void setExpanded(boolean expanded, boolean animation)
-    {
+    public void setExpanded(boolean expanded, boolean animation) {
         this.expanded = expanded;
         if (arrow == null)
             return;
@@ -115,8 +90,7 @@ public class ExpansionHeader extends FrameLayout
         }
     }
 
-    private ObjectAnimator createRotateAnimator(View target, float from, float to)
-    {
+    private ObjectAnimator createRotateAnimator(View target, float from, float to) {
         ObjectAnimator animator = ObjectAnimator.ofFloat(target, "rotation", from, to);
         animator.setDuration(animationDuration);
         animator.setInterpolator(new LinearInterpolator());
@@ -124,8 +98,7 @@ public class ExpansionHeader extends FrameLayout
         return animator;
     }
 
-    private void init(@NonNull Context context, @Nullable AttributeSet attrs)
-    {
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray a = null;
         String text = null;
         boolean expanded = false;
@@ -152,8 +125,7 @@ public class ExpansionHeader extends FrameLayout
             a.recycle();
     }
 
-    private void setTextAppearance(Context context, int resId)
-    {
+    private void setTextAppearance(Context context, int resId) {
         if (resId == -1)
             return;
 
@@ -165,8 +137,7 @@ public class ExpansionHeader extends FrameLayout
 
     @Nullable
     @Override
-    protected Parcelable onSaveInstanceState()
-    {
+    protected Parcelable onSaveInstanceState() {
         Bundle outState = new Bundle();
 
         outState.putParcelable(TAG_SUPER, super.onSaveInstanceState());
@@ -176,10 +147,8 @@ public class ExpansionHeader extends FrameLayout
     }
 
     @Override
-    protected void onRestoreInstanceState(Parcelable state)
-    {
-        if (state instanceof Bundle) {
-            Bundle savedInstanceState = (Bundle) state;
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle savedInstanceState) {
             setExpanded(savedInstanceState.getBoolean(TAG_EXPANDED), false);
 
             super.onRestoreInstanceState(savedInstanceState.getParcelable(TAG_SUPER));
