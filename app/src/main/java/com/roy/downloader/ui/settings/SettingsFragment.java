@@ -36,7 +36,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
-import com.roy.downloader.ui.settings.sections.AppearanceSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
 import com.roy.downloader.ui.settings.sections.BehaviorSettingsFragment;
 import com.roy.downloader.ui.settings.sections.BrowserSettingsFragment;
 import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
@@ -92,11 +92,11 @@ public class SettingsFragment extends PreferenceFragmentCompat
             Fragment f = activity.getSupportFragmentManager()
                     .findFragmentById(R.id.detailFragmentContainer);
             if (f == null)
-                setFragment(AppearanceSettingsFragment.newInstance(),
+                setFragment(FragmentAppearanceSettings.newInstance(),
                         getString(R.string.pref_header_appearance));
         }
 
-        Preference appearance = findPreference(AppearanceSettingsFragment.class.getSimpleName());
+        Preference appearance = findPreference(FragmentAppearanceSettings.class.getSimpleName());
         appearance.setOnPreferenceClickListener(prefClickListener);
 
         Preference behavior = findPreference(BehaviorSettingsFragment.class.getSimpleName());
@@ -122,10 +122,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         switch (prefName) {
             case AppearanceSettings:
                 if (Utils.isLargeScreenDevice(activity)) {
-                    setFragment(AppearanceSettingsFragment.newInstance(),
+                    setFragment(FragmentAppearanceSettings.newInstance(),
                             getString(R.string.pref_header_appearance));
                 } else {
-                    startActivity(AppearanceSettingsFragment.class,
+                    startActivity(FragmentAppearanceSettings.class,
                             getString(R.string.pref_header_appearance));
                 }
                 break;
