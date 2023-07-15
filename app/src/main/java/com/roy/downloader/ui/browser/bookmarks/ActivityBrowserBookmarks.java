@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020-2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2020-2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.browser.bookmarks;
 
 import android.annotation.SuppressLint;
@@ -59,11 +39,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class BrowserBookmarksActivity extends AppCompatActivity
-    implements BrowserBookmarksAdapter.ClickListener
-{
+public class ActivityBrowserBookmarks extends AppCompatActivity
+        implements BrowserBookmarksAdapter.ClickListener {
     @SuppressWarnings("unused")
-    private static final String TAG = BrowserBookmarksActivity.class.getSimpleName();
+    private static final String TAG = ActivityBrowserBookmarks.class.getSimpleName();
 
     public static final String TAG_ACTION_OPEN_BOOKMARK = "action_open_bookmark";
     public static final String TAG_BOOKMARK = "bookmark";
@@ -82,8 +61,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         setTheme(Utils.getAppTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
@@ -113,8 +91,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
 
         selectionTracker.addObserver(new SelectionTracker.SelectionObserver<BrowserBookmarkItem>() {
             @Override
-            public void onSelectionChanged()
-            {
+            public void onSelectionChanged() {
                 super.onSelectionChanged();
 
                 if (selectionTracker.hasSelection() && actionMode == null) {
@@ -137,8 +114,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
             }
 
             @Override
-            public void onSelectionRestored()
-            {
+            public void onSelectionRestored() {
                 super.onSelectionRestored();
 
                 actionMode = startSupportActionMode(actionModeCallback);
@@ -152,8 +128,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         if (savedInstanceState != null)
@@ -161,8 +136,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
         if (bookmarksListState != null)
@@ -170,8 +144,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState)
-    {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         bookmarksListState = layoutManager.onSaveInstanceState();
         outState.putParcelable(TAG_BOOKMARKS_LIST_STATE, bookmarksListState);
         selectionTracker.onSaveInstanceState(outState);
@@ -180,23 +153,20 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
 
         disposables.clear();
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         observeBookmarks();
     }
 
-    private void observeBookmarks()
-    {
+    private void observeBookmarks() {
         disposables.add(viewModel.observeBookmarks()
                 .subscribeOn(Schedulers.io())
                 .flatMapSingle((bookmarks) ->
@@ -210,8 +180,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemClicked(@NonNull BrowserBookmarkItem item)
-    {
+    public void onItemClicked(@NonNull BrowserBookmarkItem item) {
         Intent i = new Intent(TAG_ACTION_OPEN_BOOKMARK);
         i.putExtra(TAG_BOOKMARK, item);
         setResult(RESULT_OK, i);
@@ -220,31 +189,21 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    public void onItemMenuClicked(int menuId, @NonNull BrowserBookmarkItem item)
-    {
+    public void onItemMenuClicked(int menuId, @NonNull BrowserBookmarkItem item) {
         switch (menuId) {
-            case R.id.editBookmarkMenu:
-                showEditDialog(item);
-                break;
-            case R.id.deleteBookmarkMenu:
-                delete(Collections.singletonList(item));
-                break;
-            case R.id.shareBookmarkMenu:
-                shareBookmark(item);
-                break;
+            case R.id.editBookmarkMenu -> showEditDialog(item);
+            case R.id.deleteBookmarkMenu -> delete(Collections.singletonList(item));
+            case R.id.shareBookmarkMenu -> shareBookmark(item);
         }
     }
 
-    private void setActionModeTitle(int itemCount)
-    {
+    private void setActionModeTitle(int itemCount) {
         actionMode.setTitle(String.valueOf(itemCount));
     }
 
-    private final ActionMode.Callback actionModeCallback = new ActionMode.Callback()
-    {
+    private final ActionMode.Callback actionModeCallback = new ActionMode.Callback() {
         @Override
-        public boolean onPrepareActionMode(ActionMode mode, Menu menu)
-        {
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             MenuItem edit = menu.findItem(R.id.editBookmarkMenu);
             boolean show = selectionTracker.getSelection().size() <= 1;
             edit.setVisible(show);
@@ -253,46 +212,40 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         }
 
         @Override
-        public boolean onCreateActionMode(ActionMode mode, Menu menu)
-        {
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.menu_browser_bookmarks_action_mode, menu);
 
             return true;
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode mode, MenuItem item)
-        {
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.editBookmarkMenu:
+                case R.id.editBookmarkMenu -> {
                     editSelectedBookmark();
                     mode.finish();
-                    break;
-                case R.id.deleteBookmarkMenu:
+                }
+                case R.id.deleteBookmarkMenu -> {
                     deleteSelectedBookmarks();
                     mode.finish();
-                    break;
-                case R.id.shareBookmarkMenu:
+                }
+                case R.id.shareBookmarkMenu -> {
                     shareSelectedBookmarks();
                     mode.finish();
-                    break;
-                case R.id.selectAllMenu:
-                    selectAllBookmarks();
-                    break;
+                }
+                case R.id.selectAllMenu -> selectAllBookmarks();
             }
 
             return true;
         }
 
         @Override
-        public void onDestroyActionMode(ActionMode mode)
-        {
+        public void onDestroyActionMode(ActionMode mode) {
             selectionTracker.clearSelection();
         }
     };
 
-    private void editSelectedBookmark()
-    {
+    private void editSelectedBookmark() {
         MutableSelection<BrowserBookmarkItem> selections = new MutableSelection<>();
         selectionTracker.copySelection(selections);
 
@@ -303,26 +256,23 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         showEditDialog(it.next());
     }
 
-    private void showEditDialog(BrowserBookmark bookmark)
-    {
+    private void showEditDialog(BrowserBookmark bookmark) {
         Intent i = new Intent(this, EditBookmarkActivity.class);
         i.putExtra(EditBookmarkActivity.TAG_BOOKMARK, bookmark);
         editBookmark.launch(i);
     }
 
-    private void deleteSelectedBookmarks()
-    {
+    private void deleteSelectedBookmarks() {
         MutableSelection<BrowserBookmarkItem> selections = new MutableSelection<>();
         selectionTracker.copySelection(selections);
 
         disposables.add(Observable.fromIterable(selections)
-                .map((bookmark) -> (BrowserBookmark)bookmark)
+                .map((bookmark) -> (BrowserBookmark) bookmark)
                 .toList()
                 .subscribe(this::delete));
     }
 
-    private void delete(List<BrowserBookmark> bookmarks)
-    {
+    private void delete(List<BrowserBookmark> bookmarks) {
         disposables.add(viewModel.deleteBookmarks(bookmarks)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -331,37 +281,33 @@ public class BrowserBookmarksActivity extends AppCompatActivity
         );
     }
 
-    private void onBookmarksDeleted(List<BrowserBookmark> bookmarks)
-    {
+    private void onBookmarksDeleted(List<BrowserBookmark> bookmarks) {
         String message = getResources().getQuantityString(
                 R.plurals.browser_bookmark_deleted, bookmarks.size());
         Snackbar.make(binding.coordinatorLayout,
-                message,
-                Snackbar.LENGTH_SHORT)
+                        message,
+                        Snackbar.LENGTH_SHORT)
                 .show();
     }
 
-    private void onBookmarksDeleteFailed(List<BrowserBookmark> bookmarks, Throwable e)
-    {
+    private void onBookmarksDeleteFailed(List<BrowserBookmark> bookmarks, Throwable e) {
         Log.e(TAG, Log.getStackTraceString(e));
 
         String message = getResources().getQuantityString(
                 R.plurals.browser_bookmark_delete_failed, bookmarks.size());
         Snackbar.make(binding.coordinatorLayout,
-                message,
-                Snackbar.LENGTH_SHORT)
+                        message,
+                        Snackbar.LENGTH_SHORT)
                 .show();
     }
 
-    private void shareBookmark(BrowserBookmark bookmark)
-    {
+    private void shareBookmark(BrowserBookmark bookmark) {
         startActivity(Intent.createChooser(
                 Utils.makeShareUrlIntent(bookmark.url),
                 getString(R.string.share_via)));
     }
 
-    private void shareSelectedBookmarks()
-    {
+    private void shareSelectedBookmarks() {
         MutableSelection<BrowserBookmarkItem> selections = new MutableSelection<>();
         selectionTracker.copySelection(selections);
 
@@ -376,8 +322,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @SuppressLint("RestrictedApi")
-    private void selectAllBookmarks()
-    {
+    private void selectAllBookmarks() {
         int n = adapter.getItemCount();
         if (n > 0) {
             selectionTracker.startRange(0);
@@ -413,8 +358,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     );
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
@@ -423,8 +367,7 @@ public class BrowserBookmarksActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         finish();
     }
 }

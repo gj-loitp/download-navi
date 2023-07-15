@@ -60,7 +60,7 @@ import com.roy.downloader.ui.FragmentCallback;
 import com.roy.downloader.ui.SendTextToClipboard;
 import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
-import com.roy.downloader.ui.browser.bookmarks.BrowserBookmarksActivity;
+import com.roy.downloader.ui.browser.bookmarks.ActivityBrowserBookmarks;
 import com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity;
 import com.roy.downloader.ui.settings.SettingsActivity;
 
@@ -459,7 +459,7 @@ public class BrowserActivity extends AppCompatActivity
     }
 
     private void showBookmarks() {
-        bookmarks.launch(new Intent(this, BrowserBookmarksActivity.class));
+        bookmarks.launch(new Intent(this, ActivityBrowserBookmarks.class));
     }
 
     private void addBookmark() {
@@ -562,8 +562,8 @@ public class BrowserActivity extends AppCompatActivity
 
     private void handleBookmarksRequest(@Nullable Intent data) {
         String action = (data == null ? null : data.getAction());
-        if (BrowserBookmarksActivity.TAG_ACTION_OPEN_BOOKMARK.equals(action)) {
-            BrowserBookmark bookmark = data.getParcelableExtra(BrowserBookmarksActivity.TAG_BOOKMARK);
+        if (ActivityBrowserBookmarks.TAG_ACTION_OPEN_BOOKMARK.equals(action)) {
+            BrowserBookmark bookmark = data.getParcelableExtra(ActivityBrowserBookmarks.TAG_BOOKMARK);
             if (bookmark == null)
                 return;
             viewModel.url.set(bookmark.url);

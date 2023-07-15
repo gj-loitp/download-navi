@@ -1194,7 +1194,7 @@
         </activity-alias>
 
         <activity
-            android:name=".ui.browser.bookmarks.BrowserBookmarksActivity"
+            android:name=".ui.browser.bookmarks.ActivityBrowserBookmarks"
             android:label="@string/browser_bookmarks" />
 
         <activity
