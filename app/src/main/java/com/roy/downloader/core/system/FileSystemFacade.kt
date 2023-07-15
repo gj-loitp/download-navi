@@ -1,103 +1,91 @@
-package com.roy.downloader.core.system;
+package com.roy.downloader.core.system
 
-import android.net.Uri;
+import android.net.Uri
+import com.roy.downloader.core.exception.FileAlreadyExistsException
+import java.io.Closeable
+import java.io.File
+import java.io.FileDescriptor
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+interface FileSystemFacade {
+    @Throws(IOException::class)
+    fun seek(fout: FileOutputStream, offset: Long)
 
-import com.roy.downloader.core.exception.FileAlreadyExistsException;
+    @Throws(IOException::class)
+    fun allocate(fd: FileDescriptor, length: Long)
+    fun closeQuietly(closeable: Closeable?)
+    fun makeFilename(
+        dir: Uri, desiredFileName: String
+    ): String?
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+    @Throws(IOException::class, FileAlreadyExistsException::class)
+    fun moveFile(
+        srcDir: Uri, srcFileName: String, destDir: Uri, destFileName: String, replace: Boolean
+    )
 
-public interface FileSystemFacade {
-    void seek(@NonNull FileOutputStream fout, long offset) throws IOException;
+    @Throws(IOException::class)
+    fun copyFile(
+        srcFile: Uri, destFile: Uri, truncateDestFile: Boolean
+    )
 
-    void allocate(@NonNull FileDescriptor fd, long length) throws IOException;
+    fun getFD(path: Uri): FileDescriptorWrapper?
+    val extensionSeparator: String?
+    fun appendExtension(fileName: String, mimeType: String): String?
+    val defaultDownloadPath: String?
+    val userDirPath: String?
 
-    void closeQuietly(Closeable closeable);
+    @Throws(FileNotFoundException::class)
+    fun deleteFile(path: Uri): Boolean
+    fun getFileUri(
+        dir: Uri, fileName: String
+    ): Uri?
 
-    String makeFilename(@NonNull Uri dir,
-                        @NonNull String desiredFileName);
+    fun getFileUri(
+        relativePath: String, dir: Uri
+    ): Uri?
 
-    void moveFile(@NonNull Uri srcDir,
-                  @NonNull String srcFileName,
-                  @NonNull Uri destDir,
-                  @NonNull String destFileName,
-                  boolean replace) throws IOException, FileAlreadyExistsException;
+    @Throws(IOException::class)
+    fun createFile(
+        dir: Uri, fileName: String, replace: Boolean
+    ): Uri?
 
-    void copyFile(@NonNull Uri srcFile,
-                  @NonNull Uri destFile,
-                  boolean truncateDestFile) throws IOException;
+    @Throws(IOException::class)
+    fun createFile(
+        relativePath: String, dir: Uri, replace: Boolean
+    ): Uri?
 
-    FileDescriptorWrapper getFD(@NonNull Uri path);
+    fun getDirAvailableBytes(dir: Uri): Long
+    fun getExtension(fileName: String?): String?
+    fun getNameWithoutExtension(fileName: String?): String?
+    fun isValidFatFilename(name: String?): Boolean
+    fun buildValidFatFilename(name: String?): String?
+    fun getDirName(dir: Uri): String?
+    fun getFileSize(filePath: Uri): Long
 
-    String getExtensionSeparator();
+    @Throws(IOException::class)
+    fun truncate(filePath: Uri, newSize: Long)
+    fun takePermissions(path: Uri)
+    fun getDirPath(dir: Uri): String?
+    fun exists(filePath: Uri): Boolean
+    fun mkdirs(dir: Uri, relativePath: String): Boolean
 
-    String appendExtension(@NonNull String fileName, @NonNull String mimeType);
-
-    @Nullable
-    String getDefaultDownloadPath();
-
-    @Nullable
-    String getUserDirPath();
-
-    boolean deleteFile(@NonNull Uri path) throws FileNotFoundException;
-
-    Uri getFileUri(@NonNull Uri dir,
-                   @NonNull String fileName);
-
-    Uri getFileUri(@NonNull String relativePath,
-                   @NonNull Uri dir);
-
-    Uri createFile(@NonNull Uri dir,
-                   @NonNull String fileName,
-                   boolean replace) throws IOException;
-
-    Uri createFile(@NonNull String relativePath,
-                   @NonNull Uri dir,
-                   boolean replace) throws IOException;
-
-    long getDirAvailableBytes(@NonNull Uri dir);
-
-    String getExtension(String fileName);
-
-    String getNameWithoutExtension(String fileName);
-
-    boolean isValidFatFilename(String name);
-
-    String buildValidFatFilename(String name);
-
-    String getDirName(@NonNull Uri dir);
-
-    long getFileSize(@NonNull Uri filePath);
-
-    void truncate(@NonNull Uri filePath, long newSize) throws IOException;
-
-    void takePermissions(@NonNull Uri path);
-
-    String getDirPath(@NonNull Uri dir);
-
-    boolean exists(@NonNull Uri filePath);
-
-    boolean mkdirs(@NonNull Uri dir, @NonNull String relativePath);
-
-    File createTmpFile(String suffix) throws IOException;
+    @Throws(IOException::class)
+    fun createTmpFile(suffix: String?): File?
 
     /*
      * Copies the content of a InputStream into an OutputStream.
      * Uses a default buffer size of 8024 bytes.
      */
-    long copy(final InputStream input, final OutputStream output) throws IOException;
+    @Throws(IOException::class)
+    fun copy(input: InputStream?, output: OutputStream?): Long
 
     /*
      * Copies the content of a InputStream into an OutputStream
      */
-    long copy(final InputStream input, final OutputStream output, final int buffersize) throws IOException;
+    @Throws(IOException::class)
+    fun copy(input: InputStream?, output: OutputStream?, buffersize: Int): Long
 }
