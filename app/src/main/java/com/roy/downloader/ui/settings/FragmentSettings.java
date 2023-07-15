@@ -3,6 +3,7 @@ package com.roy.downloader.ui.settings;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -95,11 +96,13 @@ public class FragmentSettings extends PreferenceFragmentCompat {
     }
 
     private final Preference.OnPreferenceClickListener prefClickListener = (preference) -> {
+        Log.d(TAG, "loitp prefClickListener");
         openPreference(preference.getKey());
         return true;
     };
 
     private void openPreference(String prefName) {
+        Log.d(TAG, "loitp prefName " + prefName);
         switch (prefName) {
             case AppearanceSettings:
                 if (Utils.isLargeScreenDevice(activity)) {

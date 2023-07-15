@@ -10,6 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
+import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
+import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
+import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
+import com.roy.downloader.ui.settings.sections.FragmentLimitationsSettings;
+import com.roy.downloader.ui.settings.sections.FragmentStorageSettings;
 
 public class ActivitySettings extends AppCompatActivity {
     @SuppressWarnings("unused")
@@ -17,11 +22,11 @@ public class ActivitySettings extends AppCompatActivity {
 
     public static final String TAG_OPEN_PREFERENCE = "open_preference";
 
-    public static final String AppearanceSettings = "AppearanceSettingsFragment";
-    public static final String BehaviorSettings = "BehaviorSettingsFragment";
-    public static final String LimitationsSettings = "LimitationsSettingsFragment";
-    public static final String StorageSettings = "StorageSettingsFragment";
-    public static final String BrowserSettings = "BrowserSettingsFragment";
+    public static final String AppearanceSettings = "FragmentAppearanceSettings";
+    public static final String BehaviorSettings = "FragmentBehaviorSettings";
+    public static final String LimitationsSettings = "FragmentLimitationsSettings";
+    public static final String StorageSettings = "FragmentStorageSettings";
+    public static final String BrowserSettings = "FragmentBrowserSettings";
 
     private TextView detailTitle;
 

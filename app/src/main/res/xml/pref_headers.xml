@@ -2,27 +2,27 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <Preference
-        android:key="AppearanceSettingsFragment"
+        android:key="FragmentAppearanceSettings"
         android:persistent="false"
         android:title="@string/pref_header_appearance" />
 
     <Preference
-        android:key="BehaviorSettingsFragment"
+        android:key="FragmentBehaviorSettings"
         android:persistent="false"
         android:title="@string/pref_header_behavior" />
 
     <Preference
-        android:key="LimitationsSettingsFragment"
+        android:key="FragmentLimitationsSettings"
         android:persistent="false"
         android:title="@string/pref_header_limitations" />
 
     <Preference
-        android:key="StorageSettingsFragment"
+        android:key="FragmentStorageSettings"
         android:persistent="false"
         android:title="@string/pref_header_storage" />
 
     <Preference
-        android:key="BrowserSettingsFragment"
+        android:key="FragmentBrowserSettings"
         android:persistent="false"
         android:title="@string/pref_header_browser" />
 </PreferenceScreen>
