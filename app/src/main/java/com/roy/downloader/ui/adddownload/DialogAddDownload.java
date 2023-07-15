@@ -48,7 +48,7 @@ import com.roy.downloader.core.system.FileSystemContracts;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.databinding.DlgDialogAddDownloadBinding;
 import com.roy.downloader.ui.BaseAlertDialog;
-import com.roy.downloader.ui.ClipboardDialog;
+import com.roy.downloader.ui.DialogClipboard;
 import com.roy.downloader.ui.FragmentCallback;
 import com.roy.downloader.ui.PermissionDeniedDialog;
 import com.roy.downloader.ui.PermissionManager;
@@ -83,8 +83,8 @@ public class DialogAddDownload extends DialogFragment {
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private DlgDialogAddDownloadBinding binding;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private ClipboardDialog clipboardDialog;
-    private ClipboardDialog.SharedViewModel clipboardViewModel;
+    private DialogClipboard dialogClipboard;
+    private DialogClipboard.SharedViewModel clipboardViewModel;
     private String curClipboardTag;
     private SharedPreferences localPref;
     private PermissionDeniedDialog permDeniedDialog;
@@ -274,7 +274,7 @@ public class DialogAddDownload extends DialogFragment {
         ViewModelProvider provider = new ViewModelProvider(activity);
         viewModel = provider.get(AddDownloadViewModel.class);
         dialogViewModel = provider.get(BaseAlertDialog.SharedViewModel.class);
-        clipboardViewModel = provider.get(ClipboardDialog.SharedViewModel.class);
+        clipboardViewModel = provider.get(DialogClipboard.SharedViewModel.class);
         localPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         assert getArguments() != null;
@@ -320,7 +320,7 @@ public class DialogAddDownload extends DialogFragment {
 
         FragmentManager fm = getChildFragmentManager();
         addUserAgentDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_ADD_USER_AGENT_DIALOG);
-        clipboardDialog = (ClipboardDialog) fm.findFragmentByTag(curClipboardTag);
+        dialogClipboard = (DialogClipboard) fm.findFragmentByTag(curClipboardTag);
         permDeniedDialog = (PermissionDeniedDialog) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
 
         LayoutInflater i = LayoutInflater.from(activity);
@@ -712,8 +712,8 @@ public class DialogAddDownload extends DialogFragment {
         FragmentManager fm = getChildFragmentManager();
         if (fm.findFragmentByTag(tag) == null) {
             curClipboardTag = tag;
-            clipboardDialog = ClipboardDialog.newInstance();
-            clipboardDialog.show(fm, tag);
+            dialogClipboard = DialogClipboard.newInstance();
+            dialogClipboard.show(fm, tag);
         }
     }
 

@@ -39,7 +39,7 @@ import com.roy.downloader.core.system.FileSystemContracts;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.databinding.DlgDialogDownloadDetailsBinding;
 import com.roy.downloader.ui.BaseAlertDialog;
-import com.roy.downloader.ui.ClipboardDialog;
+import com.roy.downloader.ui.DialogClipboard;
 import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
 
@@ -67,8 +67,8 @@ public class DialogDownloadDetails extends DialogFragment {
     private DownloadDetailsViewModel viewModel;
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private final CompositeDisposable disposables = new CompositeDisposable();
-    private ClipboardDialog clipboardDialog;
-    private ClipboardDialog.SharedViewModel clipboardViewModel;
+    private DialogClipboard dialogClipboard;
+    private DialogClipboard.SharedViewModel clipboardViewModel;
     private String curClipboardTag;
 
     public static DialogDownloadDetails newInstance(UUID downloadId) {
@@ -209,7 +209,7 @@ public class DialogDownloadDetails extends DialogFragment {
         viewModel = new ViewModelProvider(this).get(DownloadDetailsViewModel.class);
         ViewModelProvider provider = new ViewModelProvider(activity);
         dialogViewModel = provider.get(BaseAlertDialog.SharedViewModel.class);
-        clipboardViewModel = provider.get(ClipboardDialog.SharedViewModel.class);
+        clipboardViewModel = provider.get(DialogClipboard.SharedViewModel.class);
     }
 
     @NonNull
@@ -222,7 +222,7 @@ public class DialogDownloadDetails extends DialogFragment {
             curClipboardTag = savedInstanceState.getString(TAG_CUR_CLIPBOARD_TAG);
 
         FragmentManager fm = getChildFragmentManager();
-        clipboardDialog = (ClipboardDialog) fm.findFragmentByTag(curClipboardTag);
+        dialogClipboard = (DialogClipboard) fm.findFragmentByTag(curClipboardTag);
 
         LayoutInflater i = LayoutInflater.from(activity);
         binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_download_details, null, false);
@@ -443,8 +443,8 @@ public class DialogDownloadDetails extends DialogFragment {
         FragmentManager fm = getChildFragmentManager();
         if (fm.findFragmentByTag(tag) == null) {
             curClipboardTag = tag;
-            clipboardDialog = ClipboardDialog.newInstance();
-            clipboardDialog.show(fm, tag);
+            dialogClipboard = DialogClipboard.newInstance();
+            dialogClipboard.show(fm, tag);
         }
     }
 
