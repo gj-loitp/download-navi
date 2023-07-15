@@ -1,33 +1,12 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.sorting;
 
-public class BaseSorting
-{
-    public enum Direction
-    {
+import androidx.annotation.NonNull;
+
+public class BaseSorting {
+    public enum Direction {
         ASC, DESC;
 
-        public static Direction fromValue(String value)
-        {
+        public static Direction fromValue(String value) {
             for (Direction direction : Direction.class.getEnumConstants()) {
                 if (direction.toString().equalsIgnoreCase(value))
                     return direction;
@@ -37,8 +16,7 @@ public class BaseSorting
         }
     }
 
-    public interface SortingColumnsInterface<F>
-    {
+    public interface SortingColumnsInterface<F> {
         int compare(F item1, F item2, Direction direction);
 
         String name();
@@ -47,25 +25,22 @@ public class BaseSorting
     private final Direction direction;
     private final String columnName;
 
-    public BaseSorting(String columnName, Direction direction)
-    {
+    public BaseSorting(String columnName, Direction direction) {
         this.direction = direction;
         this.columnName = columnName;
     }
 
-    public Direction getDirection()
-    {
+    public Direction getDirection() {
         return direction;
     }
 
-    public String getColumnName()
-    {
+    public String getColumnName() {
         return columnName;
     }
 
+    @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "BaseSorting{" +
                 "direction=" + direction +
                 ", columnName='" + columnName + '\'' +

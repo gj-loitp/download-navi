@@ -1,44 +1,22 @@
-/*
- * Copyright (C) 2019, 2020 Tachibana General Laboratories, LLC
- * Copyright (C) 2019, 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.sorting;
 
 import com.roy.downloader.ui.main.DownloadItem;
 
-public class DownloadSorting extends BaseSorting
-{
-    public enum SortingColumns implements SortingColumnsInterface<DownloadItem>
-    {
+import java.util.Objects;
+
+public class DownloadSorting extends BaseSorting {
+    public enum SortingColumns implements SortingColumnsInterface<DownloadItem> {
         none {
             @Override
             public int compare(DownloadItem item1, DownloadItem item2,
-                               Direction direction)
-            {
+                               Direction direction) {
                 return 0;
             }
         },
         name {
             @Override
             public int compare(DownloadItem item1, DownloadItem item2,
-                               Direction direction)
-            {
+                               Direction direction) {
                 if (direction == Direction.ASC)
                     return item1.info.fileName.compareTo(item2.info.fileName);
                 else
@@ -48,8 +26,7 @@ public class DownloadSorting extends BaseSorting
         size {
             @Override
             public int compare(DownloadItem item1, DownloadItem item2,
-                               Direction direction)
-            {
+                               Direction direction) {
                 if (direction == Direction.ASC)
                     return Long.compare(item1.info.totalBytes, item2.info.totalBytes);
                 else
@@ -59,8 +36,7 @@ public class DownloadSorting extends BaseSorting
         dateAdded {
             @Override
             public int compare(DownloadItem item1, DownloadItem item2,
-                               Direction direction)
-            {
+                               Direction direction) {
                 if (direction == Direction.ASC)
                     return Long.compare(item1.info.dateAdded, item2.info.dateAdded);
                 else
@@ -70,8 +46,7 @@ public class DownloadSorting extends BaseSorting
         category {
             @Override
             public int compare(DownloadItem item1, DownloadItem item2,
-                               Direction direction)
-            {
+                               Direction direction) {
                 if (direction == Direction.ASC)
                     return item1.info.mimeType.compareTo(item2.info.mimeType);
                 else
@@ -79,9 +54,8 @@ public class DownloadSorting extends BaseSorting
             }
         };
 
-        public static SortingColumns fromValue(String value)
-        {
-            for (SortingColumns column : SortingColumns.class.getEnumConstants())
+        public static SortingColumns fromValue(String value) {
+            for (SortingColumns column : Objects.requireNonNull(SortingColumns.class.getEnumConstants()))
                 if (column.toString().equalsIgnoreCase(value))
                     return column;
 
@@ -89,8 +63,7 @@ public class DownloadSorting extends BaseSorting
         }
     }
 
-    public DownloadSorting(SortingColumns columnName, Direction direction)
-    {
+    public DownloadSorting(SortingColumns columnName, Direction direction) {
         super(columnName.name(), direction);
     }
 }
