@@ -1,71 +1,46 @@
-package com.roy.downloader.service;
+package com.roy.downloader.service
 
-import android.content.Context;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-import androidx.work.Data;
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
-
-import com.roy.downloader.core.RepositoryHelper;
-import com.roy.downloader.core.model.DownloadEngine;
-import com.roy.downloader.core.model.data.entity.DownloadInfo;
-import com.roy.downloader.core.storage.DataRepository;
-
-import java.util.UUID;
+import android.content.Context
+import android.util.Log
+import androidx.work.Worker
+import androidx.work.WorkerParameters
+import com.roy.downloader.core.RepositoryHelper.getDataRepository
+import com.roy.downloader.core.model.DownloadEngine
+import java.util.UUID
 
 /*
  * Used only by DownloadEngine.
  */
-
-public class DeleteDownloadsWorker extends Worker {
-    @SuppressWarnings("unused")
-    private static final String TAG = DeleteDownloadsWorker.class.getSimpleName();
-
-    public static final String TAG_ID_LIST = "id_list";
-    public static final String TAG_WITH_FILE = "with_file";
-
-    public DeleteDownloadsWorker(@NonNull Context context, @NonNull WorkerParameters params) {
-        super(context, params);
-    }
-
-    @NonNull
-    @Override
-    public Result doWork() {
-        Context context = getApplicationContext();
-        DownloadEngine engine = DownloadEngine.getInstance(context);
-        DataRepository repo = RepositoryHelper.getDataRepository(context);
-
-        Data data = getInputData();
-        String[] idList = data.getStringArray(TAG_ID_LIST);
-        boolean withFile = data.getBoolean(TAG_WITH_FILE, false);
-        if (idList == null)
-            return Result.failure();
-
-        for (String id : idList) {
-            if (id == null)
-                continue;
-            UUID uuid;
-            try {
-                uuid = UUID.fromString(id);
-
-            } catch (IllegalArgumentException e) {
-                continue;
+class DeleteDownloadsWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
+    override fun doWork(): Result {
+        val context = applicationContext
+        val engine = DownloadEngine.getInstance(context)
+        val repo = getDataRepository(context)
+        val data = inputData
+        val idList = data.getStringArray(TAG_ID_LIST)
+        val withFile = data.getBoolean(TAG_WITH_FILE, false)
+        if (idList == null) return Result.failure()
+        for (id in idList) {
+            if (id == null) continue
+            val uuid: UUID? = try {
+                UUID.fromString(id)
+            } catch (e: IllegalArgumentException) {
+                continue
             }
-
-            assert repo != null;
-            DownloadInfo info = repo.getInfoById(uuid);
-            if (info == null)
-                continue;
+            assert(repo != null)
+            val info = repo?.getInfoById(uuid) ?: continue
             try {
-                engine.doDeleteDownload(info, withFile);
-
-            } catch (Exception e) {
-                Log.e(TAG, Log.getStackTraceString(e));
+                engine.doDeleteDownload(info, withFile)
+            } catch (e: Exception) {
+                Log.e(TAG, Log.getStackTraceString(e))
             }
         }
+        return Result.success()
+    }
 
-        return Result.success();
+    companion object {
+        private val TAG = DeleteDownloadsWorker::class.java.simpleName
+        const val TAG_ID_LIST = "id_list"
+        const val TAG_WITH_FILE = "with_file"
     }
 }
