@@ -43,7 +43,6 @@
     <string name="all">सभी</string>
     <string name="search">खोजें</string>
     <string name="settings">सेटिंग्स</string>
-    <string name="about">विवरण</string>
     <string name="close">बंद करें</string>
     <string name="redownload">फिर से डाउनलोड करें</string>
     <string name="Default">डिफ़ॉल्ट</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">फ़ाइल पहले से मौजूद है । इसे बदलें?</string>
     <string name="file_name_is_empty">फ़ाइल का नाम खाली नहीं रह सकता</string>
     <string name="system_manager">सिस्टम प्रबंधक</string>
-    <string name="device_does_not_support_this_feature">आपका उपकरण इस कार्य का समर्थन नहीं करता है</string>
     <string name="system_file_manager_not_found">सिस्टम फ़ाइल प्रबंधक नहीं मिला</string>
     <string name="replace_file">फ़ाइल बदलें</string>
     <!-- Details download dialog -->

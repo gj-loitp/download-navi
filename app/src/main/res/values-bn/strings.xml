@@ -43,7 +43,6 @@
     <string name="all">সব</string>
     <string name="search">অনুসন্ধান</string>
     <string name="settings">সেটিংস</string>
-    <string name="about">সম্পর্কে</string>
     <string name="close">বন্ধ করুন</string>
     <string name="redownload">আবার ডাউনলোড করুন</string>
     <string name="Default">পূর্ব-নির্ধারিত</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">এই ফাইলটি আগে থেকেই আছে, প্রতিস্থাপন করতে চান?</string>
     <string name="file_name_is_empty">ফাইলের নাম খালি রাখা যাবে না</string>
     <string name="system_manager">সিস্টেম ব্যবস্থাপক</string>
-    <string name="device_does_not_support_this_feature">আপনার ডিভাইস এই বৈশিষ্ট্য সাপোর্ট করেনা</string>
     <string name="system_file_manager_not_found">সিস্টেম ফাইল ব্যবস্থাপক পাওয়া যায় নি</string>
     <string name="replace_file">ফাইল বদলান</string>
     <!-- Details download dialog -->

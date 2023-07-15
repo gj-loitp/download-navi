@@ -43,7 +43,6 @@
     <string name="all">ሁሉም</string>
     <string name="search">ፈልግ</string>
     <string name="settings">ቅንብሮች</string>
-    <string name="about">ስለ</string>
     <string name="close">ዝጋ</string>
     <string name="redownload">እንደገና ያውርዱ</string>
     <string name="Default">ነባሪ</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">ፋይል አስቀድሞ አለ ይተኩ?</string>
     <string name="file_name_is_empty">የፋይል ስም ባዶ ሊሆን አይችልም</string>
     <string name="system_manager">የስርዓት አስተዳዳሪ</string>
-    <string name="device_does_not_support_this_feature">መሣሪያዎ ይህንን ባህሪ አይደግፍም</string>
     <string name="system_file_manager_not_found">የስርዓት ፋይል አስተዳዳሪ አልተገኘም</string>
     <string name="replace_file">ፋይልን ይተኩ</string>
     <!-- Details download dialog -->

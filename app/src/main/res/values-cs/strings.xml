@@ -43,7 +43,6 @@
     <string name="all">Vše</string>
     <string name="search">Hledat</string>
     <string name="settings">Nastavení</string>
-    <string name="about">O aplikaci</string>
     <string name="close">Zavřít</string>
     <string name="redownload">Stáhnout znovu</string>
     <string name="Default">Výchozí</string>
@@ -173,7 +172,6 @@
     <string name="error_file_exists">Soubor již existuje. Nahradit jej?</string>
     <string name="file_name_is_empty">Název souboru nemůže být prázdný</string>
     <string name="system_manager">Systémový správce</string>
-    <string name="device_does_not_support_this_feature">Vaše zařízení nepodporuje tuto funkci</string>
     <string name="system_file_manager_not_found">Systémový správce souborů nebyl nalezen</string>
     <string name="replace_file">Nahradit soubor</string>
     <!-- Details download dialog -->

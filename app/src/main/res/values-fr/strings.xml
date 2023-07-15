@@ -43,7 +43,6 @@
     <string name="all">Tout</string>
     <string name="search">Rechercher</string>
     <string name="settings">Paramètres</string>
-    <string name="about">À propos</string>
     <string name="close">Fermer</string>
     <string name="redownload">Re-télécharger</string>
     <string name="Default">Défaut</string>
@@ -171,7 +170,6 @@
     <string name="error_file_exists">Le fichier existe déjà. Le remplacer \?</string>
     <string name="file_name_is_empty">Un nom de fichier ne peut être vide</string>
     <string name="system_manager">Gestionnaire système</string>
-    <string name="device_does_not_support_this_feature">Votre appareil ne supporte pas cette fonctionnalité</string>
     <string name="system_file_manager_not_found">Gestionnaire de fichiers système introuvable</string>
     <string name="replace_file">Remplacer le fichier</string>
     <!-- Details download dialog -->

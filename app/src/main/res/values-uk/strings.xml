@@ -43,7 +43,6 @@
     <string name="all">Усі</string>
     <string name="search">Пошук</string>
     <string name="settings">Налаштування</string>
-    <string name="about">Про програму</string>
     <string name="close">Закрити</string>
     <string name="redownload">Завантажити заново</string>
     <string name="Default">Типово</string>
@@ -173,7 +172,6 @@
     <string name="error_file_exists">Файл вже існує. Замінити його?</string>
     <string name="file_name_is_empty">Назва файлу не може бути порожньою</string>
     <string name="system_manager">Системний менеджер</string>
-    <string name="device_does_not_support_this_feature">Ваш пристрій не підтримує цю функцію</string>
     <string name="system_file_manager_not_found">Системний файловий менеджер не знайдено</string>
     <string name="replace_file">Замінити файл</string>
     <!-- Details download dialog -->

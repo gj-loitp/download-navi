@@ -43,7 +43,6 @@
     <string name="all">همه</string>
     <string name="search">جست‌وجو</string>
     <string name="settings">تنظیمات</string>
-    <string name="about">درباره</string>
     <string name="close">بستن</string>
     <string name="redownload">بارگیری مجدد</string>
     <string name="Default">پیش‌گزیده</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">پرونده هم‌اکنون وجود دارد، جایگزین شود؟</string>
     <string name="file_name_is_empty">نام پرونده نمی‌تواند خالی باشد</string>
     <string name="system_manager">مدیر سامانه</string>
-    <string name="device_does_not_support_this_feature">دستگاه شما این ویژگی را پشتیبانی نمی‌کند</string>
     <string name="system_file_manager_not_found">مدیر پروندهٔ سامانه یافت نشد</string>
     <string name="replace_file">جایگزینی پرونده</string>
     <!-- Details download dialog -->

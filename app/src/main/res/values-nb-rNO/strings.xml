@@ -79,7 +79,6 @@
     <string name="detail_date_added">Dato tillagt</string>
     <string name="detail_downloaded">Nedlastet</string>
     <string name="replace_file">Erstatt fil</string>
-    <string name="device_does_not_support_this_feature">Enheten din støtter ikke denne funksjonen</string>
     <string name="system_manager">Systembehandler</string>
     <string name="error_file_exists">Erstatt eksisterende fil\?</string>
     <string name="file_name">Filnavn</string>
@@ -126,7 +125,6 @@
     <string name="Default">Forvalg</string>
     <string name="redownload">Last ned igjen</string>
     <string name="close">Lukk</string>
-    <string name="about">Om</string>
     <string name="settings">Innstillinger</string>
     <string name="search">Søk</string>
     <string name="all">Alle</string>

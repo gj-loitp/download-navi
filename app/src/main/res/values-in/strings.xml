@@ -42,7 +42,6 @@
     <string name="all">Semua</string>
     <string name="search">Cari</string>
     <string name="settings">Pengaturan</string>
-    <string name="about">Tentang</string>
     <string name="close">Tutup</string>
     <string name="redownload">Unduh ulang</string>
     <string name="Default">Bawaan</string>
@@ -168,7 +167,6 @@
     <string name="error_file_exists">Berkas sudah ada. Ganti?</string>
     <string name="file_name_is_empty">Nama berkas tidak boleh kosong</string>
     <string name="system_manager">Pengelola sistem</string>
-    <string name="device_does_not_support_this_feature">Perangkat Anda tidak mendukung fitur ini</string>
     <string name="system_file_manager_not_found">Pengelola berkas sistem tidak ditemukan</string>
     <string name="replace_file">Ganti berkas</string>
     <!-- Details download dialog -->

@@ -2,7 +2,6 @@
 <resources>
     <string name="ok">OK</string>
     <string name="warning">Amaran</string>
-    <string name="about">Mengenai</string>
     <string name="close">Tutup</string>
     <string name="redownload">Muat turun semula</string>
     <string name="apply">Tetapkan</string>
@@ -67,7 +66,6 @@
     <string name="error_open_dir">Tidak dapat membuka folder</string>
     <string name="permission_denied">Kebenaran ditolak</string>
     <string name="file_name">Nama fail</string>
-    <string name="device_does_not_support_this_feature">Peranti anda tidak menyokong ciri ini</string>
     <string name="system_file_manager_not_found">Pengurus fail sistem tidak ditemui</string>
     <string name="about_changelog">Log perubahan</string>
     <string name="open_navigation_drawer">Buka laci navigasi</string>

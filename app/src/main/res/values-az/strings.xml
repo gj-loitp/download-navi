@@ -43,7 +43,6 @@
     <string name="all">Hamısı</string>
     <string name="search">Axtar</string>
     <string name="settings">Tənzimləmələr</string>
-    <string name="about">Haqqında</string>
     <string name="close">Bağla</string>
     <string name="redownload">Yenidən endir</string>
     <string name="Default">İlkin</string>
@@ -171,7 +170,6 @@
     <string name="error_file_exists">Fayl artıq mövcuddur. Əvəzlənsin?</string>
     <string name="file_name_is_empty">Fayl adı boş ola bilməz</string>
     <string name="system_manager">Sistem idarəçisi</string>
-    <string name="device_does_not_support_this_feature">Cihazınız bu xüsusiyyəti dəstəkləmir</string>
     <string name="system_file_manager_not_found">Sistem fayl idarəçisi tapılmadı</string>
     <string name="replace_file">Faylı əvəz et</string>
     <!-- Details download dialog -->

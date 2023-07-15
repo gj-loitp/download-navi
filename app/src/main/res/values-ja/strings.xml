@@ -43,7 +43,6 @@
     <string name="all">全て</string>
     <string name="search">検索</string>
     <string name="settings">設定</string>
-    <string name="about">情報</string>
     <string name="close">閉じる</string>
     <string name="redownload">再ダウンロード</string>
     <string name="Default">既定</string>
@@ -170,7 +169,6 @@
     <string name="error_file_exists">既にファイルが存在します。上書きしますか?</string>
     <string name="file_name_is_empty">ファイル名を空欄にすることができません</string>
     <string name="system_manager">システムマネージャー</string>
-    <string name="device_does_not_support_this_feature">この端末では当該機能をサポートしていません</string>
     <string name="system_file_manager_not_found">システムファイルマネージャーが見つかりません</string>
     <string name="replace_file">ファイルを置き換え</string>
     <!-- Details download dialog -->

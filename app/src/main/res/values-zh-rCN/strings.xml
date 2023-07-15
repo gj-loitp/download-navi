@@ -43,7 +43,6 @@
     <string name="all">所有</string>
     <string name="search">搜索</string>
     <string name="settings">设置</string>
-    <string name="about">关于</string>
     <string name="close">关闭</string>
     <string name="redownload">重新下载</string>
     <string name="Default">默认</string>
@@ -175,7 +174,6 @@
     <string name="error_file_exists">文件已存在。要覆盖吗？</string>
     <string name="file_name_is_empty">文件名不能为空</string>
     <string name="system_manager">系统文件管理器</string>
-    <string name="device_does_not_support_this_feature">您的设备不支持此功能</string>
     <string name="system_file_manager_not_found">找不到系统文件管理器</string>
     <string name="replace_file">替换文件</string>
     <!-- Details download dialog -->

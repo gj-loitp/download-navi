@@ -43,7 +43,6 @@
     <string name="all">Todo</string>
     <string name="search">Buscar</string>
     <string name="settings">Ajustes</string>
-    <string name="about">Acerca de</string>
     <string name="close">Cerrar</string>
     <string name="redownload">Volver a descargar</string>
     <string name="Default">Predeterminado</string>
@@ -171,7 +170,6 @@
     <string name="error_file_exists">El archivo ya existe. ¿Reemplazar?</string>
     <string name="file_name_is_empty">El nombre del archivo no puede estar vacío</string>
     <string name="system_manager">Administrador del sistema</string>
-    <string name="device_does_not_support_this_feature">Tu dispositivo no es compatible con esta característica</string>
     <string name="system_file_manager_not_found">Administrador de archivos del sistema no encontrado</string>
     <string name="replace_file">Reemplazar archivo</string>
     <!-- Details download dialog -->

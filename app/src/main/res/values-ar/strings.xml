@@ -43,7 +43,6 @@
     <string name="all">الكل</string>
     <string name="search">بحث</string>
     <string name="settings">الإعدادات</string>
-    <string name="about">حول التطبيق</string>
     <string name="close">إغلاق</string>
     <string name="redownload">إعادة التنزيل</string>
     <string name="Default">الإفتراضي</string>
@@ -175,7 +174,6 @@
     <string name="error_file_exists">الملف موجود مسبقاً، هل تريد استبداله؟</string>
     <string name="file_name_is_empty">لا يمكن ترك حقل الاسم الكامل فارغا</string>
     <string name="system_manager">إدارة النظام</string>
-    <string name="device_does_not_support_this_feature">الجهاز الخاص بك لا يدعم هذه الميزة</string>
     <string name="system_file_manager_not_found">لم يتم العثور على مدير ملفات النظام</string>
     <string name="replace_file">استبدال ملف</string>
     <!-- Details download dialog -->

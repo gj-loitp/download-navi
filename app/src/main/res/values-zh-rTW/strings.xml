@@ -43,7 +43,6 @@
     <string name="all">全部</string>
     <string name="search">搜尋</string>
     <string name="settings">設定</string>
-    <string name="about">關於</string>
     <string name="close">關閉</string>
     <string name="redownload">重新下載</string>
     <string name="Default">預設</string>
@@ -171,7 +170,6 @@
     <string name="error_file_exists">已有相同的檔案。您要覆寫它嗎？</string>
     <string name="file_name_is_empty">檔案名稱不能爲空</string>
     <string name="system_manager">系統檔案管理員</string>
-    <string name="device_does_not_support_this_feature">您的裝置不支援此功能</string>
     <string name="system_file_manager_not_found">找不到系統檔案管理員</string>
     <string name="replace_file">取代檔案</string>
     <!-- Details download dialog -->

@@ -43,7 +43,6 @@
     <string name="all">Tümü</string>
     <string name="search">Ara</string>
     <string name="settings">Ayarlar</string>
-    <string name="about">Hakkında</string>
     <string name="close">Kapat</string>
     <string name="redownload">Yeniden indir</string>
     <string name="Default">Öntanımlı</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">Dosya zaten var. Değiştirilsin mi?</string>
     <string name="file_name_is_empty">Dosya adı boş bırakılamaz</string>
     <string name="system_manager">Sistem yöneticisi</string>
-    <string name="device_does_not_support_this_feature">Aygıtınız bu özelliği desteklemiyor</string>
     <string name="system_file_manager_not_found">Sistem dosya yöneticisi bulunamadı</string>
     <string name="replace_file">Dosyayı değiştir</string>
     <!-- Details download dialog -->

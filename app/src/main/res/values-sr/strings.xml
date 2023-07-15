@@ -43,7 +43,6 @@
     <string name="all">Све</string>
     <string name="search">Претрага</string>
     <string name="settings">Подешавања</string>
-    <string name="about">О програму</string>
     <string name="close">Затвори</string>
     <string name="redownload">Поново преузми</string>
     <string name="Default">Подразумевано</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">Фајл већ постоји. Замени га?</string>
     <string name="file_name_is_empty">Име фајла не може бити празно</string>
     <string name="system_manager">Системски менаџер</string>
-    <string name="device_does_not_support_this_feature">Ваш уређај не подржава ову функцију</string>
     <string name="system_file_manager_not_found">Системски фајл менаџер није пронађен</string>
     <string name="replace_file">Замени фајл</string>
     <!-- Details download dialog -->

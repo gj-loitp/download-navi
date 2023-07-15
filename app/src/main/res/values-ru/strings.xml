@@ -43,7 +43,6 @@
     <string name="all">Все</string>
     <string name="search">Поиск</string>
     <string name="settings">Настройки</string>
-    <string name="about">О программе</string>
     <string name="close">Закрыть</string>
     <string name="redownload">Скачать заново</string>
     <string name="Default">По умолчанию</string>
@@ -173,7 +172,6 @@
     <string name="error_file_exists">Файл уже существует. Замени это?</string>
     <string name="file_name_is_empty">Имя файла не может быть пустым</string>
     <string name="system_manager">Системный менеджер</string>
-    <string name="device_does_not_support_this_feature">Ваше устройство не поддерживает данную функцию</string>
     <string name="system_file_manager_not_found">Системный файловый менеджер не найден</string>
     <string name="replace_file">Заменить файл</string>
     <!-- Details download dialog -->

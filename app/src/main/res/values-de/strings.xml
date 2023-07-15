@@ -43,7 +43,6 @@
     <string name="all">Alle</string>
     <string name="search">Suche</string>
     <string name="settings">Einstellungen</string>
-    <string name="about">Über</string>
     <string name="close">Schließen</string>
     <string name="redownload">Erneut herunterladen</string>
     <string name="Default">Standard</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">Die Datei existiert bereits. Sie ersetzen?</string>
     <string name="file_name_is_empty">Der Dateiname darf nicht leer sein</string>
     <string name="system_manager">System-Manager</string>
-    <string name="device_does_not_support_this_feature">Dein Gerät unterstützt diese Funktion nicht</string>
     <string name="system_file_manager_not_found">Datei-Manager des Systems nicht gefunden</string>
     <string name="replace_file">Datei ersetzen</string>
     <!-- Details download dialog -->

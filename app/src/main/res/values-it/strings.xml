@@ -43,7 +43,6 @@
     <string name="all">Tutti</string>
     <string name="search">Cerca</string>
     <string name="settings">Impostazioni</string>
-    <string name="about">Info su</string>
     <string name="close">Chiudi</string>
     <string name="redownload">Scarica di nuovo</string>
     <string name="Default">Default</string>
@@ -166,7 +165,6 @@
     <string name="error_file_exists">File già esistente. Sostituirlo?</string>
     <string name="file_name_is_empty">Il nome del file non può essere vuoto</string>
     <string name="system_manager">Gestore di sistema</string>
-    <string name="device_does_not_support_this_feature">Il dispositivo non supporta questa funzione</string>
     <string name="system_file_manager_not_found">Gestore file di sistema non trovato</string>
     <string name="replace_file">Sostituisci file</string>
     <!-- Details download dialog -->

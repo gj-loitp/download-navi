@@ -43,7 +43,6 @@
     <string name="all">Tất cả</string>
     <string name="search">Tìm kiếm</string>
     <string name="settings">Thiết lập</string>
-    <string name="about">Giới thiệu</string>
     <string name="close">Đóng</string>
     <string name="redownload">Tải xuống lại</string>
     <string name="Default">Mặc định</string>
@@ -170,7 +169,6 @@
     <string name="error_file_exists">Đã tồn tại tập tin này. Ghi đè lên?</string>
     <string name="file_name_is_empty">Tên tập tin không thể để trống</string>
     <string name="system_manager">Trình quản lí tập tin hệ thống</string>
-    <string name="device_does_not_support_this_feature">Thiết bị của bạn không hỗ trợ tính năng này</string>
     <string name="system_file_manager_not_found">Không tìm thấy trình quản lí tập tin hệ thống</string>
     <string name="replace_file">Ghi đè tập tin</string>
     <!-- Details download dialog -->

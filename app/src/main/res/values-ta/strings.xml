@@ -28,7 +28,6 @@
     <string name="error">பிழை</string>
     <string name="file">கோப்பு</string>
     <string name="settings">அமைப்புகள்</string>
-    <string name="about">பற்றி</string>
     <string name="close">மூடு</string>
     <string name="apply">விண்ணப்பிக்கவும்</string>
     <string name="clipboard">கிளிப்போர்டு</string>
@@ -98,7 +97,6 @@
     <string name="file_name">கோப்பு பெயர்</string>
     <string name="error_file_exists">கோப்பு ஏற்கனவே உள்ளது. அதை மாற்றவா\?</string>
     <string name="system_manager">கணினி மேலாளர்</string>
-    <string name="device_does_not_support_this_feature">இந்த அம்சத்தை உங்கள் சாதனம் ஆதரிக்கவில்லை</string>
     <string name="replace_file">கோப்பை மாற்று</string>
     <string name="detail_downloaded_format">%1$s/%2$s (%3$d%%)</string>
     <string name="detail_pieces">துண்டுகள்</string>

@@ -43,7 +43,6 @@
     <string name="all">Todos</string>
     <string name="search">Procurar</string>
     <string name="settings">Configurações</string>
-    <string name="about">Sobre</string>
     <string name="close">Fechar</string>
     <string name="redownload">Baixar novamente</string>
     <string name="Default">Padrão</string>
@@ -171,7 +170,6 @@
     <string name="error_file_exists">O arquivo já existe. Substituir?</string>
     <string name="file_name_is_empty">O nome do arquivo não pode estar vazio</string>
     <string name="system_manager">Gerenciador de sistema</string>
-    <string name="device_does_not_support_this_feature">Seu aparelho não oferece suporte a esse recurso</string>
     <string name="system_file_manager_not_found">Gerenciador de arquivos do sistema não encontrado</string>
     <string name="replace_file">Sobrescrever arquivo</string>
     <!-- Details download dialog -->
