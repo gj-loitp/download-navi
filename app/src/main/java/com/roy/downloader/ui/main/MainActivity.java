@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Html;
@@ -53,7 +52,7 @@ import com.roy.downloader.ui.browser.ActivityBrowser;
 import com.roy.downloader.ui.main.drawer.AdapterDrawerExpandable;
 import com.roy.downloader.ui.main.drawer.DrawerGroup;
 import com.roy.downloader.ui.main.drawer.DrawerGroupItem;
-import com.roy.downloader.ui.settings.SettingsActivity;
+import com.roy.downloader.ui.settings.ActivitySettings;
 
 import java.util.List;
 
@@ -421,7 +420,7 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId == R.id.resumeAllMenu) {
             resumeAll();
         } else if (itemId == R.id.settingsMenu) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(new Intent(this, ActivitySettings.class));
         } else if (itemId == R.id.aboutMenu) {
             showAboutDialog();
         } else if (itemId == R.id.shutdownAppMenu) {

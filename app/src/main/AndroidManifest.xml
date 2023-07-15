@@ -1116,7 +1116,7 @@
         <activity android:name=".ui.settings.ActivityPreference" />
 
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".ui.settings.ActivitySettings"
             android:exported="true"
             android:label="@string/settings">
             <intent-filter>

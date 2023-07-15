@@ -42,7 +42,7 @@ import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
 import com.roy.downloader.ui.browser.bookmarks.ActivityBrowserBookmarks;
 import com.roy.downloader.ui.browser.bookmarks.ActivityEditBookmark;
-import com.roy.downloader.ui.settings.SettingsActivity;
+import com.roy.downloader.ui.settings.ActivitySettings;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
@@ -392,8 +392,8 @@ public class ActivityBrowser extends AppCompatActivity implements FragmentCallba
     }
 
     private void showSettings() {
-        Intent i = new Intent(this, SettingsActivity.class);
-        i.putExtra(SettingsActivity.TAG_OPEN_PREFERENCE, SettingsActivity.BrowserSettings);
+        Intent i = new Intent(this, ActivitySettings.class);
+        i.putExtra(ActivitySettings.TAG_OPEN_PREFERENCE, ActivitySettings.BrowserSettings);
         settings.launch(i);
     }
 
