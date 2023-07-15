@@ -33,13 +33,22 @@ import org.acra.config.DialogConfigurationBuilder;
 import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
-public class MainApplication extends MultiDexApplication
-{
+//TODO firebase analytic
+//TODO ic_launcher
+//TODO proguard
+//TODO keystore
+//TODO rename app
+//TODO rate, more app, share app
+//TODO leak canary
+//TODO policy
+//TODO ad applovin
+//done
+
+public class MainApplication extends MultiDexApplication {
     public static final String TAG = MainApplication.class.getSimpleName();
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
 
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder();
