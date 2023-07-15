@@ -17,7 +17,7 @@
     <string name="error_template">பிழை: %1$s</string>
     <string name="pause">இடைநிறுத்தம்</string>
     <string name="unmetered_connections_only">அளவிடப்படாத இணைப்புகள் மட்டுமே</string>
-    <string name="app_name">பதிவிறக்கம் நவி</string>
+<!--    <string name="app_name">பதிவிறக்கம் நவி</string>-->
     <string name="resume">தற்குறிப்பு</string>
     <string name="delete">அழி</string>
     <string name="share">பகிர்</string>

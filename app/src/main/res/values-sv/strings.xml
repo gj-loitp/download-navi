@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Ladda ner Navi</string>
+<!--    <string name="app_name">Ladda ner Navi</string>-->
     <string name="download_running">Pågående</string>
     <string name="finished">Avslutade</string>
     <string name="ok">OK</string>

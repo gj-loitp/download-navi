@@ -21,7 +21,7 @@
     <string name="stop">Berhenti</string>
     <string name="share">Kongsi</string>
     <string name="download_ticker_notify">Memuat turun%1$s</string>
-    <string name="app_name">Download Navi</string>
+<!--    <string name="app_name">Download Navi</string>-->
     <string name="shutdown">Matikan</string>
     <string name="unmetered_connections_only">Sambungan tanpa had sahaja</string>
     <string name="connect">Sambung</string>

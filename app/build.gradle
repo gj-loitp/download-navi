@@ -5,7 +5,8 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     namespace 'com.roy.downloader'
-    compileSdkVersion 33
+    compileSdk 33
+
     defaultConfig {
         applicationId 'com.roy.downloader'
         minSdkVersion 21
@@ -23,17 +24,17 @@ android {
         }
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//        }
+//    }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_11
+//        targetCompatibility JavaVersion.VERSION_11
+//    }
 
     buildFeatures {
         dataBinding true
@@ -47,6 +48,71 @@ android {
 
     lint {
         abortOnError false
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("keystore.jks")
+            storePassword KS_PW
+            keyAlias KS_ALIAS
+            keyPassword KS_PW
+        }
+    }
+
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled true
+            //used android.enableR8=true in gradle.properties
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+//            applicationIdSuffix ".release"
+        }
+        debug {
+            minifyEnabled false
+            //used android.enableR8=true in gradle.properties
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            applicationIdSuffix ".debug"
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = defaultConfig.applicationId + buildType.name + "_" + defaultConfig.versionName + "_" + defaultConfig.versionCode + ".apk"
+        }
+    }
+
+    flavorDimensions "type"
+    productFlavors {
+
+        dev {
+//            applicationId = "com.roygroup.base.dev"
+            dimension "type"
+            buildConfigField("String", "FLAVOR_buildEnv", '"dev"')
+            resValue "string", "app_name", "Download Manager DEV"
+
+//            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
+//            resValue "string", "BANNER", "18a3d1924d3ebee6"
+//            resValue "string", "INTER", "895d5d41cb20edb7"
+//
+//            resValue "string", "EnableAdInter", "false"
+//            resValue "string", "EnableAdBanner", "false"
+        }
+
+        production {
+//            applicationId = "com.roygroup.base.prod"
+            dimension "type"
+            buildConfigField("String", "FLAVOR_buildEnv", '"prod"')
+            resValue "string", "app_name", "Download Manager"
+
+//            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
+//            resValue "string", "BANNER", "18a3d1924d3ebee6"
+//            resValue "string", "INTER", "895d5d41cb20edb7"
+//
+//            resValue "string", "EnableAdInter", "true"
+//            resValue "string", "EnableAdBanner", "true"
+        }
+
     }
 
     compileOptions {

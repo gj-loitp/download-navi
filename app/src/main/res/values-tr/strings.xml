@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Global string -->
-    <string name="app_name">Download Navi</string>
+<!--    <string name="app_name">Download Navi</string>-->
     <string name="foreground_notification">Ön plan bildirimi</string>
     <string name="download_running">Devam ediyor</string>
     <string name="finished">Tamamlandı</string>

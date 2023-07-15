@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Global string -->
-    <string name="app_name">Download Navi</string>
+<!--    <string name="app_name">Download Navi</string>-->
     <string name="foreground_notification">अग्रभूमि अधिसूचना</string>
     <string name="download_running">प्रगति में</string>
     <string name="finished">पूरा हुआ</string>

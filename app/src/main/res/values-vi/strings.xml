@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Global string -->
-    <string name="app_name">Download Navi</string>
+<!--    <string name="app_name">Download Navi</string>-->
     <string name="foreground_notification">Thông báo trên màn hình</string>
     <string name="download_running">Đang tải</string>
     <string name="finished">Đã hoàn thành</string>
