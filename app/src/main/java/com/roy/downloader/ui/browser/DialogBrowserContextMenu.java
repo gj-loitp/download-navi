@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020 Tachibana General Laboratories, LLC
- * Copyright (C) 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.browser;
 
 import android.content.Context;
@@ -41,10 +21,9 @@ import com.roy.downloader.R;
 import com.roy.downloader.databinding.DlgBrowserContextMenuDialogBinding;
 import com.roy.downloader.ui.FragmentCallback;
 
-public class BrowserContextMenuDialog extends BottomSheetDialogFragment
-{
+public class DialogBrowserContextMenu extends BottomSheetDialogFragment {
     @SuppressWarnings("unused")
-    private static final String TAG = BrowserContextMenuDialog.class.getSimpleName();
+    private static final String TAG = DialogBrowserContextMenu.class.getSimpleName();
 
     public static final String TAG_URL = "url";
     public static final String TAG_ACTION_SHARE = "action_share";
@@ -54,9 +33,8 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
     private AppCompatActivity activity;
     private DlgBrowserContextMenuDialogBinding binding;
 
-    public static BrowserContextMenuDialog newInstance(@NonNull String url)
-    {
-        BrowserContextMenuDialog frag = new BrowserContextMenuDialog();
+    public static DialogBrowserContextMenu newInstance(@NonNull String url) {
+        DialogBrowserContextMenu frag = new DialogBrowserContextMenu();
 
         Bundle args = new Bundle();
         args.putString(TAG_URL, url);
@@ -66,40 +44,37 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
     }
 
     @Override
-    public void onAttach(@NonNull Context context)
-    {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
         if (context instanceof AppCompatActivity)
-            activity = (AppCompatActivity)context;
+            activity = (AppCompatActivity) context;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState)
-    {
+                             @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.dlg_browser_context_menu_dialog, container, true);
 
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
-    {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         if (activity == null)
-            activity = (AppCompatActivity)getActivity();
+            activity = (AppCompatActivity) getActivity();
 
         /* Make full height */
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onGlobalLayout()
-            {
+            public void onGlobalLayout() {
                 view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                BottomSheetDialog dialog = (BottomSheetDialog)getDialog();
+                BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+                assert dialog != null;
                 FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
                 BottomSheetBehavior behavior = BottomSheetBehavior.from(bottomSheet);
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -107,6 +82,7 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
             }
         });
 
+        assert getArguments() != null;
         String url = getArguments().getString(TAG_URL);
         if (url != null)
             binding.title.setText(url);
@@ -118,26 +94,20 @@ public class BrowserContextMenuDialog extends BottomSheetDialogFragment
 
     private final View.OnClickListener onItemClickListener = (v) -> {
         Intent i = new Intent();
+        assert getArguments() != null;
         i.putExtra(TAG_URL, getArguments().getString(TAG_URL));
 
         switch (v.getId()) {
-            case R.id.share:
-                i.setAction(TAG_ACTION_SHARE);
-                break;
-            case R.id.downloadFromLink:
-                i.setAction(TAG_ACTION_DOWNLOAD);
-                break;
-            case R.id.copyLink:
-                i.setAction(TAG_ACTION_COPY);
-                break;
+            case R.id.share -> i.setAction(TAG_ACTION_SHARE);
+            case R.id.downloadFromLink -> i.setAction(TAG_ACTION_DOWNLOAD);
+            case R.id.copyLink -> i.setAction(TAG_ACTION_COPY);
         }
 
         finish(i, FragmentCallback.ResultCode.OK);
     };
 
-    private void finish(Intent intent, FragmentCallback.ResultCode code)
-    {
+    private void finish(Intent intent, FragmentCallback.ResultCode code) {
         dismiss();
-        ((FragmentCallback)activity).fragmentFinished(intent, code);
+        ((FragmentCallback) activity).fragmentFinished(intent, code);
     }
 }

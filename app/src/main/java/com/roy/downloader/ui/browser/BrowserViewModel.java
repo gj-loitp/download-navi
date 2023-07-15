@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020, 2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2020, 2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.browser;
 
 import android.annotation.TargetApi;
@@ -58,8 +38,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.subjects.PublishSubject;
 
-public class BrowserViewModel extends AndroidViewModel
-{
+public class BrowserViewModel extends AndroidViewModel {
     @SuppressWarnings("unused")
     private static final String TAG = BrowserViewModel.class.getSimpleName();
 
@@ -82,8 +61,7 @@ public class BrowserViewModel extends AndroidViewModel
     private boolean isDesktopMode = false;
     private final HashMap<String, String> requestHeaders;
 
-    public enum UrlFetchState
-    {
+    public enum UrlFetchState {
         UNKNOWN,
         PAGE_STARTED,
         FETCHING,
@@ -91,21 +69,18 @@ public class BrowserViewModel extends AndroidViewModel
 
         private int progress = 0;
 
-        public UrlFetchState progress(int progress)
-        {
+        public UrlFetchState progress(int progress) {
             this.progress = progress;
 
             return this;
         }
 
-        public int progress()
-        {
+        public int progress() {
             return progress;
         }
     }
 
-    public BrowserViewModel(@NonNull Application application)
-    {
+    public BrowserViewModel(@NonNull Application application) {
         super(application);
 
         pref = RepositoryHelper.getSettingsRepository(application);
@@ -113,8 +88,7 @@ public class BrowserViewModel extends AndroidViewModel
         requestHeaders = new HashMap<>();
     }
 
-    void initWebView(@NonNull WebView webView)
-    {
+    void initWebView(@NonNull WebView webView) {
         webView.setWebViewClient(webViewClient);
         webView.setWebChromeClient(webChromeClient);
         webView.setDownloadListener(downloadListener);
@@ -130,17 +104,14 @@ public class BrowserViewModel extends AndroidViewModel
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
         settings.setGeolocationEnabled(false);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-        }
+        settings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
 
         initUserAgent(settings);
 
         applyPrefs(webView);
     }
 
-    private void initUserAgent(WebSettings settings)
-    {
+    private void initUserAgent(WebSettings settings) {
         /*
          * Mobile: Remove "wv" from the WebView's user agent. Some websites don't work
          * properly if the browser reports itself as a simple WebView.
@@ -163,8 +134,7 @@ public class BrowserViewModel extends AndroidViewModel
         }
     }
 
-    void applyPrefs(@NonNull WebView webView)
-    {
+    void applyPrefs(@NonNull WebView webView) {
         if (pref.browserDoNotTrack())
             requestHeaders.put(HEADER_DNT, "1");
         else
@@ -177,13 +147,11 @@ public class BrowserViewModel extends AndroidViewModel
         enableDesktopMode(webView, isDesktopMode);
     }
 
-    private void allowJavaScript(@NonNull WebView webView, boolean enable)
-    {
+    private void allowJavaScript(@NonNull WebView webView, boolean enable) {
         webView.getSettings().setJavaScriptEnabled(enable);
     }
 
-    private void enableCaching(@NonNull WebView webView, boolean enable)
-    {
+    private void enableCaching(@NonNull WebView webView, boolean enable) {
         WebSettings settings = webView.getSettings();
 
         if (enable) {
@@ -199,8 +167,7 @@ public class BrowserViewModel extends AndroidViewModel
         }
     }
 
-    private void allowPopupWindows(@NonNull WebView webView, boolean enable)
-    {
+    private void allowPopupWindows(@NonNull WebView webView, boolean enable) {
         WebSettings settings = webView.getSettings();
 
         if (enable) {
@@ -212,15 +179,13 @@ public class BrowserViewModel extends AndroidViewModel
         }
     }
 
-    private void enableCookies(boolean enable)
-    {
+    private void enableCookies(boolean enable) {
         CookieManager.getInstance().setAcceptCookie(enable);
         if (!enable)
             Utils.deleteCookies();
     }
 
-    void enableDesktopMode(@NonNull WebView webView, boolean enable)
-    {
+    void enableDesktopMode(@NonNull WebView webView, boolean enable) {
         isDesktopMode = enable;
         WebSettings settings = webView.getSettings();
 
@@ -229,18 +194,15 @@ public class BrowserViewModel extends AndroidViewModel
         settings.setLoadWithOverviewMode(enable);
     }
 
-    boolean isDesktopMode()
-    {
+    boolean isDesktopMode() {
         return isDesktopMode;
     }
 
-    public LiveData<UrlFetchState> observeUrlFetchState()
-    {
+    public LiveData<UrlFetchState> observeUrlFetchState() {
         return urlFetchState;
     }
 
-    void loadUrl(@NonNull WebView webView)
-    {
+    void loadUrl(@NonNull WebView webView) {
         requestStop = false;
 
         String urlStr = url.get();
@@ -258,22 +220,19 @@ public class BrowserViewModel extends AndroidViewModel
         webView.loadUrl(urlStr, requestHeaders);
     }
 
-    void stopLoading(@NonNull WebView webView)
-    {
+    void stopLoading(@NonNull WebView webView) {
         webView.stopLoading();
 
         requestStop = true;
         urlFetchState.postValue(UrlFetchState.UNKNOWN);
     }
 
-    void loadStartPage(@NonNull WebView webView)
-    {
+    void loadStartPage(@NonNull WebView webView) {
         url.set(pref.browserStartPage());
         loadUrl(webView);
     }
 
-    Single<BrowserBookmark> addBookmark()
-    {
+    Single<BrowserBookmark> addBookmark() {
         String urlStr = url.get();
         if (TextUtils.isEmpty(urlStr))
             return Single.error(new NullPointerException("Url is empty or null"));
@@ -286,8 +245,7 @@ public class BrowserViewModel extends AndroidViewModel
         return repo.addBookmark(bookmark).map((__) -> bookmark);
     }
 
-    Maybe<BrowserBookmark> getBookmarkForCurrentPage()
-    {
+    Maybe<BrowserBookmark> getBookmarkForCurrentPage() {
         String urlStr = url.get();
         if (TextUtils.isEmpty(urlStr))
             return Maybe.error(new NullPointerException("url is null"));
@@ -295,28 +253,24 @@ public class BrowserViewModel extends AndroidViewModel
         return repo.getBookmarkByUrlSingle(urlStr).toMaybe();
     }
 
-    Maybe<Boolean> isCurrentPageBookmarked()
-    {
+    Maybe<Boolean> isCurrentPageBookmarked() {
         return getBookmarkForCurrentPage()
                 .map((bookmark) -> bookmark != null);
     }
 
-    Observable<DownloadRequest> observeDownloadRequests()
-    {
+    Observable<DownloadRequest> observeDownloadRequests() {
         return downloadRequestEvent;
     }
 
     private final WebViewClient webViewClient = new WebViewClient() {
         @TargetApi(Build.VERSION_CODES.N)
         @Override
-        public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request)
-        {
+        public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull WebResourceRequest request) {
             return validateAndLoad(view, request.getUrl().toString());
         }
 
         @Override
-        public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull String url)
-        {
+        public boolean shouldOverrideUrlLoading(@NonNull WebView view, @NonNull String url) {
             return validateAndLoad(view, url);
         }
 
@@ -330,8 +284,7 @@ public class BrowserViewModel extends AndroidViewModel
         }
 
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon)
-        {
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
             BrowserViewModel.this.url.set(url);
@@ -342,8 +295,7 @@ public class BrowserViewModel extends AndroidViewModel
         }
 
         @Override
-        public void onPageFinished(WebView view, String url)
-        {
+        public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
 
             String titleStr = view.getTitle();
@@ -359,7 +311,7 @@ public class BrowserViewModel extends AndroidViewModel
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
             view.evaluateJavascript("var v = document.querySelector('meta[name=\"viewport\"]');" +
-                    "if (v) v.setAttribute('content', 'width=1024, initial-scale=' + (window.screen.width / 1024));",
+                            "if (v) v.setAttribute('content', 'width=1024, initial-scale=' + (window.screen.width / 1024));",
                     null
             );
         }
@@ -367,8 +319,7 @@ public class BrowserViewModel extends AndroidViewModel
 
     private final WebChromeClient webChromeClient = new WebChromeClient() {
         @Override
-        public void onProgressChanged(WebView view, int newProgress)
-        {
+        public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
 
             if (!requestStop)
@@ -382,24 +333,20 @@ public class BrowserViewModel extends AndroidViewModel
                                     String userAgent,
                                     String contentDisposition,
                                     String mimeType,
-                                    long contentLength)
-        {
+                                    long contentLength) {
             downloadRequestEvent.onNext(new DownloadRequest(url));
         }
     };
 
-    public static class DownloadRequest
-    {
+    public static class DownloadRequest {
         private final String url;
 
-        private DownloadRequest(@NonNull String url)
-        {
+        private DownloadRequest(@NonNull String url) {
             this.url = url;
         }
 
         @NonNull
-        public String getUrl()
-        {
+        public String getUrl() {
             return url;
         }
     }

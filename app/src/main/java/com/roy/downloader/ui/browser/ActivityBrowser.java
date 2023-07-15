@@ -278,7 +278,7 @@ public class ActivityBrowser extends AppCompatActivity implements FragmentCallba
     }
 
     private void showContextMenu(String url) {
-        BrowserContextMenuDialog dialog = BrowserContextMenuDialog.newInstance(url);
+        DialogBrowserContextMenu dialog = DialogBrowserContextMenu.newInstance(url);
         dialog.show(getSupportFragmentManager(), TAG_CONTEXT_MENU_DIALOG);
     }
 
@@ -289,11 +289,11 @@ public class ActivityBrowser extends AppCompatActivity implements FragmentCallba
         String action = intent.getAction();
         if (action == null) return;
 
-        String url = intent.getStringExtra(BrowserContextMenuDialog.TAG_URL);
+        String url = intent.getStringExtra(DialogBrowserContextMenu.TAG_URL);
         switch (action) {
-            case BrowserContextMenuDialog.TAG_ACTION_SHARE -> makeShareDialog(url);
-            case BrowserContextMenuDialog.TAG_ACTION_DOWNLOAD -> showAddDownloadDialog(url);
-            case BrowserContextMenuDialog.TAG_ACTION_COPY -> showCopyToClipboardDialog(url);
+            case DialogBrowserContextMenu.TAG_ACTION_SHARE -> makeShareDialog(url);
+            case DialogBrowserContextMenu.TAG_ACTION_DOWNLOAD -> showAddDownloadDialog(url);
+            case DialogBrowserContextMenu.TAG_ACTION_COPY -> showCopyToClipboardDialog(url);
         }
     }
 
