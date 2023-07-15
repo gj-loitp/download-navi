@@ -50,7 +50,7 @@ import com.roy.downloader.databinding.DlgDialogAddDownloadBinding;
 import com.roy.downloader.ui.BaseAlertDialog;
 import com.roy.downloader.ui.DialogClipboard;
 import com.roy.downloader.ui.FragmentCallback;
-import com.roy.downloader.ui.PermissionDeniedDialog;
+import com.roy.downloader.ui.DialogPermissionDenied;
 import com.roy.downloader.ui.PermissionManager;
 
 import java.io.IOException;
@@ -87,7 +87,7 @@ public class DialogAddDownload extends DialogFragment {
     private DialogClipboard.SharedViewModel clipboardViewModel;
     private String curClipboardTag;
     private SharedPreferences localPref;
-    private PermissionDeniedDialog permDeniedDialog;
+    private DialogPermissionDenied permDeniedDialog;
     private PermissionManager permissionManager;
 
     public static DialogAddDownload newInstance(@NonNull AddInitParams initParams) {
@@ -290,7 +290,7 @@ public class DialogAddDownload extends DialogFragment {
             public void onStorageResult(boolean isGranted, boolean shouldRequestStoragePermission) {
                 if (!isGranted && shouldRequestStoragePermission) {
                     if (fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG) == null) {
-                        permDeniedDialog = PermissionDeniedDialog.newInstance();
+                        permDeniedDialog = DialogPermissionDenied.newInstance();
                         FragmentTransaction ft = fm.beginTransaction();
                         ft.add(permDeniedDialog, TAG_PERM_DENIED_DIALOG);
                         ft.commitAllowingStateLoss();
@@ -321,7 +321,7 @@ public class DialogAddDownload extends DialogFragment {
         FragmentManager fm = getChildFragmentManager();
         addUserAgentDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_ADD_USER_AGENT_DIALOG);
         dialogClipboard = (DialogClipboard) fm.findFragmentByTag(curClipboardTag);
-        permDeniedDialog = (PermissionDeniedDialog) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
+        permDeniedDialog = (DialogPermissionDenied) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
 
         LayoutInflater i = LayoutInflater.from(activity);
         binding = DataBindingUtil.inflate(i, R.layout.dlg_dialog_add_download, null, false);

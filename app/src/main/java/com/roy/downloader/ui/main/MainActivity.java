@@ -38,7 +38,7 @@ import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandab
 
 import com.roy.downloader.R;
 import com.roy.downloader.ui.BatteryOptimizationDialog;
-import com.roy.downloader.ui.PermissionDeniedDialog;
+import com.roy.downloader.ui.DialogPermissionDenied;
 import com.roy.downloader.core.RepositoryHelper;
 import com.roy.downloader.core.model.DownloadEngine;
 import com.roy.downloader.core.settings.SettingsRepository;
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     protected CompositeDisposable disposables = new CompositeDisposable();
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private BaseAlertDialog aboutDialog;
-    private PermissionDeniedDialog permDeniedDialog;
+    private DialogPermissionDenied permDeniedDialog;
     private BatteryOptimizationDialog batteryDialog;
     private PermissionManager permissionManager;
 
@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         dialogViewModel = provider.get(BaseAlertDialog.SharedViewModel.class);
         FragmentManager fm = getSupportFragmentManager();
         aboutDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_ABOUT_DIALOG);
-        permDeniedDialog = (PermissionDeniedDialog) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
+        permDeniedDialog = (DialogPermissionDenied) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
         batteryDialog = (BatteryOptimizationDialog) fm.findFragmentByTag(TAG_BATTERY_DIALOG);
 
         permissionManager = new PermissionManager(this, new PermissionManager.Callback() {
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             public void onStorageResult(boolean isGranted, boolean shouldRequestStoragePermission) {
                 if (!isGranted && shouldRequestStoragePermission) {
                     if (fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG) == null) {
-                        permDeniedDialog = PermissionDeniedDialog.newInstance();
+                        permDeniedDialog = DialogPermissionDenied.newInstance();
                         FragmentTransaction ft = fm.beginTransaction();
                         ft.add(permDeniedDialog, TAG_PERM_DENIED_DIALOG);
                         ft.commitAllowingStateLoss();
