@@ -38,7 +38,7 @@ import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
 import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
-import com.roy.downloader.ui.settings.sections.BrowserSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
 import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
 import com.roy.downloader.ui.settings.sections.StorageSettingsFragment;
 import static com.roy.downloader.ui.settings.SettingsActivity.AppearanceSettings;
@@ -105,7 +105,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Preference storage = findPreference(StorageSettingsFragment.class.getSimpleName());
         storage.setOnPreferenceClickListener(prefClickListener);
 
-        Preference browser = findPreference(BrowserSettingsFragment.class.getSimpleName());
+        Preference browser = findPreference(FragmentBrowserSettings.class.getSimpleName());
         browser.setOnPreferenceClickListener(prefClickListener);
 
         Preference limitations = findPreference(LimitationsSettingsFragment.class.getSimpleName());
@@ -149,10 +149,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 break;
             case BrowserSettings:
                 if (Utils.isLargeScreenDevice(activity)) {
-                    setFragment(BrowserSettingsFragment.newInstance(),
+                    setFragment(FragmentBrowserSettings.newInstance(),
                             getString(R.string.pref_header_browser));
                 } else {
-                    startActivity(BrowserSettingsFragment.class,
+                    startActivity(FragmentBrowserSettings.class,
                             getString(R.string.pref_header_browser));
                 }
                 break;

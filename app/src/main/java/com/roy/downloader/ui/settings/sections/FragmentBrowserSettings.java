@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2020-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2020-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.settings.sections;
 
 import android.content.Context;
@@ -41,16 +21,15 @@ import com.roy.downloader.core.RepositoryHelper;
 import com.roy.downloader.core.settings.SettingsRepository;
 import com.roy.downloader.core.utils.Utils;
 
-public class BrowserSettingsFragment extends PreferenceFragmentCompat
-        implements Preference.OnPreferenceChangeListener {
+public class FragmentBrowserSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
-    private static final String TAG = BrowserSettingsFragment.class.getSimpleName();
+    private static final String TAG = FragmentBrowserSettings.class.getSimpleName();
 
     private SettingsRepository pref;
     private CoordinatorLayout coordinatorLayout;
 
-    public static BrowserSettingsFragment newInstance() {
-        BrowserSettingsFragment fragment = new BrowserSettingsFragment();
+    public static FragmentBrowserSettings newInstance() {
+        FragmentBrowserSettings fragment = new FragmentBrowserSettings();
         fragment.setArguments(new Bundle());
 
         return fragment;
@@ -118,10 +97,7 @@ public class BrowserSettingsFragment extends PreferenceFragmentCompat
         if (deleteCookies != null) {
             deleteCookies.setOnPreferenceClickListener(__ -> {
                 Utils.deleteCookies();
-                Snackbar.make(coordinatorLayout,
-                                R.string.pref_browser_delete_cookies_done,
-                                Snackbar.LENGTH_SHORT)
-                        .show();
+                Snackbar.make(coordinatorLayout, R.string.pref_browser_delete_cookies_done, Snackbar.LENGTH_SHORT).show();
                 return true;
             });
         }
@@ -137,10 +113,7 @@ public class BrowserSettingsFragment extends PreferenceFragmentCompat
         if (clearCache != null) {
             clearCache.setOnPreferenceClickListener(__ -> {
                 WebStorage.getInstance().deleteAllData();
-                Snackbar.make(coordinatorLayout,
-                                R.string.pref_browser_clear_cache_done,
-                                Snackbar.LENGTH_SHORT)
-                        .show();
+                Snackbar.make(coordinatorLayout, R.string.pref_browser_clear_cache_done, Snackbar.LENGTH_SHORT).show();
                 return true;
             });
         }
@@ -191,11 +164,9 @@ public class BrowserSettingsFragment extends PreferenceFragmentCompat
 
         } else if (preference.getKey().equals(getString(R.string.pref_key_browser_start_page))) {
             String url = (String) newValue;
-            if (TextUtils.isEmpty(url))
-                return false;
+            if (TextUtils.isEmpty(url)) return false;
 
-            if (!url.startsWith(Utils.HTTP_PREFIX))
-                url = Utils.HTTP_PREFIX + "://" + url;
+            if (!url.startsWith(Utils.HTTP_PREFIX)) url = Utils.HTTP_PREFIX + "://" + url;
             pref.browserStartPage(url);
             preference.setSummary(url);
 
@@ -211,14 +182,12 @@ public class BrowserSettingsFragment extends PreferenceFragmentCompat
         } else if (preference.getKey().equals(getString(R.string.pref_key_browser_enable_cookies))) {
             boolean enable = (boolean) newValue;
             pref.browserEnableCookies(enable);
-            if (!enable)
-                Utils.deleteCookies();
+            if (!enable) Utils.deleteCookies();
 
         } else if (preference.getKey().equals(getString(R.string.pref_key_browser_enable_caching))) {
             boolean enable = (boolean) newValue;
             pref.browserEnableCaching(enable);
-            if (!enable)
-                WebStorage.getInstance().deleteAllData();
+            if (!enable) WebStorage.getInstance().deleteAllData();
 
         } else if (preference.getKey().equals(getString(R.string.pref_key_browser_disable_from_system))) {
             boolean disable = (boolean) newValue;

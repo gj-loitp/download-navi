@@ -32,7 +32,7 @@ import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
 import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
-import com.roy.downloader.ui.settings.sections.BrowserSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
 import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
 import com.roy.downloader.ui.settings.sections.StorageSettingsFragment;
 
@@ -97,8 +97,8 @@ public class PreferenceActivity extends AppCompatActivity
                 return (F) FragmentBehaviorSettings.newInstance();
             else if (fragment.equals(StorageSettingsFragment.class.getSimpleName()))
                 return (F)StorageSettingsFragment.newInstance();
-            else if (fragment.equals(BrowserSettingsFragment.class.getSimpleName()))
-                return (F)BrowserSettingsFragment.newInstance();
+            else if (fragment.equals(FragmentBrowserSettings.class.getSimpleName()))
+                return (F) FragmentBrowserSettings.newInstance();
             else if (fragment.equals(LimitationsSettingsFragment.class.getSimpleName()))
                 return (F)LimitationsSettingsFragment.newInstance();
             else
