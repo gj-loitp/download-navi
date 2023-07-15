@@ -188,12 +188,12 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
     private <F extends PreferenceFragmentCompat> void startActivity(Class<F> fragment, String title)
     {
-        Intent i = new Intent(activity, PreferenceActivity.class);
-        PreferenceActivityConfig config = new PreferenceActivityConfig(
+        Intent i = new Intent(activity, ActivityPreference.class);
+        ActivityPreferenceConfig config = new ActivityPreferenceConfig(
                 fragment.getSimpleName(),
                 title);
 
-        i.putExtra(PreferenceActivity.TAG_CONFIG, config);
+        i.putExtra(ActivityPreference.TAG_CONFIG, config);
         startActivity(i);
     }
 }

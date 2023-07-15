@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.settings;
 
 import android.content.Intent;
@@ -36,18 +16,14 @@ import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
 import com.roy.downloader.ui.settings.sections.FragmentLimitationsSettings;
 import com.roy.downloader.ui.settings.sections.FragmentStorageSettings;
 
-public class PreferenceActivity extends AppCompatActivity
-{
+public class ActivityPreference extends AppCompatActivity {
     @SuppressWarnings("unused")
-    private static final String TAG = PreferenceActivity.class.getSimpleName();
+    private static final String TAG = ActivityPreference.class.getSimpleName();
 
     public static final String TAG_CONFIG = "config";
 
-    private Toolbar toolbar;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme(Utils.getSettingsTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
@@ -63,33 +39,26 @@ public class PreferenceActivity extends AppCompatActivity
         String title = null;
         Intent intent = getIntent();
         if (intent.hasExtra(TAG_CONFIG)) {
-            PreferenceActivityConfig config = intent.getParcelableExtra(TAG_CONFIG);
+            ActivityPreferenceConfig config = intent.getParcelableExtra(TAG_CONFIG);
             fragment = config.getFragment();
             title = config.getTitle();
         }
 
-        toolbar = findViewById(R.id.toolbar);
-        if (title != null)
-            toolbar.setTitle(title);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        if (title != null) toolbar.setTitle(title);
         setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (fragment != null && savedInstanceState == null)
-            setFragment(getFragment(fragment));
+        if (fragment != null && savedInstanceState == null) setFragment(getFragment(fragment));
     }
 
-    public <F extends PreferenceFragmentCompat> void setFragment(F fragment)
-    {
-        if (fragment == null)
-            return;
+    public <F extends PreferenceFragmentCompat> void setFragment(F fragment) {
+        if (fragment == null) return;
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, fragment).commit();
     }
 
-    private <F extends PreferenceFragmentCompat> F getFragment(String fragment)
-    {
+    private <F extends PreferenceFragmentCompat> F getFragment(String fragment) {
         if (fragment != null) {
             if (fragment.equals(FragmentAppearanceSettings.class.getSimpleName()))
                 return (F) FragmentAppearanceSettings.newInstance();
@@ -101,16 +70,14 @@ public class PreferenceActivity extends AppCompatActivity
                 return (F) FragmentBrowserSettings.newInstance();
             else if (fragment.equals(FragmentLimitationsSettings.class.getSimpleName()))
                 return (F) FragmentLimitationsSettings.newInstance();
-            else
-                return null;
+            else return null;
         }
 
         return null;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }

@@ -1113,7 +1113,7 @@
 
         <activity android:name=".ui.filemanager.DialogFileManager" />
 
-        <activity android:name=".ui.settings.PreferenceActivity" />
+        <activity android:name=".ui.settings.ActivityPreference" />
 
         <activity
             android:name=".ui.settings.SettingsActivity"
