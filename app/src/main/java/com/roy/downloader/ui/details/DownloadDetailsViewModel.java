@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.details;
 
 import android.app.Application;
@@ -56,8 +36,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class DownloadDetailsViewModel extends AndroidViewModel
-{
+public class DownloadDetailsViewModel extends AndroidViewModel {
     @SuppressWarnings("unused")
     private static final String TAG = DownloadDetailsViewModel.class.getSimpleName();
 
@@ -70,16 +49,14 @@ public class DownloadDetailsViewModel extends AndroidViewModel
     public FileSystemFacade fs;
 
     @Override
-    protected void onCleared()
-    {
+    protected void onCleared() {
         super.onCleared();
 
         disposables.clear();
         mutableParams.removeOnPropertyChangedCallback(mutableParamsCallback);
     }
 
-    public DownloadDetailsViewModel(@NonNull Application application)
-    {
+    public DownloadDetailsViewModel(@NonNull Application application) {
         super(application);
 
         repo = RepositoryHelper.getDataRepository(application);
@@ -88,13 +65,11 @@ public class DownloadDetailsViewModel extends AndroidViewModel
         mutableParams.addOnPropertyChangedCallback(mutableParamsCallback);
     }
 
-    public Flowable<InfoAndPieces> observeInfoAndPieces(UUID id)
-    {
+    public Flowable<InfoAndPieces> observeInfoAndPieces(UUID id) {
         return repo.observeInfoAndPiecesById(id);
     }
 
-    public void updateInfo(InfoAndPieces infoAndPieces)
-    {
+    public void updateInfo(InfoAndPieces infoAndPieces) {
         boolean firstUpdate = info.getDownloadInfo() == null;
 
         info.setDownloadInfo(infoAndPieces.info);
@@ -107,8 +82,7 @@ public class DownloadDetailsViewModel extends AndroidViewModel
             initMutableParams();
     }
 
-    private void initMutableParams()
-    {
+    private void initMutableParams() {
         DownloadInfo downloadInfo = info.getDownloadInfo();
         if (downloadInfo == null)
             return;
@@ -122,28 +96,25 @@ public class DownloadDetailsViewModel extends AndroidViewModel
         mutableParams.setChecksum(downloadInfo.checksum);
     }
 
-    private final Observable.OnPropertyChangedCallback mutableParamsCallback = new Observable.OnPropertyChangedCallback()
-    {
+    private final Observable.OnPropertyChangedCallback mutableParamsCallback = new Observable.OnPropertyChangedCallback() {
         @Override
-        public void onPropertyChanged(Observable sender, int propertyId)
-        {
+        public void onPropertyChanged(Observable sender, int propertyId) {
             if (propertyId == BR.dirPath) {
                 Uri dirPath = mutableParams.getDirPath();
                 if (dirPath == null)
                     return;
 
                 disposables.add(Completable.fromRunnable(() -> {
-                    info.setStorageFreeSpace(fs.getDirAvailableBytes(dirPath));
-                    info.setDirName(fs.getDirName(dirPath));
-                })
-                .subscribeOn(Schedulers.io())
-                .subscribe());
+                            info.setStorageFreeSpace(fs.getDirAvailableBytes(dirPath));
+                            info.setDirName(fs.getDirName(dirPath));
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .subscribe());
             }
         }
     };
 
-    public void calcMd5Hash()
-    {
+    public void calcMd5Hash() {
         info.setMd5State(DownloadDetailsInfo.HashSumState.CALCULATION);
 
         disposables.add(io.reactivex.Observable.fromCallable(() -> calcHashSum(false))
@@ -160,8 +131,7 @@ public class DownloadDetailsViewModel extends AndroidViewModel
                         }));
     }
 
-    public void calcSha256Hash()
-    {
+    public void calcSha256Hash() {
         info.setSha256State(DownloadDetailsInfo.HashSumState.CALCULATION);
 
         disposables.add(io.reactivex.Observable.fromCallable(() -> calcHashSum(true))
@@ -178,8 +148,7 @@ public class DownloadDetailsViewModel extends AndroidViewModel
                         }));
     }
 
-    private String calcHashSum(boolean sha256Hash) throws IOException
-    {
+    private String calcHashSum(boolean sha256Hash) throws IOException {
         DownloadInfo downloadInfo = info.getDownloadInfo();
         if (downloadInfo == null)
             return null;
@@ -189,6 +158,7 @@ public class DownloadDetailsViewModel extends AndroidViewModel
             return null;
 
         try (FileDescriptorWrapper w = fs.getFD(filePath)) {
+            assert w != null;
             FileDescriptor outFd = w.open("r");
             try (FileInputStream is = new FileInputStream(outFd)) {
                 return (sha256Hash ? DigestUtils.makeSha256Hash(is) : DigestUtils.makeMd5Hash(is));
@@ -196,8 +166,7 @@ public class DownloadDetailsViewModel extends AndroidViewModel
         }
     }
 
-    public boolean applyChangedParams(boolean checkFileExists) throws FreeSpaceException, FileAlreadyExistsException
-    {
+    public boolean applyChangedParams(boolean checkFileExists) throws FreeSpaceException, FileAlreadyExistsException {
         if (!checkFreeSpace())
             throw new FreeSpaceException();
 
@@ -216,8 +185,7 @@ public class DownloadDetailsViewModel extends AndroidViewModel
         return true;
     }
 
-    private ChangeableParams makeParams(DownloadInfo downloadInfo)
-    {
+    private ChangeableParams makeParams(DownloadInfo downloadInfo) {
         ChangeableParams params = new ChangeableParams();
 
         String url = mutableParams.getUrl();
@@ -247,23 +215,20 @@ public class DownloadDetailsViewModel extends AndroidViewModel
         return params;
     }
 
-    public boolean isChecksumValid(String checksum)
-    {
+    public boolean isChecksumValid(String checksum) {
         if (checksum == null)
             return false;
 
         return DigestUtils.isMd5Hash(checksum) || DigestUtils.isSha256Hash(checksum);
     }
 
-    private boolean checkFreeSpace()
-    {
+    private boolean checkFreeSpace() {
         long storageFreeSpace = info.getStorageFreeSpace();
 
         return storageFreeSpace == -1 || storageFreeSpace >= info.getDownloadInfo().totalBytes;
     }
 
-    private boolean checkFileExists(ChangeableParams params, DownloadInfo downloadInfo)
-    {
+    private boolean checkFileExists(ChangeableParams params, DownloadInfo downloadInfo) {
         String fileName = (params.fileName == null ? downloadInfo.fileName : params.fileName);
         Uri dirPath = (params.dirPath == null ? downloadInfo.dirPath : params.dirPath);
 

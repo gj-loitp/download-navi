@@ -1,33 +1,13 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.details;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
 
-public class DownloadDetailsMutableParams extends BaseObservable
-{
+public class DownloadDetailsMutableParams extends BaseObservable {
     private String url;
     private String fileName;
     private String description;
@@ -37,92 +17,78 @@ public class DownloadDetailsMutableParams extends BaseObservable
     private String checksum;
 
     @Bindable
-    public String getUrl()
-    {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url)
-    {
+    public void setUrl(String url) {
         this.url = url;
         notifyPropertyChanged(BR.url);
     }
 
     @Bindable
-    public String getFileName()
-    {
+    public String getFileName() {
         return fileName;
     }
 
-    public void setFileName(String fileName)
-    {
+    public void setFileName(String fileName) {
         this.fileName = fileName;
         notifyPropertyChanged(BR.fileName);
     }
 
     @Bindable
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description)
-    {
+    public void setDescription(String description) {
         this.description = description;
         notifyPropertyChanged(BR.description);
     }
 
     @Bindable
-    public Uri getDirPath()
-    {
+    public Uri getDirPath() {
         return dirPath;
     }
 
-    public void setDirPath(Uri dirPath)
-    {
+    public void setDirPath(Uri dirPath) {
         this.dirPath = dirPath;
         notifyPropertyChanged(BR.dirPath);
     }
 
     @Bindable
-    public boolean isUnmeteredConnectionsOnly()
-    {
+    public boolean isUnmeteredConnectionsOnly() {
         return unmeteredConnectionsOnly;
     }
 
-    public void setUnmeteredConnectionsOnly(boolean unmeteredConnectionsOnly)
-    {
+    public void setUnmeteredConnectionsOnly(boolean unmeteredConnectionsOnly) {
         this.unmeteredConnectionsOnly = unmeteredConnectionsOnly;
         notifyPropertyChanged(BR.unmeteredConnectionsOnly);
     }
 
     @Bindable
-    public boolean isRetry()
-    {
+    public boolean isRetry() {
         return retry;
     }
 
-    public void setRetry(boolean retry)
-    {
+    public void setRetry(boolean retry) {
         this.retry = retry;
         notifyPropertyChanged(BR.retry);
     }
 
     @Bindable
-    public String getChecksum()
-    {
+    public String getChecksum() {
         return checksum;
     }
 
-    public void setChecksum(String checksum)
-    {
+    public void setChecksum(String checksum) {
         this.checksum = checksum;
         notifyPropertyChanged(BR.checksum);
     }
 
+    @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DownloadDetailsMutableParams{" +
                 "url='" + url + '\'' +
                 ", fileName='" + fileName + '\'' +
