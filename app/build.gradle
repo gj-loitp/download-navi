@@ -1,5 +1,7 @@
 //roy checked
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     namespace 'com.roy.downloader'
@@ -46,6 +48,15 @@ android {
     lint {
         abortOnError false
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
 }
 
 tasks.withType(Test) {
@@ -82,6 +93,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation "androidx.room:room-runtime:2.5.2"
     implementation "androidx.room:room-rxjava2:2.5.2"
+//    implementation 'androidx.core:core-ktx:+'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     annotationProcessor "androidx.room:room-compiler:2.5.2" /* For schemas import */
     implementation 'androidx.work:work-runtime:2.8.1'
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -107,4 +120,8 @@ dependencies {
     implementation 'com.github.albfernandez:juniversalchardet:2.4.0'
     implementation 'org.apache.commons:commons-compress:1.23.0'
     implementation 'org.tukaani:xz:1.9'
+
+    api 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 }
