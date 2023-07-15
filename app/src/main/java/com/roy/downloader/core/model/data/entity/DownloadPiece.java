@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.model.data.entity;
 
 import android.os.Parcel;
@@ -58,8 +38,7 @@ import static androidx.room.ForeignKey.CASCADE;
                 parentColumns = "id",
                 childColumns = "infoId",
                 onDelete = CASCADE))
-public class DownloadPiece implements Parcelable
-{
+public class DownloadPiece implements Parcelable {
     @ColumnInfo(name = "pieceIndex")
     public int index;
     @NonNull
@@ -70,8 +49,7 @@ public class DownloadPiece implements Parcelable
     public String statusMsg;
     public long speed;
 
-    public DownloadPiece(@NonNull UUID infoId, int index, long size, long curBytes)
-    {
+    public DownloadPiece(@NonNull UUID infoId, int index, long size, long curBytes) {
         this.infoId = infoId;
         this.index = index;
         this.size = size;
@@ -79,9 +57,8 @@ public class DownloadPiece implements Parcelable
     }
 
     @Ignore
-    public DownloadPiece(@NonNull Parcel source)
-    {
-        infoId = (UUID)source.readSerializable();
+    public DownloadPiece(@NonNull Parcel source) {
+        infoId = (UUID) source.readSerializable();
         size = source.readLong();
         index = source.readInt();
         curBytes = source.readLong();
@@ -90,14 +67,12 @@ public class DownloadPiece implements Parcelable
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(infoId);
         dest.writeLong(size);
         dest.writeInt(index);
@@ -107,25 +82,20 @@ public class DownloadPiece implements Parcelable
     }
 
     public static final Creator<DownloadPiece> CREATOR =
-            new Creator<DownloadPiece>()
-            {
+            new Creator<>() {
                 @Override
-                public DownloadPiece createFromParcel(Parcel source)
-                {
+                public DownloadPiece createFromParcel(Parcel source) {
                     return new DownloadPiece(source);
                 }
 
                 @Override
-                public DownloadPiece[] newArray(int size)
-                {
+                public DownloadPiece[] newArray(int size) {
                     return new DownloadPiece[size];
                 }
             };
 
-
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         int prime = 31, result = 1;
 
         result = prime * result + index;
@@ -135,15 +105,12 @@ public class DownloadPiece implements Parcelable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (!(o instanceof DownloadPiece))
+    public boolean equals(Object o) {
+        if (!(o instanceof DownloadPiece piece))
             return false;
 
         if (o == this)
             return true;
-
-        DownloadPiece piece = (DownloadPiece)o;
 
         return infoId.equals(piece.infoId) &&
                 index == piece.index &&
@@ -154,9 +121,9 @@ public class DownloadPiece implements Parcelable
                 (statusMsg == null || statusMsg.equals(piece.statusMsg));
     }
 
+    @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DownloadPiece{" +
                 "index=" + index +
                 ", infoId=" + infoId +

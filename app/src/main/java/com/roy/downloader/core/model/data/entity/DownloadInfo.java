@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.model.data.entity;
 
 import android.net.Uri;
@@ -44,8 +24,7 @@ import java.util.UUID;
  */
 
 @Entity
-public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
-{
+public class DownloadInfo implements Parcelable, Comparable<DownloadInfo> {
     /* Piece number can't be less or equal zero */
     public static final int MIN_PIECES = 1;
     /* Recommended max number of pieces */
@@ -74,7 +53,6 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
      * a Retry-After response header with a parameter in delta-seconds
      */
     public static final int MAX_RETRY_AFTER = 24 * 60 * 60; /* 24 h */
-
 
     @PrimaryKey
     @NonNull
@@ -115,8 +93,7 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
 
     public DownloadInfo(@NonNull Uri dirPath,
                         @NonNull String url,
-                        @NonNull String fileName)
-    {
+                        @NonNull String fileName) {
         this.id = UUID.randomUUID();
         this.dirPath = dirPath;
         this.url = url;
@@ -150,9 +127,8 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
     }
 
     @Ignore
-    public DownloadInfo(@NonNull Parcel source)
-    {
-        id = (UUID)source.readSerializable();
+    public DownloadInfo(@NonNull Parcel source) {
+        id = (UUID) source.readSerializable();
         dirPath = source.readParcelable(Uri.class.getClassLoader());
         url = source.readString();
         fileName = source.readString();
@@ -177,14 +153,12 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeSerializable(id);
         dest.writeParcelable(dirPath, flags);
         dest.writeString(url);
@@ -193,39 +167,35 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
         dest.writeString(mimeType);
         dest.writeLong(totalBytes);
         dest.writeInt(statusCode);
-        dest.writeByte((byte)(unmeteredConnectionsOnly ? 1 : 0));
+        dest.writeByte((byte) (unmeteredConnectionsOnly ? 1 : 0));
         dest.writeInt(numPieces);
-        dest.writeByte((byte)(retry ? 1 : 0));
+        dest.writeByte((byte) (retry ? 1 : 0));
         dest.writeString(statusMsg);
         dest.writeLong(dateAdded);
         dest.writeInt(visibility);
-        dest.writeByte((byte)(hasMetadata ? 1 : 0));
+        dest.writeByte((byte) (hasMetadata ? 1 : 0));
         dest.writeString(userAgent);
         dest.writeInt(numFailed);
         dest.writeInt(retryAfter);
         dest.writeLong(lastModify);
         dest.writeString(checksum);
-        dest.writeByte((byte)(uncompressArchive ? 1 : 0));
-        dest.writeByte((byte)(partialSupport ? 1 : 0));
+        dest.writeByte((byte) (uncompressArchive ? 1 : 0));
+        dest.writeByte((byte) (partialSupport ? 1 : 0));
     }
 
-    public static final Parcelable.Creator<DownloadInfo> CREATOR = new Parcelable.Creator<>()
-            {
-                @Override
-                public DownloadInfo createFromParcel(Parcel source)
-                {
-                    return new DownloadInfo(source);
-                }
+    public static final Parcelable.Creator<DownloadInfo> CREATOR = new Parcelable.Creator<>() {
+        @Override
+        public DownloadInfo createFromParcel(Parcel source) {
+            return new DownloadInfo(source);
+        }
 
-                @Override
-                public DownloadInfo[] newArray(int size)
-                {
-                    return new DownloadInfo[size];
-                }
-            };
+        @Override
+        public DownloadInfo[] newArray(int size) {
+            return new DownloadInfo[size];
+        }
+    };
 
-    public void setNumPieces(int numPieces)
-    {
+    public void setNumPieces(int numPieces) {
         if (numPieces <= 0)
             throw new IllegalArgumentException("Piece number can't be less or equal zero");
 
@@ -238,13 +208,11 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
         this.numPieces = numPieces;
     }
 
-    public int getNumPieces()
-    {
+    public int getNumPieces() {
         return numPieces;
     }
 
-    public List<DownloadPiece> makePieces()
-    {
+    public List<DownloadPiece> makePieces() {
         List<DownloadPiece> pieces = new ArrayList<>();
         long piecesSize = -1;
         long lastPieceSize = -1;
@@ -263,8 +231,7 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
         return pieces;
     }
 
-    public long pieceStartPos(@NonNull DownloadPiece piece)
-    {
+    public long pieceStartPos(@NonNull DownloadPiece piece) {
         if (totalBytes <= 0)
             return 0;
 
@@ -273,41 +240,34 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
         return piece.index * pieceSize;
     }
 
-    public long pieceEndPos(@NonNull DownloadPiece piece)
-    {
+    public long pieceEndPos(@NonNull DownloadPiece piece) {
         if (piece.size <= 0)
             return -1;
 
         return pieceStartPos(piece) + piece.size - 1;
     }
 
-    public long getDownloadedBytes(@NonNull DownloadPiece piece)
-    {
+    public long getDownloadedBytes(@NonNull DownloadPiece piece) {
         return piece.curBytes - pieceStartPos(piece);
     }
 
     @Override
-    public int compareTo(@NonNull DownloadInfo another)
-    {
+    public int compareTo(@NonNull DownloadInfo another) {
         return fileName.compareTo(another.fileName);
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return id.hashCode();
     }
 
     @Override
-    public boolean equals(Object o)
-    {
-        if (!(o instanceof DownloadInfo))
+    public boolean equals(Object o) {
+        if (!(o instanceof DownloadInfo info))
             return false;
 
         if (o == this)
             return true;
-
-        DownloadInfo info = (DownloadInfo)o;
 
         return id.equals(info.id) &&
                 dirPath.equals(info.dirPath) &&
@@ -332,9 +292,9 @@ public class DownloadInfo implements Parcelable, Comparable<DownloadInfo>
                 uncompressArchive == info.uncompressArchive;
     }
 
+    @NonNull
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "DownloadInfo{" +
                 "id=" + id +
                 ", dirPath=" + dirPath +
