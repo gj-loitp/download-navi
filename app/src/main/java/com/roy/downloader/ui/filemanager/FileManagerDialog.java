@@ -72,7 +72,7 @@ import io.reactivex.disposables.Disposable;
  */
 
 public class FileManagerDialog extends AppCompatActivity
-        implements FileManagerAdapter.ViewHolder.ClickListener
+        implements AdapterFileManager.ViewHolder.ClickListener
 {
     @SuppressWarnings("unused")
     private static final String TAG = FileManagerDialog.class.getSimpleName();
@@ -93,7 +93,7 @@ public class FileManagerDialog extends AppCompatActivity
     private LinearLayoutManager layoutManager;
     /* Save state scrolling */
     private Parcelable filesListState;
-    private FileManagerAdapter adapter;
+    private AdapterFileManager adapter;
 
     private FileManagerViewModel viewModel;
     private BaseAlertDialog inputNameDialog;
@@ -178,7 +178,7 @@ public class FileManagerDialog extends AppCompatActivity
         binding.fileList.setLayoutManager(layoutManager);
         binding.fileList.setItemAnimator(new DefaultItemAnimator());
 
-        adapter = new FileManagerAdapter(viewModel.config.highlightFileTypes, this);
+        adapter = new AdapterFileManager(viewModel.config.highlightFileTypes, this);
         binding.fileList.setAdapter(adapter);
 
         binding.swipeContainer.setOnRefreshListener(this::refreshDir);

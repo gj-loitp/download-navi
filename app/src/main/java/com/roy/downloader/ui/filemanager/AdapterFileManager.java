@@ -1,22 +1,3 @@
-/*
- * Copyright (C) 2016, 2019, 2020 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of LibreTorrent.
- *
- * LibreTorrent is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * LibreTorrent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with LibreTorrent.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.filemanager;
 
 import android.content.Context;
@@ -47,10 +28,9 @@ import java.util.List;
  * The adapter for directory or file chooser dialog.
  */
 
-public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManagerAdapter.ViewHolder>
-{
+public class AdapterFileManager extends ListAdapter<FileManagerNode, AdapterFileManager.ViewHolder> {
     @SuppressWarnings("unused")
-    private static final String TAG = FileManagerAdapter.class.getSimpleName();
+    private static final String TAG = AdapterFileManager.class.getSimpleName();
 
     private final ViewHolder.ClickListener clickListener;
     private final List<String> highlightFileTypes;
@@ -62,8 +42,7 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
         return (directoryFirst == 0 ? byName : directoryFirst);
     };
 
-    public FileManagerAdapter(List<String> highlightFileTypes, ViewHolder.ClickListener clickListener)
-    {
+    public AdapterFileManager(List<String> highlightFileTypes, ViewHolder.ClickListener clickListener) {
         super(diffCallback);
 
         this.clickListener = clickListener;
@@ -72,60 +51,51 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.v_item_filemanager, parent, false);
 
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.bind(getItem(position), highlightFileTypes, clickListener);
     }
 
     @Override
-    public void submitList(@Nullable List<FileManagerNode> list)
-    {
+    public void submitList(@Nullable List<FileManagerNode> list) {
         if (list != null)
             Collections.sort(list, directoryFirstCmp);
 
         super.submitList(list);
     }
 
-    public static final DiffUtil.ItemCallback<FileManagerNode> diffCallback = new DiffUtil.ItemCallback<FileManagerNode>()
-    {
+    public static final DiffUtil.ItemCallback<FileManagerNode> diffCallback = new DiffUtil.ItemCallback<FileManagerNode>() {
         @Override
         public boolean areContentsTheSame(@NonNull FileManagerNode oldItem,
-                                          @NonNull FileManagerNode newItem)
-        {
+                                          @NonNull FileManagerNode newItem) {
             return oldItem.equals(newItem);
         }
 
         @Override
         public boolean areItemsTheSame(@NonNull FileManagerNode oldItem,
-                                       @NonNull FileManagerNode newItem)
-        {
+                                       @NonNull FileManagerNode newItem) {
             return oldItem.equals(newItem);
         }
     };
 
-    public static class ViewHolder extends RecyclerView.ViewHolder
-    {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView fileName;
         private final ImageView fileIcon;
 
-        public ViewHolder(View itemView)
-        {
+        public ViewHolder(View itemView) {
             super(itemView);
 
             fileName = itemView.findViewById(R.id.fileName);
             fileIcon = itemView.findViewById(R.id.fileIcon);
         }
 
-        void bind(FileManagerNode item, List<String> highlightFileTypes, ClickListener listener)
-        {
+        void bind(FileManagerNode item, List<String> highlightFileTypes, ClickListener listener) {
             Context context = itemView.getContext();
 
             itemView.setOnClickListener((v) -> {
@@ -141,14 +111,14 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
 
                 } else {
                     TypedArray a = context.obtainStyledAttributes(new TypedValue().data,
-                            new int[]{ android.R.attr.textColorPrimary });
+                            new int[]{android.R.attr.textColorPrimary});
                     fileName.setTextColor(a.getColor(0, 0));
                     a.recycle();
                 }
 
             } else {
                 TypedArray a = context.obtainStyledAttributes(new TypedValue().data,
-                        new int[]{ android.R.attr.textColorSecondary });
+                        new int[]{android.R.attr.textColorSecondary});
                 fileName.setTextColor(a.getColor(0, 0));
                 a.recycle();
             }
@@ -165,8 +135,7 @@ public class FileManagerAdapter extends ListAdapter<FileManagerNode, FileManager
             }
         }
 
-        public interface ClickListener
-        {
+        public interface ClickListener {
             void onItemClicked(FileManagerNode item);
         }
     }
