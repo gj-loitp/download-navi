@@ -26,7 +26,7 @@ final class PathResolver {
      */
     public static String resolve(String base, String ref) {
         String merged = merge(base, ref);
-        if (merged == null || merged.isEmpty()) {
+        if (merged.isEmpty()) {
             return "";
         }
         String[] parts = merged.split("/", -1);
@@ -96,19 +96,16 @@ final class PathResolver {
         // Get last element, if it was '.' or '..' we need
         // to end in a slash.
         switch (parts[parts.length - 1]) {
-            case ".":
-            case "..":
+            case ".", ".." ->
                 // Add an empty last string, it will be turned into
                 // a slash when joined together.
-                result.add("");
-                break;
+                    result.add("");
         }
 
-        return "/" + join("/", result);
+        return "/" + join(result);
     }
 
-    private static String join(CharSequence delimiter, List<String> tokens)
-    {
+    private static String join(List<String> tokens) {
         int length = tokens.size();
         if (length == 0)
             return "";
@@ -116,7 +113,7 @@ final class PathResolver {
         StringBuilder sb = new StringBuilder();
         sb.append(tokens.get(0));
         for (int i = 1; i < length; i++) {
-            sb.append(delimiter);
+            sb.append((CharSequence) "/");
             sb.append(tokens.get(i));
         }
 
