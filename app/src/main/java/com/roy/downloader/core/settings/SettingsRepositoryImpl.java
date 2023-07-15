@@ -85,10 +85,10 @@ public class SettingsRepositoryImpl implements SettingsRepository {
         static final boolean browserEnableCaching = true;
         static final boolean browserEnableCookies = true;
         static final boolean browserDisableFromSystem = false;
-        static final String browserStartPage = "https://duckduckgo.com";
+        static final String browserStartPage = "https://google.com";
         static final boolean browserBottomAddressBar = true;
         static final boolean browserDoNotTrack = true;
-        static final String browserSearchEngine = "https://duckduckgo.com/?q={searchTerms}";
+        static final String browserSearchEngine = "https://google.com/?q={searchTerms}";
         static final boolean browserHideMenuIcon = false;
         static final boolean askDisableBatteryOptimization = true;
         static final boolean askNotificationPermission = true;
