@@ -69,24 +69,29 @@ public class FragmentSettings extends PreferenceFragmentCompat {
         }
 
         Preference appearance = findPreference(FragmentAppearanceSettings.class.getSimpleName());
-        assert appearance != null;
-        appearance.setOnPreferenceClickListener(prefClickListener);
+        if (appearance != null) {
+            appearance.setOnPreferenceClickListener(prefClickListener);
+        }
 
         Preference behavior = findPreference(FragmentBehaviorSettings.class.getSimpleName());
-        assert behavior != null;
-        behavior.setOnPreferenceClickListener(prefClickListener);
+        if (behavior != null) {
+            behavior.setOnPreferenceClickListener(prefClickListener);
+        }
 
         Preference storage = findPreference(FragmentStorageSettings.class.getSimpleName());
-        assert storage != null;
-        storage.setOnPreferenceClickListener(prefClickListener);
+        if (storage != null) {
+            storage.setOnPreferenceClickListener(prefClickListener);
+        }
 
         Preference browser = findPreference(FragmentBrowserSettings.class.getSimpleName());
-        assert browser != null;
-        browser.setOnPreferenceClickListener(prefClickListener);
+        if (browser != null) {
+            browser.setOnPreferenceClickListener(prefClickListener);
+        }
 
         Preference limitations = findPreference(FragmentLimitationsSettings.class.getSimpleName());
-        assert limitations != null;
-        limitations.setOnPreferenceClickListener(prefClickListener);
+        if (limitations != null) {
+            limitations.setOnPreferenceClickListener(prefClickListener);
+        }
     }
 
     private final Preference.OnPreferenceClickListener prefClickListener = (preference) -> {
