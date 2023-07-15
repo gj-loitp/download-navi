@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.main;
 
 import android.app.Dialog;
@@ -80,8 +60,7 @@ import java.util.List;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public class MainActivity extends AppCompatActivity
-{
+public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -118,13 +97,12 @@ public class MainActivity extends AppCompatActivity
     private PermissionManager permissionManager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme(Utils.getAppTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
         if (getIntent().getAction() != null &&
-            getIntent().getAction().equals(NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP)) {
+                getIntent().getAction().equals(NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP)) {
             finish();
             return;
         }
@@ -133,9 +111,9 @@ public class MainActivity extends AppCompatActivity
         fragmentViewModel = provider.get(DownloadsViewModel.class);
         dialogViewModel = provider.get(BaseAlertDialog.SharedViewModel.class);
         FragmentManager fm = getSupportFragmentManager();
-        aboutDialog = (BaseAlertDialog)fm.findFragmentByTag(TAG_ABOUT_DIALOG);
-        permDeniedDialog = (PermissionDeniedDialog)fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
-        batteryDialog = (BatteryOptimizationDialog)fm.findFragmentByTag(TAG_BATTERY_DIALOG);
+        aboutDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_ABOUT_DIALOG);
+        permDeniedDialog = (PermissionDeniedDialog) fm.findFragmentByTag(TAG_PERM_DENIED_DIALOG);
+        batteryDialog = (BatteryOptimizationDialog) fm.findFragmentByTag(TAG_BATTERY_DIALOG);
 
         permissionManager = new PermissionManager(this, new PermissionManager.Callback() {
             @Override
@@ -176,8 +154,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initLayout()
-    {
+    private void initLayout() {
         toolbar = findViewById(R.id.toolbar);
         coordinatorLayout = findViewById(R.id.coordinator);
         navigationView = findViewById(R.id.navigationView);
@@ -224,8 +201,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener((v) -> startActivity(new Intent(this, ActivityAddDownload.class)));
     }
 
-    private void initDrawer()
-    {
+    private void initDrawer() {
         drawerItemManager = new RecyclerViewExpandableItemManager(null);
         drawerItemManager.setDefaultGroupsExpandedState(false);
         drawerItemManager.setOnGroupCollapseListener((groupPosition, fromUser, payload) -> {
@@ -258,8 +234,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onPostCreate(Bundle savedInstanceState)
-    {
+    protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
         if (toggle != null)
@@ -267,8 +242,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         subscribeAlertDialog();
@@ -276,15 +250,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
 
         disposables.clear();
     }
 
-    private void subscribeAlertDialog()
-    {
+    private void subscribeAlertDialog() {
         Disposable d = dialogViewModel.observeEvents()
                 .subscribe((event) -> {
                     if (event.dialogTag == null) {
@@ -339,8 +311,7 @@ public class MainActivity extends AppCompatActivity
                 }));
     }
 
-    private void onDrawerGroupsCreated()
-    {
+    private void onDrawerGroupsCreated() {
         for (int pos = 0; pos < drawerAdapter.getGroupCount(); pos++) {
             DrawerGroup group = drawerAdapter.getGroup(pos);
             if (group == null)
@@ -367,16 +338,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void applyExpandState(DrawerGroup group, int pos)
-    {
+    private void applyExpandState(DrawerGroup group, int pos) {
         if (group.getDefaultExpandState())
             drawerItemManager.expandGroup(pos);
         else
             drawerItemManager.collapseGroup(pos);
     }
 
-    private void saveGroupExpandState(int groupPosition, boolean expanded)
-    {
+    private void saveGroupExpandState(int groupPosition, boolean expanded) {
         DrawerGroup group = drawerAdapter.getGroup(groupPosition);
         if (group == null)
             return;
@@ -402,8 +371,7 @@ public class MainActivity extends AppCompatActivity
                     .apply();
     }
 
-    private void onDrawerItemSelected(DrawerGroup group, DrawerGroupItem item)
-    {
+    private void onDrawerItemSelected(DrawerGroup group, DrawerGroupItem item) {
         Resources res = getResources();
         String prefKey = null;
         if (group.id == res.getInteger(R.integer.drawer_category_id)) {
@@ -433,8 +401,7 @@ public class MainActivity extends AppCompatActivity
             drawerLayout.closeDrawer(GravityCompat.START);
     }
 
-    private void saveSelectionState(String prefKey, DrawerGroupItem item)
-    {
+    private void saveSelectionState(String prefKey, DrawerGroupItem item) {
         PreferenceManager.getDefaultSharedPreferences(this)
                 .edit()
                 .putLong(prefKey, item.getId())
@@ -442,29 +409,25 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        searchView = (SearchView)menu.findItem(R.id.search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         initSearch();
 
         return true;
     }
 
-    private void initSearch()
-    {
+    private void initSearch() {
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setOnCloseListener(() -> {
             fragmentViewModel.resetSearch();
 
             return false;
         });
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
-        {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit(String query)
-            {
+            public boolean onQueryTextSubmit(String query) {
                 fragmentViewModel.setSearchQuery(query);
                 /* Submit the search will hide the keyboard */
                 searchView.clearFocus();
@@ -473,15 +436,14 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public boolean onQueryTextChange(String newText)
-            {
+            public boolean onQueryTextChange(String newText) {
                 fragmentViewModel.setSearchQuery(newText);
 
                 return true;
             }
         });
         searchView.setQueryHint(getString(R.string.search));
-        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         /* Assumes current activity is the searchable activity */
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
     }
@@ -494,8 +456,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.pauseAllMenu) {
             pauseAll();
@@ -515,18 +476,15 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void pauseAll()
-    {
+    private void pauseAll() {
         engine.pauseAllDownloads();
     }
 
-    private void resumeAll()
-    {
+    private void resumeAll() {
         engine.resumeDownloads(false);
     }
 
-    private void showAboutDialog()
-    {
+    private void showAboutDialog() {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(TAG_ABOUT_DIALOG) == null) {
             aboutDialog = BaseAlertDialog.newInstance(
@@ -541,8 +499,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void initAboutDialog()
-    {
+    private void initAboutDialog() {
         if (aboutDialog == null)
             return;
 
@@ -558,15 +515,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void openChangelogLink()
-    {
+    private void openChangelogLink() {
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(getString(R.string.about_changelog_link)));
         startActivity(i);
     }
 
-    public void shutdown()
-    {
+    public void shutdown() {
         Intent i = new Intent(getApplicationContext(), DownloadService.class);
         i.setAction(DownloadService.ACTION_SHUTDOWN);
         startService(i);

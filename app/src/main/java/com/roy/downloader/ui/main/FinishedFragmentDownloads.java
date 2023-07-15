@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.main;
 
 import android.app.Dialog;
@@ -43,10 +23,7 @@ import java.util.Collections;
 
 import io.reactivex.disposables.Disposable;
 
-public class FinishedFragmentDownloads extends FragmentDownloads
-    implements DownloadListAdapter.FinishClickListener,
-               DownloadListAdapter.ErrorClickListener
-{
+public class FinishedFragmentDownloads extends FragmentDownloads implements DownloadListAdapter.FinishClickListener, DownloadListAdapter.ErrorClickListener {
     @SuppressWarnings("unused")
     private static final String TAG = FinishedFragmentDownloads.class.getSimpleName();
 
@@ -57,8 +34,7 @@ public class FinishedFragmentDownloads extends FragmentDownloads
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private DownloadInfo downloadForDeletion;
 
-    public static FinishedFragmentDownloads newInstance()
-    {
+    public static FinishedFragmentDownloads newInstance() {
         FinishedFragmentDownloads fragment = new FinishedFragmentDownloads();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -66,58 +42,52 @@ public class FinishedFragmentDownloads extends FragmentDownloads
         return fragment;
     }
 
-    public FinishedFragmentDownloads()
-    {
+    public FinishedFragmentDownloads() {
         super((item) -> StatusCode.isStatusCompleted(item.info.statusCode));
     }
 
     @Override
-    public void onStart()
-    {
+    public void onStart() {
         super.onStart();
 
         subscribeAdapter();
         subscribeAlertDialog();
     }
 
-    private void subscribeAlertDialog()
-    {
-        Disposable d = dialogViewModel.observeEvents()
-                .subscribe((event) -> {
-                    if (event.dialogTag == null || !event.dialogTag.equals(TAG_DELETE_DOWNLOAD_DIALOG) || deleteDownloadDialog == null)
-                        return;
-                    switch (event.type) {
-                        case POSITIVE_BUTTON_CLICKED:
-                            Dialog dialog = deleteDownloadDialog.getDialog();
-                            if (dialog != null && downloadForDeletion != null) {
-                                CheckBox withFile = dialog.findViewById(R.id.deleteWithFile);
-                                deleteDownload(downloadForDeletion, withFile.isChecked());
-                            }
-                        case NEGATIVE_BUTTON_CLICKED:
-                            downloadForDeletion = null;
-                            deleteDownloadDialog.dismiss();
-                            break;
+    private void subscribeAlertDialog() {
+        Disposable d = dialogViewModel.observeEvents().subscribe((event) -> {
+            if (event.dialogTag == null || !event.dialogTag.equals(TAG_DELETE_DOWNLOAD_DIALOG) || deleteDownloadDialog == null)
+                return;
+            switch (event.type) {
+                case POSITIVE_BUTTON_CLICKED:
+                    Dialog dialog = deleteDownloadDialog.getDialog();
+                    if (dialog != null && downloadForDeletion != null) {
+                        CheckBox withFile = dialog.findViewById(R.id.deleteWithFile);
+                        deleteDownload(downloadForDeletion, withFile.isChecked());
                     }
-                });
+                case NEGATIVE_BUTTON_CLICKED:
+                    downloadForDeletion = null;
+                    deleteDownloadDialog.dismiss();
+                    break;
+            }
+        });
         disposables.add(d);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState)
-    {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null)
             downloadForDeletion = savedInstanceState.getParcelable(TAG_DOWNLOAD_FOR_DELETION);
 
         FragmentManager fm = getChildFragmentManager();
-        deleteDownloadDialog = (BaseAlertDialog)fm.findFragmentByTag(TAG_DELETE_DOWNLOAD_DIALOG);
+        deleteDownloadDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_DELETE_DOWNLOAD_DIALOG);
         dialogViewModel = new ViewModelProvider(activity).get(BaseAlertDialog.SharedViewModel.class);
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState)
-    {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(TAG_DOWNLOAD_FOR_DELETION, downloadForDeletion);
 
         super.onSaveInstanceState(outState);
@@ -134,56 +104,36 @@ public class FinishedFragmentDownloads extends FragmentDownloads
     }
 
     @Override
-    public void onItemMenuClicked(int menuId, @NonNull DownloadItem item)
-    {
+    public void onItemMenuClicked(int menuId, @NonNull DownloadItem item) {
         switch (menuId) {
-            case R.id.deleteMenu:
+            case R.id.deleteMenu -> {
                 downloadForDeletion = item.info;
                 showDeleteDownloadDialog();
-                break;
-            case R.id.openDetailsMenu:
-                showDetailsDialog(item.info.id);
-                break;
-            case R.id.shareMenu:
-                shareDownload(item);
-                break;
-            case R.id.shareUrlMenu:
-                shareUrl(item);
-                break;
-            case R.id.reDownloadMenu:
-                showAddDownloadDialog(item.info);
-                break;
+            }
+            case R.id.openDetailsMenu -> showDetailsDialog(item.info.id);
+            case R.id.shareMenu -> shareDownload(item);
+            case R.id.shareUrlMenu -> shareUrl(item);
+            case R.id.reDownloadMenu -> showAddDownloadDialog(item.info);
         }
     }
 
     @Override
-    public void onItemResumeClicked(@NonNull DownloadItem item)
-    {
+    public void onItemResumeClicked(@NonNull DownloadItem item) {
         viewModel.resumeIfError(item.info);
     }
 
-    private void showDeleteDownloadDialog()
-    {
-        if (!isAdded())
-            return;
+    private void showDeleteDownloadDialog() {
+        if (!isAdded()) return;
 
         FragmentManager fm = getChildFragmentManager();
         if (fm.findFragmentByTag(TAG_DELETE_DOWNLOAD_DIALOG) == null) {
-            deleteDownloadDialog = BaseAlertDialog.newInstance(
-                    getString(R.string.deleting),
-                    getString(R.string.delete_selected_download),
-                    R.layout.dlg_dialog_delete_downloads,
-                    getString(R.string.ok),
-                    getString(R.string.cancel),
-                    null,
-                    false);
+            deleteDownloadDialog = BaseAlertDialog.newInstance(getString(R.string.deleting), getString(R.string.delete_selected_download), R.layout.dlg_dialog_delete_downloads, getString(R.string.ok), getString(R.string.cancel), null, false);
 
             deleteDownloadDialog.show(fm, TAG_DELETE_DOWNLOAD_DIALOG);
         }
     }
 
-    private void deleteDownload(DownloadInfo info, boolean withFile)
-    {
+    private void deleteDownload(DownloadInfo info, boolean withFile) {
         viewModel.deleteDownload(info, withFile);
     }
 
@@ -192,20 +142,15 @@ public class FinishedFragmentDownloads extends FragmentDownloads
         if (intent != null) {
             startActivity(Intent.createChooser(intent, getString(R.string.share_via)));
         } else {
-            Toast.makeText(activity.getApplicationContext(),
-                    getResources().getQuantityString(R.plurals.unable_sharing, 1), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplicationContext(), getResources().getQuantityString(R.plurals.unable_sharing, 1), Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void shareUrl(DownloadItem item)
-    {
-        startActivity(Intent.createChooser(
-                Utils.makeShareUrlIntent(item.info.url),
-                getString(R.string.share_via)));
+    private void shareUrl(DownloadItem item) {
+        startActivity(Intent.createChooser(Utils.makeShareUrlIntent(item.info.url), getString(R.string.share_via)));
     }
 
-    private void showAddDownloadDialog(DownloadInfo info)
-    {
+    private void showAddDownloadDialog(DownloadInfo info) {
         AddInitParams initParams = new AddInitParams();
         initParams.url = info.url;
         initParams.dirPath = info.dirPath;
