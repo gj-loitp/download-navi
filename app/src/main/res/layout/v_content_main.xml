@@ -40,5 +40,6 @@
         android:layout_margin="@dimen/fab_margin"
         android:contentDescription="@string/add"
         android:focusable="true"
-        app:srcCompat="@drawable/ic_add_black_24dp" />
+        app:srcCompat="@drawable/ic_add_black_24dp"
+        app:tint="@color/white" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
