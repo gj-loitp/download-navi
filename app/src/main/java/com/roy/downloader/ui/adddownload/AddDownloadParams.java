@@ -2,6 +2,7 @@ package com.roy.downloader.ui.adddownload;
 
 import android.net.Uri;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.library.baseAdapters.BR;
@@ -202,6 +203,7 @@ public class AddDownloadParams extends BaseObservable {
         notifyPropertyChanged(BR.uncompressArchive);
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "AddDownloadParams{" +

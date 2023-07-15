@@ -47,6 +47,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.Completable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -130,7 +131,7 @@ public class AddDownloadViewModel extends AndroidViewModel {
                 getPrefUserAgent().userAgent :
                 initParams.userAgent);
         params.setDirPath(initParams.dirPath == null ?
-                Uri.fromFile(new File(fs.getDefaultDownloadPath())) :
+                Uri.fromFile(new File(Objects.requireNonNull(fs.getDefaultDownloadPath()))) :
                 initParams.dirPath);
         params.setUnmeteredConnectionsOnly(
                 initParams.unmeteredConnectionsOnly != null && initParams.unmeteredConnectionsOnly
@@ -171,7 +172,7 @@ public class AddDownloadViewModel extends AndroidViewModel {
     }
 
     public UserAgent getPrefUserAgent() {
-        return new UserAgent(pref.userAgent());
+        return new UserAgent(Objects.requireNonNull(pref.userAgent()));
     }
 
     public void savePrefUserAgent(UserAgent userAgent) {
@@ -440,6 +441,7 @@ public class AddDownloadViewModel extends AndroidViewModel {
         String mimeType = params.getMimeType();
         if (TextUtils.isEmpty(fs.getExtension(fileName)) &&
                 !"application/octet-stream".equals(mimeType)) {
+            assert fileName != null;
             fileName = fs.appendExtension(fileName, mimeType);
         }
         if (filePath != null && params.isReplaceFile()) {
@@ -449,9 +451,11 @@ public class AddDownloadViewModel extends AndroidViewModel {
                 Log.w(TAG, "Unable to truncate file size: " + Log.getStackTraceString(e));
             }
         } else {
+            assert fileName != null;
             fileName = fs.makeFilename(params.getDirPath(), fileName);
         }
 
+        assert fileName != null;
         DownloadInfo info = new DownloadInfo(dirPath, url, fileName);
         info.mimeType = params.getMimeType();
         info.totalBytes = params.getTotalBytes();
