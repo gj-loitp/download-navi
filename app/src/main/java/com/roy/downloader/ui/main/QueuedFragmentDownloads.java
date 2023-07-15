@@ -26,22 +26,22 @@ import androidx.annotation.NonNull;
 
 import com.roy.downloader.core.model.data.StatusCode;
 
-public class QueuedDownloadsFragment extends DownloadsFragment
+public class QueuedFragmentDownloads extends FragmentDownloads
     implements DownloadListAdapter.QueueClickListener
 {
     @SuppressWarnings("unused")
-    private static final String TAG = QueuedDownloadsFragment.class.getSimpleName();
+    private static final String TAG = QueuedFragmentDownloads.class.getSimpleName();
 
-    public static QueuedDownloadsFragment newInstance()
+    public static QueuedFragmentDownloads newInstance()
     {
-        QueuedDownloadsFragment fragment = new QueuedDownloadsFragment();
+        QueuedFragmentDownloads fragment = new QueuedFragmentDownloads();
         Bundle args = new Bundle();
         fragment.setArguments(args);
 
         return fragment;
     }
 
-    public QueuedDownloadsFragment()
+    public QueuedFragmentDownloads()
     {
         super((item) -> !StatusCode.isStatusCompleted(item.info.statusCode));
     }

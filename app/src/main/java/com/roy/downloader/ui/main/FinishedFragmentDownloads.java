@@ -43,12 +43,12 @@ import java.util.Collections;
 
 import io.reactivex.disposables.Disposable;
 
-public class FinishedDownloadsFragment extends DownloadsFragment
+public class FinishedFragmentDownloads extends FragmentDownloads
     implements DownloadListAdapter.FinishClickListener,
                DownloadListAdapter.ErrorClickListener
 {
     @SuppressWarnings("unused")
-    private static final String TAG = FinishedDownloadsFragment.class.getSimpleName();
+    private static final String TAG = FinishedFragmentDownloads.class.getSimpleName();
 
     private static final String TAG_DELETE_DOWNLOAD_DIALOG = "delete_download_dialog";
     private static final String TAG_DOWNLOAD_FOR_DELETION = "download_for_deletion";
@@ -57,16 +57,16 @@ public class FinishedDownloadsFragment extends DownloadsFragment
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private DownloadInfo downloadForDeletion;
 
-    public static FinishedDownloadsFragment newInstance()
+    public static FinishedFragmentDownloads newInstance()
     {
-        FinishedDownloadsFragment fragment = new FinishedDownloadsFragment();
+        FinishedFragmentDownloads fragment = new FinishedFragmentDownloads();
         Bundle args = new Bundle();
         fragment.setArguments(args);
 
         return fragment;
     }
 
-    public FinishedDownloadsFragment()
+    public FinishedFragmentDownloads()
     {
         super((item) -> StatusCode.isStatusCompleted(item.info.statusCode));
     }

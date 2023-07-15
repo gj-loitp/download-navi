@@ -9,8 +9,8 @@ class DownloadListPagerAdapter(fa: FragmentActivity) : FragmentStateAdapter(fa) 
     override fun createFragment(position: Int): Fragment {
         /* Stubs */
         return when (position) {
-            QUEUED_FRAG_POS -> QueuedDownloadsFragment.newInstance()
-            COMPLETED_FRAG_POS -> FinishedDownloadsFragment.newInstance()
+            QUEUED_FRAG_POS -> QueuedFragmentDownloads.newInstance()
+            COMPLETED_FRAG_POS -> FinishedFragmentDownloads.newInstance()
             else -> Fragment()
         }
     }
