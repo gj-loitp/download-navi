@@ -1,220 +1,114 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
+package com.roy.downloader.core.settings
 
-package com.roy.downloader.core.settings;
+import io.reactivex.Flowable
 
-import io.reactivex.Flowable;
-
-public interface SettingsRepository
-{
+interface SettingsRepository {
     /*
      * Returns Flowable with key
      */
-
-    Flowable<String> observeSettingsChanged();
+    fun observeSettingsChanged(): Flowable<String?>?
 
     /*
      * Appearance settings
      */
-
-    int theme();
-
-    void theme(int val);
-
-    boolean progressNotify();
-
-    void progressNotify(boolean val);
-
-    boolean finishNotify();
-
-    void finishNotify(boolean val);
-
-    boolean pendingNotify();
-
-    void pendingNotify(boolean val);
-
-    String notifySound();
-
-    void notifySound(String val);
-
-    boolean playSoundNotify();
-
-    void playSoundNotify(boolean val);
-
-    boolean ledIndicatorNotify();
-
-    void ledIndicatorNotify(boolean val);
-
-    boolean vibrationNotify();
-
-    void vibrationNotify(boolean val);
-
-    int ledIndicatorColorNotify();
-
-    void ledIndicatorColorNotify(int val);
+    fun theme(): Int
+    fun theme(`val`: Int)
+    fun progressNotify(): Boolean
+    fun progressNotify(`val`: Boolean)
+    fun finishNotify(): Boolean
+    fun finishNotify(`val`: Boolean)
+    fun pendingNotify(): Boolean
+    fun pendingNotify(`val`: Boolean)
+    fun notifySound(): String?
+    fun notifySound(`val`: String?)
+    fun playSoundNotify(): Boolean
+    fun playSoundNotify(`val`: Boolean)
+    fun ledIndicatorNotify(): Boolean
+    fun ledIndicatorNotify(`val`: Boolean)
+    fun vibrationNotify(): Boolean
+    fun vibrationNotify(`val`: Boolean)
+    fun ledIndicatorColorNotify(): Int
+    fun ledIndicatorColorNotify(`val`: Int)
 
     /*
      * Behavior settings
      */
-
-    boolean unmeteredConnectionsOnly();
-
-    void unmeteredConnectionsOnly(boolean val);
-
-    boolean enableRoaming();
-
-    void enableRoaming(boolean val);
-
-    boolean autostart();
-
-    void autostart(boolean val);
-
-    boolean cpuDoNotSleep();
-
-    void cpuDoNotSleep(boolean val);
-
-    boolean onlyCharging();
-
-    void onlyCharging(boolean val);
-
-    boolean batteryControl();
-
-    void batteryControl(boolean val);
-
-    boolean customBatteryControl();
-
-    void customBatteryControl(boolean val);
-
-    int customBatteryControlValue();
-
-    void customBatteryControlValue(int val);
-
-    int timeout();
-
-    void timeout(int val);
-
-    boolean replaceDuplicateDownloads();
-
-    void replaceDuplicateDownloads(boolean val);
-
-    boolean autoConnect();
-
-    void autoConnect(boolean val);
-
-    String userAgent();
-
-    void userAgent(String val);
+    fun unmeteredConnectionsOnly(): Boolean
+    fun unmeteredConnectionsOnly(`val`: Boolean)
+    fun enableRoaming(): Boolean
+    fun enableRoaming(`val`: Boolean)
+    fun autostart(): Boolean
+    fun autostart(`val`: Boolean)
+    fun cpuDoNotSleep(): Boolean
+    fun cpuDoNotSleep(`val`: Boolean)
+    fun onlyCharging(): Boolean
+    fun onlyCharging(`val`: Boolean)
+    fun batteryControl(): Boolean
+    fun batteryControl(`val`: Boolean)
+    fun customBatteryControl(): Boolean
+    fun customBatteryControl(`val`: Boolean)
+    fun customBatteryControlValue(): Int
+    fun customBatteryControlValue(`val`: Int)
+    fun timeout(): Int
+    fun timeout(`val`: Int)
+    fun replaceDuplicateDownloads(): Boolean
+    fun replaceDuplicateDownloads(`val`: Boolean)
+    fun autoConnect(): Boolean
+    fun autoConnect(`val`: Boolean)
+    fun userAgent(): String?
+    fun userAgent(`val`: String?)
 
     /*
      * Limitation settings
      */
-
-    int maxActiveDownloads();
-
-    void maxActiveDownloads(int val);
-
-    int maxDownloadRetries();
-
-    void maxDownloadRetries(int val);
-
-    int speedLimit();
-
-    void speedLimit(int val);
+    fun maxActiveDownloads(): Int
+    fun maxActiveDownloads(`val`: Int)
+    fun maxDownloadRetries(): Int
+    fun maxDownloadRetries(`val`: Int)
+    fun speedLimit(): Int
+    fun speedLimit(`val`: Int)
 
     /*
      * Storage settings
      */
-
-    String saveDownloadsIn();
-
-    void saveDownloadsIn(String val);
-
-    boolean moveAfterDownload();
-
-    void moveAfterDownload(boolean val);
-
-    String moveAfterDownloadIn();
-
-    void moveAfterDownloadIn(String val);
-
-    boolean deleteFileIfError();
-
-    void deleteFileIfError(boolean val);
-
-    boolean preallocateDiskSpace();
-
-    void preallocateDiskSpace(boolean val);
+    fun saveDownloadsIn(): String?
+    fun saveDownloadsIn(`val`: String?)
+    fun moveAfterDownload(): Boolean
+    fun moveAfterDownload(`val`: Boolean)
+    fun moveAfterDownloadIn(): String?
+    fun moveAfterDownloadIn(`val`: String?)
+    fun deleteFileIfError(): Boolean
+    fun deleteFileIfError(`val`: Boolean)
+    fun preallocateDiskSpace(): Boolean
+    fun preallocateDiskSpace(`val`: Boolean)
 
     /*
      * Browser settings
      */
-
-    boolean browserAllowJavaScript();
-
-    void browserAllowJavaScript(boolean val);
-
-    boolean browserAllowPopupWindows();
-
-    void browserAllowPopupWindows(boolean val);
-
-    boolean browserLauncherIcon();
-
-    void browserLauncherIcon(boolean val);
-
-    boolean browserEnableCaching();
-
-    void browserEnableCaching(boolean val);
-
-    boolean browserEnableCookies();
-
-    void browserEnableCookies(boolean val);
-
-    boolean browserDisableFromSystem();
-
-    void browserDisableFromSystem(boolean val);
-
-    String browserStartPage();
-
-    void browserStartPage(String val);
-
-    boolean browserBottomAddressBar();
-
-    void browserBottomAddressBar(boolean val);
-
-    boolean browserDoNotTrack();
-
-    void browserDoNotTrack(boolean val);
-
-    String browserSearchEngine();
-
-    void browserSearchEngine(String val);
-
-    boolean browserHideMenuIcon();
-
-    void browserHideMenuIcon(boolean val);
-
-    void askDisableBatteryOptimization(boolean val);
-
-    boolean askDisableBatteryOptimization();
-
-    boolean askNotificationPermission();
-
-    void askNotificationPermission(boolean val);
+    fun browserAllowJavaScript(): Boolean
+    fun browserAllowJavaScript(`val`: Boolean)
+    fun browserAllowPopupWindows(): Boolean
+    fun browserAllowPopupWindows(`val`: Boolean)
+    fun browserLauncherIcon(): Boolean
+    fun browserLauncherIcon(`val`: Boolean)
+    fun browserEnableCaching(): Boolean
+    fun browserEnableCaching(`val`: Boolean)
+    fun browserEnableCookies(): Boolean
+    fun browserEnableCookies(`val`: Boolean)
+    fun browserDisableFromSystem(): Boolean
+    fun browserDisableFromSystem(`val`: Boolean)
+    fun browserStartPage(): String?
+    fun browserStartPage(`val`: String?)
+    fun browserBottomAddressBar(): Boolean
+    fun browserBottomAddressBar(`val`: Boolean)
+    fun browserDoNotTrack(): Boolean
+    fun browserDoNotTrack(`val`: Boolean)
+    fun browserSearchEngine(): String?
+    fun browserSearchEngine(`val`: String?)
+    fun browserHideMenuIcon(): Boolean
+    fun browserHideMenuIcon(`val`: Boolean)
+    fun askDisableBatteryOptimization(`val`: Boolean)
+    fun askDisableBatteryOptimization(): Boolean
+    fun askNotificationPermission(): Boolean
+    fun askNotificationPermission(`val`: Boolean)
 }
