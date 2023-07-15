@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.model;
 
 import android.content.Intent;
@@ -85,8 +65,7 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
  * Represent one task of downloading.
  */
 
-class DownloadThreadImpl implements DownloadThread
-{
+class DownloadThreadImpl implements DownloadThread {
     @SuppressWarnings("unused")
     private static final String TAG = DownloadThreadImpl.class.getSimpleName();
 
@@ -104,14 +83,12 @@ class DownloadThreadImpl implements DownloadThread
     private int networkType;
     private final OnBeforeFinishedCallback onBeforeFinishedCallback;
 
-    private class ExecDownloadResult
-    {
+    private static class ExecDownloadResult {
         StopRequest stopRequest;
         List<Future<PieceResult>> pieceResultList;
 
         public ExecDownloadResult(StopRequest stopRequest,
-                                  List<Future<PieceResult>> pieceResultList)
-        {
+                                  List<Future<PieceResult>> pieceResultList) {
             this.stopRequest = stopRequest;
             this.pieceResultList = pieceResultList;
         }
@@ -126,8 +103,7 @@ class DownloadThreadImpl implements DownloadThread
                               @NonNull DataRepository repo,
                               @NonNull SettingsRepository pref,
                               @NonNull FileSystemFacade fs,
-                              @NonNull SystemFacade systemFacade)
-    {
+                              @NonNull SystemFacade systemFacade) {
         this(id, repo, pref, fs, systemFacade, null);
     }
 
@@ -136,8 +112,7 @@ class DownloadThreadImpl implements DownloadThread
                               @NonNull SettingsRepository pref,
                               @NonNull FileSystemFacade fs,
                               @NonNull SystemFacade systemFacade,
-                              OnBeforeFinishedCallback onBeforeFinishedCallback)
-    {
+                              OnBeforeFinishedCallback onBeforeFinishedCallback) {
         this.id = id;
         this.repo = repo;
         this.pref = pref;
@@ -147,30 +122,26 @@ class DownloadThreadImpl implements DownloadThread
     }
 
     @Override
-    public void requestStop()
-    {
+    public void requestStop() {
         stop = true;
         if (exec != null)
             exec.shutdownNow();
     }
 
     @Override
-    public void requestPause()
-    {
+    public void requestPause() {
         pause = true;
         if (exec != null)
             exec.shutdownNow();
     }
 
     @Override
-    public boolean isRunning()
-    {
+    public boolean isRunning() {
         return running;
     }
 
     @Override
-    public DownloadResult call()
-    {
+    public DownloadResult call() {
         running = true;
         try {
             info = repo.getInfoById(id);
@@ -210,7 +181,7 @@ class DownloadThreadImpl implements DownloadThread
 
             checkPiecesStatus(res.pieceResultList);
             StopRequest result = checkPauseStop();
-            if ((result == null ) && onBeforeFinishedCallback != null) {
+            if ((result == null) && onBeforeFinishedCallback != null) {
                 info = onBeforeFinishedCallback.onBeforeFinished(info);
             }
 
@@ -228,20 +199,15 @@ class DownloadThreadImpl implements DownloadThread
         DownloadResult.Status status = DownloadResult.Status.FINISHED;
         if (info != null) {
             switch (info.statusCode) {
-                case STATUS_PAUSED:
-                    status = DownloadResult.Status.PAUSED;
-                    break;
-                case STATUS_STOPPED:
-                    status = DownloadResult.Status.STOPPED;
-                    break;
+                case STATUS_PAUSED -> status = DownloadResult.Status.PAUSED;
+                case STATUS_STOPPED -> status = DownloadResult.Status.STOPPED;
             }
         }
 
         return new DownloadResult(id, status);
     }
 
-    private void finalizeThread()
-    {
+    private void finalizeThread() {
         if (info != null) {
             writeToDatabase(false);
 
@@ -265,8 +231,7 @@ class DownloadThreadImpl implements DownloadThread
         pause = false;
     }
 
-    private void checkPiecesStatus(List<Future<PieceResult>> resList)
-    {
+    private void checkPiecesStatus(List<Future<PieceResult>> resList) {
         if (info.statusCode == HTTP_UNAVAILABLE)
             extractRetryAfter(resList);
 
@@ -330,8 +295,7 @@ class DownloadThreadImpl implements DownloadThread
         }
     }
 
-    private void extractRetryAfter(List<Future<PieceResult>> resList)
-    {
+    private void extractRetryAfter(List<Future<PieceResult>> resList) {
         long maxRetryAfter = 0;
         for (Future<PieceResult> f : resList) {
             PieceResult res;
@@ -351,8 +315,7 @@ class DownloadThreadImpl implements DownloadThread
             info.retryAfter = constrainRetryAfter(maxRetryAfter);
     }
 
-    private void handleRetryableStatus(boolean madeProgress)
-    {
+    private void handleRetryableStatus(boolean madeProgress) {
         info.numFailed++;
 
         if (info.numFailed < pref.maxDownloadRetries()) {
@@ -374,8 +337,7 @@ class DownloadThreadImpl implements DownloadThread
         }
     }
 
-    private Header getETag(List<Header> headers)
-    {
+    private Header getETag(List<Header> headers) {
         for (Header header : headers) {
             if ("ETag".equals(header.name))
                 return header;
@@ -384,8 +346,7 @@ class DownloadThreadImpl implements DownloadThread
         return null;
     }
 
-    private ExecDownloadResult execDownload()
-    {
+    private ExecDownloadResult execDownload() {
         StopRequest ret = null;
         List<Future<PieceResult>> resList = Collections.emptyList();
 
@@ -427,7 +388,7 @@ class DownloadThreadImpl implements DownloadThread
             long availBytes = fs.getDirAvailableBytes(info.dirPath);
             if (availBytes != -1 && availBytes < (info.totalBytes - fileSize)) {
                 ret = new StopRequest(StatusCode.STATUS_INSUFFICIENT_SPACE_ERROR,
-                                    "No space left on device");
+                        "No space left on device");
                 return new ExecDownloadResult(ret, resList);
             }
 
@@ -455,10 +416,9 @@ class DownloadThreadImpl implements DownloadThread
         return new ExecDownloadResult(ret, resList);
     }
 
-    private StopRequest fetchMetadata()
-    {
+    private StopRequest fetchMetadata() {
         final StopRequest[] ret = new StopRequest[1];
-        final boolean[] connectWithReferer = new boolean[] {false};
+        final boolean[] connectWithReferer = new boolean[]{false};
 
         do {
             HttpConnection connection;
@@ -475,48 +435,38 @@ class DownloadThreadImpl implements DownloadThread
             connection.contentRangeLength(true);
             connection.setListener(new HttpConnection.Listener() {
                 @Override
-                public void onConnectionCreated(HttpURLConnection conn)
-                {
+                public void onConnectionCreated(HttpURLConnection conn) {
                     ret[0] = addRequestHeaders(conn);
                 }
 
                 @Override
-                public void onResponseHandle(HttpURLConnection conn, int code, String message)
-                {
+                public void onResponseHandle(HttpURLConnection conn, int code, String message) {
                     switch (code) {
-                        case HTTP_OK:
-                        case HTTP_PARTIAL:
+                        case HTTP_OK, HTTP_PARTIAL -> {
                             connectWithReferer[0] = parseOkHeaders(conn, connectWithReferer[0]);
                             StopRequest r;
                             if ((r = checkPauseStop()) != null)
                                 ret[0] = r;
-                            break;
-                        case HTTP_PRECON_FAILED:
-                            ret[0] = new StopRequest(STATUS_CANNOT_RESUME,
-                                    "Precondition failed");
-                            break;
-                        case HTTP_UNAVAILABLE:
+                        }
+                        case HTTP_PRECON_FAILED -> ret[0] = new StopRequest(STATUS_CANNOT_RESUME,
+                                "Precondition failed");
+                        case HTTP_UNAVAILABLE -> {
                             parseUnavailableHeaders(conn);
                             ret[0] = new StopRequest(HTTP_UNAVAILABLE, message);
-                            break;
-                        case HTTP_INTERNAL_ERROR:
-                            ret[0] = new StopRequest(HTTP_INTERNAL_ERROR, message);
-                            break;
-                        default:
-                            ret[0] = StopRequest.getUnhandledHttpError(code, message);
-                            break;
+                        }
+                        case HTTP_INTERNAL_ERROR ->
+                                ret[0] = new StopRequest(HTTP_INTERNAL_ERROR, message);
+                        default -> ret[0] = StopRequest.getUnhandledHttpError(code, message);
                     }
                 }
 
                 @Override
-                public void onMoved(String newUrl, boolean permanently)
-                {
+                public void onMoved(String newUrl, boolean permanently) {
                     info.url = newUrl;
                 }
 
                 @Override
-                public void onIOException(IOException e)
-                {
+                public void onIOException(IOException e) {
                     if (e instanceof ProtocolException && e.getMessage().startsWith("Unexpected status line"))
                         ret[0] = new StopRequest(STATUS_UNHANDLED_HTTP_CODE, e);
                     else if (e instanceof InterruptedIOException)
@@ -527,8 +477,7 @@ class DownloadThreadImpl implements DownloadThread
                 }
 
                 @Override
-                public void onTooManyRedirects()
-                {
+                public void onTooManyRedirects() {
                     ret[0] = new StopRequest(STATUS_TOO_MANY_REDIRECTS, "Too many redirects");
                 }
             });
@@ -549,8 +498,7 @@ class DownloadThreadImpl implements DownloadThread
         return null;
     }
 
-    private boolean parseOkHeaders(HttpURLConnection conn, boolean needsRefererPrevValue)
-    {
+    private boolean parseOkHeaders(HttpURLConnection conn, boolean needsRefererPrevValue) {
         String mimeType = Intent.normalizeMimeType(conn.getContentType());
         String fileName = null;
         /* Try to determine the MIME type by the filename extension */
@@ -642,30 +590,26 @@ class DownloadThreadImpl implements DownloadThread
         return false;
     }
 
-    private void parseUnavailableHeaders(@NonNull HttpURLConnection conn)
-    {
+    private void parseUnavailableHeaders(@NonNull HttpURLConnection conn) {
         long retryAfter = conn.getHeaderFieldInt("Retry-After", -1);
 
         if (retryAfter > 0)
             info.retryAfter = constrainRetryAfter(retryAfter);
     }
 
-    private int constrainRetryAfter(long retryAfter)
-    {
+    private int constrainRetryAfter(long retryAfter) {
         retryAfter = constrain(retryAfter,
                 DownloadInfo.MIN_RETRY_AFTER,
                 DownloadInfo.MAX_RETRY_AFTER);
 
-        return (int)(retryAfter * DateUtils.SECOND_IN_MILLIS);
+        return (int) (retryAfter * DateUtils.SECOND_IN_MILLIS);
     }
 
-    private long constrain(long amount, long low, long high)
-    {
+    private long constrain(long amount, long low, long high) {
         return amount < low ? low : (amount > high ? high : amount);
     }
 
-    private StopRequest allocFileSpace(Uri filePath)
-    {
+    private StopRequest allocFileSpace(Uri filePath) {
         FileDescriptor fd = null;
         try (FileDescriptorWrapper w = fs.getFD(filePath)) {
             fd = w.open("rw");
@@ -694,14 +638,12 @@ class DownloadThreadImpl implements DownloadThread
         return null;
     }
 
-    private void writeToDatabase(boolean withPieces)
-    {
+    private void writeToDatabase(boolean withPieces) {
         info.lastModify = System.currentTimeMillis();
         repo.updateInfo(info, false, withPieces);
     }
 
-    private StopRequest checkPauseStop()
-    {
+    private StopRequest checkPauseStop() {
         if (pause)
             return new StopRequest(STATUS_PAUSED, "Download paused");
         else if (stop || Thread.currentThread().isInterrupted())

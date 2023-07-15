@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018-2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.model;
 
 import android.net.Uri;
@@ -73,8 +53,7 @@ import static java.net.HttpURLConnection.HTTP_UNAVAILABLE;
  * Represent one task of piece downloading.
  */
 
-class PieceThreadImpl extends Thread implements PieceThread
-{
+class PieceThreadImpl extends Thread implements PieceThread {
     @SuppressWarnings("unused")
     private static final String TAG = PieceThreadImpl.class.getSimpleName();
 
@@ -107,15 +86,13 @@ class PieceThreadImpl extends Thread implements PieceThread
     private FileDescriptor outFd;
     private FileOutputStream fout;
     private InputStream in;
-    private FileDescriptorWrapper fdWrapper;
 
     public PieceThreadImpl(@NonNull UUID infoId,
                            int pieceIndex,
                            @NonNull DataRepository repo,
                            @NonNull FileSystemFacade fs,
                            @NonNull SystemFacade systemFacade,
-                           @NonNull SettingsRepository pref)
-    {
+                           @NonNull SettingsRepository pref) {
         this.infoId = infoId;
         this.pieceIndex = pieceIndex;
         this.repo = repo;
@@ -126,8 +103,7 @@ class PieceThreadImpl extends Thread implements PieceThread
     }
 
     @Override
-    public PieceResult call()
-    {
+    public PieceResult call() {
         StopRequest ret;
         try {
             piece = repo.getPiece(pieceIndex, infoId);
@@ -165,8 +141,7 @@ class PieceThreadImpl extends Thread implements PieceThread
         return result;
     }
 
-    private void handleRequest(StopRequest request)
-    {
+    private void handleRequest(StopRequest request) {
         if (request.getException() != null)
             Log.e(TAG, "piece=" + pieceIndex + ", " + request + "\n" +
                     Log.getStackTraceString(request.getException()));
@@ -187,14 +162,12 @@ class PieceThreadImpl extends Thread implements PieceThread
             piece.statusCode = STATUS_WAITING_TO_RETRY;
     }
 
-    private void finalizeThread()
-    {
+    private void finalizeThread() {
         if (piece != null)
             writeToDatabase();
     }
 
-    private StopRequest execDownload()
-    {
+    private StopRequest execDownload() {
         lastBandwidthUpdateTime = DateUtils.elapsedRealtime();
 
         if (piece.size == 0)
@@ -232,52 +205,41 @@ class PieceThreadImpl extends Thread implements PieceThread
 
         connection.setListener(new HttpConnection.Listener() {
             @Override
-            public void onConnectionCreated(HttpURLConnection conn)
-            {
+            public void onConnectionCreated(HttpURLConnection conn) {
                 ret[0] = addRequestHeaders(conn, resuming);
             }
 
             @Override
-            public void onResponseHandle(HttpURLConnection conn, int code, String message)
-            {
+            public void onResponseHandle(HttpURLConnection conn, int code, String message) {
                 switch (code) {
-                    case HTTP_OK:
+                    case HTTP_OK -> {
                         if (startPos != 0 || resuming) {
                             ret[0] = new StopRequest(STATUS_CANNOT_RESUME,
                                     "Expected partial, but received OK");
                             return;
                         }
                         ret[0] = transferData(conn);
-                        break;
-                    case HTTP_PARTIAL:
-                        ret[0] = transferData(conn);
-                        break;
-                    case HTTP_PRECON_FAILED:
-                        ret[0] = new StopRequest(STATUS_CANNOT_RESUME,
-                                "Precondition failed");
-                        break;
-                    case HTTP_UNAVAILABLE:
+                    }
+                    case HTTP_PARTIAL -> ret[0] = transferData(conn);
+                    case HTTP_PRECON_FAILED -> ret[0] = new StopRequest(STATUS_CANNOT_RESUME,
+                            "Precondition failed");
+                    case HTTP_UNAVAILABLE -> {
                         parseUnavailableHeaders(conn);
                         ret[0] = new StopRequest(HTTP_UNAVAILABLE, message);
-                        break;
-                    case HTTP_INTERNAL_ERROR:
-                        ret[0] = new StopRequest(HTTP_INTERNAL_ERROR, message);
-                        break;
-                    default:
-                        ret[0] = StopRequest.getUnhandledHttpError(code, message);
-                        break;
+                    }
+                    case HTTP_INTERNAL_ERROR ->
+                            ret[0] = new StopRequest(HTTP_INTERNAL_ERROR, message);
+                    default -> ret[0] = StopRequest.getUnhandledHttpError(code, message);
                 }
             }
 
             @Override
-            public void onMoved(String newUrl, boolean permanently)
-            {
+            public void onMoved(String newUrl, boolean permanently) {
                 /* Ignore */
             }
 
             @Override
-            public void onIOException(IOException e)
-            {
+            public void onIOException(IOException e) {
                 if (e instanceof ProtocolException && e.getMessage() != null &&
                         e.getMessage().startsWith("Unexpected status line"))
                     ret[0] = new StopRequest(STATUS_UNHANDLED_HTTP_CODE, e);
@@ -289,8 +251,7 @@ class PieceThreadImpl extends Thread implements PieceThread
             }
 
             @Override
-            public void onTooManyRedirects()
-            {
+            public void onTooManyRedirects() {
                 ret[0] = new StopRequest(STATUS_TOO_MANY_REDIRECTS, "Too many redirects");
             }
         });
@@ -303,8 +264,7 @@ class PieceThreadImpl extends Thread implements PieceThread
      * Add custom headers for this download to the HTTP request.
      */
 
-    private StopRequest addRequestHeaders(HttpURLConnection conn, boolean resuming)
-    {
+    private StopRequest addRequestHeaders(HttpURLConnection conn, boolean resuming) {
         DownloadInfo info = repo.getInfoById(infoId);
         if (info == null)
             return new StopRequest(STATUS_STOPPED, "Download deleted or missing");
@@ -343,8 +303,7 @@ class PieceThreadImpl extends Thread implements PieceThread
      * Transfer data from the given connection to the destination file.
      */
 
-    private StopRequest transferData(HttpURLConnection conn)
-    {
+    private StopRequest transferData(HttpURLConnection conn) {
         DownloadInfo info = repo.getInfoById(infoId);
         if (info == null)
             return new StopRequest(STATUS_STOPPED, "Download deleted or missing");
@@ -378,6 +337,7 @@ class PieceThreadImpl extends Thread implements PieceThread
             }
         }
 
+        FileDescriptorWrapper fdWrapper;
         try {
             try {
                 in = conn.getInputStream();
@@ -434,8 +394,7 @@ class PieceThreadImpl extends Thread implements PieceThread
      * net response to the destination file
      */
 
-    private StopRequest transferData(InputStream in, FileOutputStream fout, FileDescriptor outFd)
-    {
+    private StopRequest transferData(InputStream in, FileOutputStream fout, FileDescriptor outFd) {
         byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
         while (true) {
             StopRequest ret;
@@ -480,7 +439,7 @@ class PieceThreadImpl extends Thread implements PieceThread
         if (piece.size != -1 && piece.curBytes != endPos + 1) {
             return new StopRequest(STATUS_HTTP_DATA_ERROR,
                     "Piece length mismatch; found "
-                    + piece.curBytes + " instead of " + (endPos + 1));
+                            + piece.curBytes + " instead of " + (endPos + 1));
         }
 
         return null;
@@ -510,8 +469,7 @@ class PieceThreadImpl extends Thread implements PieceThread
         }
     }
 
-    private StopRequest updateProgress(FileDescriptor outFd, int speedLimitBytes) throws IOException
-    {
+    private StopRequest updateProgress(FileDescriptor outFd, int speedLimitBytes) throws IOException {
         long now = DateUtils.elapsedRealtime();
         long currentBytes = piece.curBytes;
 
@@ -550,25 +508,21 @@ class PieceThreadImpl extends Thread implements PieceThread
         return null;
     }
 
-    private void parseUnavailableHeaders(@NonNull HttpURLConnection conn)
-    {
+    private void parseUnavailableHeaders(@NonNull HttpURLConnection conn) {
         result.retryAfter = conn.getHeaderFieldInt("Retry-After", -1);
     }
 
-    private StopRequest writeToDatabaseOrCancel()
-    {
+    private StopRequest writeToDatabaseOrCancel() {
         return repo.updatePiece(piece) > 0 ?
                 null :
                 new StopRequest(STATUS_STOPPED, "Download deleted or missing");
     }
 
-    private void writeToDatabase()
-    {
+    private void writeToDatabase() {
         repo.updatePiece(piece);
     }
 
-    private StopRequest checkCancel()
-    {
+    private StopRequest checkCancel() {
         return (Thread.currentThread().isInterrupted() ?
                 new StopRequest(STATUS_STOPPED, "Download cancelled") :
                 null);
