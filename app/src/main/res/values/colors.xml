@@ -6,7 +6,7 @@
     <color name="accent">#EC407A</color>
     <color name="accent_dark">#EC407A</color>
     <color name="accent_light">#EC407A</color>
-    <color name="status_bar">#E0E0E0</color>
+    <color name="status_bar">#EC407A</color>
     <color name="toolbar">#FFFFFF</color>
     <color name="toolbar_dark">#272727</color>
     <color name="dark_theme_status_bar">#212121</color>
