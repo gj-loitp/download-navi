@@ -51,7 +51,7 @@ import com.roy.downloader.core.system.SystemFacadeHelper;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.databinding.AFileManagerDialogBinding;
 import com.roy.downloader.ui.BaseAlertDialog;
-import com.roy.downloader.ui.errorreport.ErrorReportDialog;
+import com.roy.downloader.ui.errorreport.DialogErrorReport;
 
 import java.io.IOException;
 
@@ -97,7 +97,7 @@ public class FileManagerDialog extends AppCompatActivity
 
     private FileManagerViewModel viewModel;
     private BaseAlertDialog inputNameDialog;
-    private ErrorReportDialog errorReportDialog;
+    private DialogErrorReport dialogErrorReport;
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private final CompositeDisposable disposable = new CompositeDisposable();
     private SharedPreferences pref;
@@ -128,7 +128,7 @@ public class FileManagerDialog extends AppCompatActivity
 
         FragmentManager fm = getSupportFragmentManager();
         inputNameDialog = (BaseAlertDialog)fm.findFragmentByTag(TAG_INPUT_NAME_DIALOG);
-        errorReportDialog = (ErrorReportDialog)fm.findFragmentByTag(TAG_ERROR_REPORT_DIALOG);
+        dialogErrorReport = (DialogErrorReport)fm.findFragmentByTag(TAG_ERROR_REPORT_DIALOG);
         dialogViewModel = new ViewModelProvider(this).get(BaseAlertDialog.SharedViewModel.class);
 
         String title = viewModel.config.title;
@@ -317,23 +317,23 @@ public class FileManagerDialog extends AppCompatActivity
 
                 } else if (event.dialogTag.equals(TAG_REPLACE_FILE_DIALOG)) {
                     createFile(true);
-                } else if (event.dialogTag.equals(TAG_ERROR_REPORT_DIALOG) && errorReportDialog != null) {
-                    Dialog dialog = errorReportDialog.getDialog();
+                } else if (event.dialogTag.equals(TAG_ERROR_REPORT_DIALOG) && dialogErrorReport != null) {
+                    Dialog dialog = dialogErrorReport.getDialog();
                     if (dialog != null) {
                         TextInputEditText editText = dialog.findViewById(R.id.comment);
                         Editable e = editText.getText();
                         String comment = (e == null ? null : e.toString());
 
                         Utils.reportError(viewModel.errorReport, comment);
-                        errorReportDialog.dismiss();
+                        dialogErrorReport.dismiss();
                     }
                 }
                 break;
             case NEGATIVE_BUTTON_CLICKED:
                 if (event.dialogTag.equals(TAG_INPUT_NAME_DIALOG) && inputNameDialog != null)
                     inputNameDialog.dismiss();
-                else if (event.dialogTag.equals(TAG_ERROR_REPORT_DIALOG) && errorReportDialog != null)
-                    errorReportDialog.dismiss();
+                else if (event.dialogTag.equals(TAG_ERROR_REPORT_DIALOG) && dialogErrorReport != null)
+                    dialogErrorReport.dismiss();
                 break;
         }
     }
@@ -342,12 +342,12 @@ public class FileManagerDialog extends AppCompatActivity
     {
         viewModel.errorReport = e;
         if (getSupportFragmentManager().findFragmentByTag(TAG_ERROR_REPORT_DIALOG) == null) {
-            errorReportDialog = ErrorReportDialog.newInstance(
+            dialogErrorReport = DialogErrorReport.newInstance(
                     getString(R.string.error),
                     getString(R.string.error_open_dir),
                     Log.getStackTraceString(e));
 
-            errorReportDialog.show(getSupportFragmentManager(), TAG_ERROR_REPORT_DIALOG);
+            dialogErrorReport.show(getSupportFragmentManager(), TAG_ERROR_REPORT_DIALOG);
         }
     }
 

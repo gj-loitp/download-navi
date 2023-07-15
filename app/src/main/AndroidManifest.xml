@@ -1126,7 +1126,7 @@
         </activity>
 
         <activity
-            android:name=".ui.errorreport.ErrorReportActivity"
+            android:name=".ui.errorreport.ActivityErrorReport"
             android:excludeFromRecents="true"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"

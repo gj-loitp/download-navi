@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.multidex.MultiDexApplication;
 
 import com.roy.downloader.core.DownloadNotifier;
-import com.roy.downloader.ui.errorreport.ErrorReportActivity;
+import com.roy.downloader.ui.errorreport.ActivityErrorReport;
 
 import org.acra.ACRA;
 import org.acra.config.CoreConfigurationBuilder;
@@ -44,7 +44,7 @@ public class MainApplication extends MultiDexApplication {
                 .build());
         builder.withPluginConfigurations(new DialogConfigurationBuilder()
                 .withEnabled(true)
-                .withReportDialogClass(ErrorReportActivity.class)
+                .withReportDialogClass(ActivityErrorReport.class)
                 .build());
         if (Thread.getDefaultUncaughtExceptionHandler() == null) {
             Thread.setDefaultUncaughtExceptionHandler((t, e) ->
