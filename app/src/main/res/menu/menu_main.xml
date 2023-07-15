@@ -28,9 +28,21 @@
         android:icon="@drawable/ic_settings_menu_24dp"
         android:title="@string/settings" />
 
+    <!--    <item-->
+    <!--        android:id="@+id/aboutMenu"-->
+    <!--        android:title="@string/about" />-->
     <item
-        android:id="@+id/aboutMenu"
-        android:title="@string/about" />
+        android:id="@+id/rateMenu"
+        android:title="@string/rate_app" />
+    <item
+        android:id="@+id/moreMenu"
+        android:title="@string/more_apps" />
+    <item
+        android:id="@+id/shareAppMenu"
+        android:title="@string/share_app" />
+    <item
+        android:id="@+id/policyMenu"
+        android:title="@string/term_and_policy" />
 
     <item
         android:id="@+id/shutdownAppMenu"

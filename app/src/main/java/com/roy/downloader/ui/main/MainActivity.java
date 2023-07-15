@@ -1,5 +1,10 @@
 package com.roy.downloader.ui.main;
 
+import static com.roy.downloader.ext.ActivityKt.moreApp;
+import static com.roy.downloader.ext.ActivityKt.rateApp;
+import static com.roy.downloader.ext.ActivityKt.shareApp;
+import static com.roy.downloader.ext.ContextKt.openBrowserPolicy;
+
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -421,13 +426,19 @@ public class MainActivity extends AppCompatActivity {
             resumeAll();
         } else if (itemId == R.id.settingsMenu) {
             startActivity(new Intent(this, ActivitySettings.class));
-        } else if (itemId == R.id.aboutMenu) {
-            showAboutDialog();
         } else if (itemId == R.id.shutdownAppMenu) {
             closeOptionsMenu();
             shutdown();
         } else if (itemId == R.id.browserMenu) {
             startActivity(new Intent(this, ActivityBrowser.class));
+        } else if (itemId == R.id.rateMenu) {
+            rateApp(this, getPackageName());
+        } else if (itemId == R.id.moreMenu) {
+            moreApp(this, "Roy93Group");
+        } else if (itemId == R.id.shareAppMenu) {
+            shareApp(this);
+        } else if (itemId == R.id.policyMenu) {
+            openBrowserPolicy(this);
         }
 
         return true;

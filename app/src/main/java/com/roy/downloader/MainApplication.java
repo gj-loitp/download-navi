@@ -18,13 +18,13 @@ import org.acra.data.StringFormat;
 
 //TODO keystore
 //TODO rename app
-//TODO rate, more app, share app
-//TODO policy
 
 //done
 //ic_launcher
 //proguard
 //leak canary
+//rate, more app, share app
+//policy
 
 public class MainApplication extends MultiDexApplication {
     public static final String TAG = MainApplication.class.getSimpleName();
