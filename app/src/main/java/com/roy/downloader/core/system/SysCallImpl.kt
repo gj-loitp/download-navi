@@ -1,45 +1,36 @@
-package com.roy.downloader.core.system;
+package com.roy.downloader.core.system
 
-import android.system.Os;
-import android.system.OsConstants;
-import android.system.StructStatVfs;
+import android.system.Os
+import android.system.OsConstants
+import java.io.FileDescriptor
+import java.io.IOException
 
-import androidx.annotation.NonNull;
-
-import java.io.FileDescriptor;
-import java.io.IOException;
-
-class SysCallImpl implements SysCall {
-    @Override
-    public void lseek(@NonNull FileDescriptor fd, long offset) throws IOException, UnsupportedOperationException {
+internal class SysCallImpl : SysCall {
+    @Throws(IOException::class, UnsupportedOperationException::class)
+    override fun lseek(fd: FileDescriptor, offset: Long) {
         try {
-            Os.lseek(fd, offset, OsConstants.SEEK_SET);
-
-        } catch (Exception e) {
-            throw new IOException(e);
+            Os.lseek(fd, offset, OsConstants.SEEK_SET)
+        } catch (e: Exception) {
+            throw IOException(e)
         }
-
     }
 
-    @Override
-    public void fallocate(@NonNull FileDescriptor fd, long length) throws IOException {
-
+    @Throws(IOException::class)
+    override fun fallocate(fd: FileDescriptor, length: Long) {
         try {
-            long curSize = Os.fstat(fd).st_size;
-            long newBytes = length - curSize;
-            long availBytes = availableBytes(fd);
-            if (availBytes < newBytes)
-                throw new IOException("Not enough free space; " + newBytes + " requested, " +
-                        availBytes + " available");
-
-            Os.posix_fallocate(fd, 0, length);
-
-        } catch (Exception e) {
+            val curSize = Os.fstat(fd).st_size
+            val newBytes = length - curSize
+            val availBytes = availableBytes(fd)
+            if (availBytes < newBytes) throw IOException(
+                "Not enough free space; " + newBytes + " requested, " +
+                        availBytes + " available"
+            )
+            Os.posix_fallocate(fd, 0, length)
+        } catch (e: Exception) {
             try {
-                Os.ftruncate(fd, length);
-
-            } catch (Exception ex) {
-                throw new IOException(ex);
+                Os.ftruncate(fd, length)
+            } catch (ex: Exception) {
+                throw IOException(ex)
             }
         }
     }
@@ -50,15 +41,13 @@ class SysCallImpl implements SysCall {
      *
      * TODO: maybe there is analog for KitKat?
      */
-
-    @Override
-    public long availableBytes(@NonNull FileDescriptor fd) throws IOException {
-        try {
-            StructStatVfs stat = Os.fstatvfs(fd);
-
-            return stat.f_bavail * stat.f_bsize;
-        } catch (Exception e) {
-            throw new IOException(e);
+    @Throws(IOException::class)
+    override fun availableBytes(fd: FileDescriptor): Long {
+        return try {
+            val stat = Os.fstatvfs(fd)
+            stat.f_bavail * stat.f_bsize
+        } catch (e: Exception) {
+            throw IOException(e)
         }
     }
 }
