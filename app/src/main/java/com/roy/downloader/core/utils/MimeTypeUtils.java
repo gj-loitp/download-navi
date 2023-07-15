@@ -1,36 +1,14 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.utils;
 
 import android.webkit.MimeTypeMap;
 
 import java.util.HashMap;
 
-public class MimeTypeUtils
-{
+public class MimeTypeUtils {
     public static final String DEFAULT_MIME_TYPE = "*/*";
     public static final String MIME_TYPE_DELIMITER = "/";
 
-    public enum Category
-    {
+    public enum Category {
         OTHER,
         ARCHIVE,
         VIDEO,
@@ -40,8 +18,7 @@ public class MimeTypeUtils
         APK,
     }
 
-    public static Category getCategory(String mime)
-    {
+    public static Category getCategory(String mime) {
         if (mime == null)
             return Category.OTHER;
 
@@ -61,10 +38,11 @@ public class MimeTypeUtils
     }
 
     private static final HashMap<String, Category> mimeToCategory = new HashMap<>();
+
     static {
         mimeToCategory.put("application/atom+xml", Category.DOCUMENT);
         mimeToCategory.put("application/ecmascript", Category.DOCUMENT);
-        mimeToCategory.put("application/epub+zip",Category.DOCUMENT);
+        mimeToCategory.put("application/epub+zip", Category.DOCUMENT);
         mimeToCategory.put("application/gpx+xml", Category.DOCUMENT);
         mimeToCategory.put("application/gzip", Category.ARCHIVE);
         mimeToCategory.put("application/hta", Category.DOCUMENT);
@@ -209,12 +187,14 @@ public class MimeTypeUtils
     }
 
     private static final HashMap<String, String> extensionToMime = new HashMap<>();
+
     static {
         extensionToMime.put("php", "application/php");
         extensionToMime.put("json", "application/json");
     }
 
     private static final HashMap<String, String> mimeToExtension = new HashMap<>();
+
     static {
         mimeToExtension.put("text/php", "php");
         mimeToExtension.put("text/x-php", "php");
@@ -225,16 +205,14 @@ public class MimeTypeUtils
         mimeToExtension.put("application/json", "json");
     }
 
-    public static String getExtensionFromMimeType(String mimeType)
-    {
+    public static String getExtensionFromMimeType(String mimeType) {
         var extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
         return extension == null || "bin".equals(mimeType)
                 ? mimeToExtension.get(mimeType)
                 : extension;
     }
 
-    public static String getMimeTypeFromExtension(String extension)
-    {
+    public static String getMimeTypeFromExtension(String extension) {
         var mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
         return mimeType == null || "application/octet-stream".equals(mimeType)
                 ? extensionToMime.get(extension)

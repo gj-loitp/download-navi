@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.utils;
 
 import android.net.Uri;
@@ -40,39 +20,37 @@ public class DownloadUtils {
 
     /**
      * This is the regular expression to match the content disposition type segment.
-     *
+     * <p>
      * A content disposition header can start either with inline or attachment followed by comma;
-     *  For example: attachment; filename="filename.jpg" or inline; filename="filename.jpg"
+     * For example: attachment; filename="filename.jpg" or inline; filename="filename.jpg"
      * (inline|attachment)\\s*; -> Match either inline or attachment, followed by zero o more
      * optional whitespaces characters followed by a comma.
-     *
      */
     private static final String contentDispositionType = "(inline|attachment)\\s*;";
 
     /**
      * This is the regular expression to match filename* parameter segment.
-     *
+     * <p>
      * A content disposition header could have an optional filename* parameter,
      * the difference between this parameter and the filename is that this uses
      * the encoding defined in RFC 5987.
-     *
+     * <p>
      * Some examples:
-     *  filename*=utf-8''success.html
-     *  filename*=iso-8859-1'en'file%27%20%27name.jpg
-     *  filename*=utf-8'en'filename.jpg
-     *
+     * filename*=utf-8''success.html
+     * filename*=iso-8859-1'en'file%27%20%27name.jpg
+     * filename*=utf-8'en'filename.jpg
+     * <p>
      * For matching this section we use:
      * \\s*filename\\s*=\\s*= -> Zero or more optional whitespaces characters
      * followed by filename followed by any zero or more whitespaces characters and the equal sign;
-     *
+     * <p>
      * (utf-8|iso-8859-1)-> Either utf-8 or iso-8859-1 encoding types.
-     *
+     * <p>
      * '[^']*'-> Zero or more characters that are inside of single quotes '' that are not single
      * quote.
-     *
+     * <p>
      * (\S*) -> Zero or more characters that are not whitespaces. In this group,
      * it's where we are going to have the filename.
-     *
      */
     private static final String contentDispositionFileNameAsterisk =
             "\\s*filename\\*\\s*=\\s*(utf-8|iso-8859-1|windows-1251)'[^']*'([^;\\s]*)";
@@ -82,7 +60,7 @@ public class DownloadUtils {
      * Both inline and attachment types are supported.
      * More details can be found
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
-     *
+     * <p>
      * The first segment is the [contentDispositionType], there you can find the documentation,
      * Next, it's the filename segment, where we have a filename="filename.ext"
      * For example, all of these could be possible in this section:
@@ -91,30 +69,30 @@ public class DownloadUtils {
      * filename="file\\name.jpg"
      * filename="file\\\"name.jpg"
      * filename=filename.jpg
-     *
+     * <p>
      * For matching this section we use:
      * \\s*filename\\s*=\\s*= -> Zero or more whitespaces followed by filename followed
-     *  by zero or more whitespaces and the equal sign.
-     *
+     * by zero or more whitespaces and the equal sign.
+     * <p>
      * As we want to extract the the content of filename="THIS", we use:
-     *
+     * <p>
      * \\s* -> Zero or more whitespaces
-     *
-     *  (\"((?:\\\\.|[^|"\\\\])*)\" -> A quotation mark, optional : or \\ or any character,
-     *  and any non quotation mark or \\\\ zero or more times.
-     *
-     *  For example: filename="file\\name.jpg", filename="file\"name.jpg" and filename="file\\\"name.jpg"
-     *
+     * <p>
+     * (\"((?:\\\\.|[^|"\\\\])*)\" -> A quotation mark, optional : or \\ or any character,
+     * and any non quotation mark or \\\\ zero or more times.
+     * <p>
+     * For example: filename="file\\name.jpg", filename="file\"name.jpg" and filename="file\\\"name.jpg"
+     * <p>
      * We don't want to match after ; appears, For example filename="filename.jpg"; foo
      * we only want to match before the semicolon, so we use. |[^;]*)
-     *
+     * <p>
      * \\s* ->  Zero or more whitespaces.
-     *
-     *  For supporting cases, where we have both filename and filename*, we use:
+     * <p>
+     * For supporting cases, where we have both filename and filename*, we use:
      * "(?:;contentDispositionFileNameAsterisk)?"
-     *
+     * <p>
      * Some examples:
-     *
+     * <p>
      * attachment; filename="_.jpg"; filename*=iso-8859-1'en'file%27%20%27name.jpg
      * attachment; filename="_.jpg"; filename*=iso-8859-1'en'file%27%20%27name.jpg
      */

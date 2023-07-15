@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core.utils;
 
 import android.content.Context;
@@ -32,8 +12,7 @@ import java.util.Formatter;
 import java.util.Locale;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class DateUtils
-{
+public class DateUtils {
     public static final long SECOND_IN_MILLIS = 1000;
 
     private static final int secondsInDay = 86400;
@@ -46,15 +25,13 @@ public class DateUtils
     private static String elapsedFormatDHMM;
     private static final ReentrantLock lock = new ReentrantLock();
 
-    public static String formatElapsedTime(Context context, long elapsedSeconds)
-    {
+    public static String formatElapsedTime(Context context, long elapsedSeconds) {
         return formatElapsedTime(context, null, elapsedSeconds);
     }
 
     public static String formatElapsedTime(@NonNull Context context,
                                            StringBuilder recycle,
-                                           long elapsedSeconds)
-    {
+                                           long elapsedSeconds) {
         long days = 0;
         long hours = 0;
         long minutes = 0;
@@ -97,22 +74,20 @@ public class DateUtils
             return f.format(elapsedFormatSS, seconds).toString();
     }
 
-    private static void initFormatStrings(@NonNull Context context)
-    {
+    private static void initFormatStrings(@NonNull Context context) {
         lock.lock();
 
         try {
             elapsedFormatSS = context.getString(R.string.elapsed_time_format_ss);
             elapsedFormatMMSS = context.getString(R.string.elapsed_time_format_mm_ss);
             elapsedFormatHMMSS = context.getString(R.string.elapsed_time_format_h_mm_ss);
-            elapsedFormatDHMM =  context.getString(R.string.elapsed_time_format_d_h_mm);
+            elapsedFormatDHMM = context.getString(R.string.elapsed_time_format_d_h_mm);
         } finally {
             lock.unlock();
         }
     }
 
-    public static long endOfToday(long timeMillis)
-    {
+    public static long endOfToday(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -123,8 +98,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long startOfToday(long timeMillis)
-    {
+    public static long startOfToday(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -135,18 +109,15 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long endOfYesterday(long timeMillis)
-    {
+    public static long endOfYesterday(long timeMillis) {
         return endOfToday(timeMillis) - secondsInDay * 1000;
     }
 
-    public static long startOfYesterday(long timeMillis)
-    {
+    public static long startOfYesterday(long timeMillis) {
         return startOfToday(timeMillis) - secondsInDay * 1000;
     }
 
-    public static long endOfWeek(long timeMillis)
-    {
+    public static long endOfWeek(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -159,8 +130,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long startOfWeek(long timeMillis)
-    {
+    public static long startOfWeek(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 24);
@@ -172,8 +142,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long endOfMonth(long timeMillis)
-    {
+    public static long endOfMonth(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -185,8 +154,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long startOfMonth(long timeMillis)
-    {
+    public static long startOfMonth(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -198,8 +166,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long endOfYear(long timeMillis)
-    {
+    public static long endOfYear(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 23);
@@ -211,8 +178,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long startOfYear(long timeMillis)
-    {
+    public static long startOfYear(long timeMillis) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(timeMillis);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
@@ -224,8 +190,7 @@ public class DateUtils
         return calendar.getTimeInMillis();
     }
 
-    public static long elapsedRealtime()
-    {
+    public static long elapsedRealtime() {
         return SystemClock.elapsedRealtime();
     }
 }
