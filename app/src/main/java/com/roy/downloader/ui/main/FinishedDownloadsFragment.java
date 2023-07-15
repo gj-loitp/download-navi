@@ -36,7 +36,7 @@ import com.roy.downloader.core.model.data.StatusCode;
 import com.roy.downloader.core.model.data.entity.DownloadInfo;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.BaseAlertDialog;
-import com.roy.downloader.ui.adddownload.AddDownloadActivity;
+import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
 
 import java.util.Collections;
@@ -216,8 +216,8 @@ public class FinishedDownloadsFragment extends DownloadsFragment
         initParams.retry = info.retry;
         initParams.replaceFile = true;
 
-        Intent i = new Intent(activity, AddDownloadActivity.class);
-        i.putExtra(AddDownloadActivity.TAG_INIT_PARAMS, initParams);
+        Intent i = new Intent(activity, ActivityAddDownload.class);
+        i.putExtra(ActivityAddDownload.TAG_INIT_PARAMS, initParams);
         startActivity(i);
     }
 }

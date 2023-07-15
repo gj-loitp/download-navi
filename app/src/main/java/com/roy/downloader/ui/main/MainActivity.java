@@ -68,7 +68,7 @@ import com.roy.downloader.receiver.NotificationReceiver;
 import com.roy.downloader.service.DownloadService;
 import com.roy.downloader.ui.BaseAlertDialog;
 import com.roy.downloader.ui.PermissionManager;
-import com.roy.downloader.ui.adddownload.AddDownloadActivity;
+import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.browser.BrowserActivity;
 import com.roy.downloader.ui.main.drawer.DrawerExpandableAdapter;
 import com.roy.downloader.ui.main.drawer.DrawerGroup;
@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity
                 }
         ).attach();
 
-        fab.setOnClickListener((v) -> startActivity(new Intent(this, AddDownloadActivity.class)));
+        fab.setOnClickListener((v) -> startActivity(new Intent(this, ActivityAddDownload.class)));
     }
 
     private void initDrawer()

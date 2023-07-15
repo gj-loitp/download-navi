@@ -23,16 +23,16 @@ import com.roy.downloader.ui.FragmentCallback;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
-public class AddDownloadActivity extends AppCompatActivity
+public class ActivityAddDownload extends AppCompatActivity
         implements FragmentCallback {
     public static final String TAG_INIT_PARAMS = "init_params";
 
     private static final String TAG_DOWNLOAD_DIALOG = "add_download_dialog";
     private static final String TAG_BATTERY_DIALOG = "battery_dialog";
 
-    private AddDownloadDialog addDownloadDialog;
+    private DialogAddDownload dialogAddDownload;
     private BatteryOptimizationDialog batteryDialog;
-    private CompositeDisposable disposables = new CompositeDisposable();
+    private final CompositeDisposable disposables = new CompositeDisposable();
     private BaseAlertDialog.SharedViewModel dialogViewModel;
     private SettingsRepository pref;
 
@@ -46,8 +46,8 @@ public class AddDownloadActivity extends AppCompatActivity
         dialogViewModel = provider.get(BaseAlertDialog.SharedViewModel.class);
 
         FragmentManager fm = getSupportFragmentManager();
-        addDownloadDialog = (AddDownloadDialog) fm.findFragmentByTag(TAG_DOWNLOAD_DIALOG);
-        if (addDownloadDialog == null) {
+        dialogAddDownload = (DialogAddDownload) fm.findFragmentByTag(TAG_DOWNLOAD_DIALOG);
+        if (dialogAddDownload == null) {
             AddInitParams initParams = null;
             Intent i = getIntent();
             if (i != null)
@@ -56,8 +56,8 @@ public class AddDownloadActivity extends AppCompatActivity
                 initParams = new AddInitParams();
             }
             fillInitParams(initParams);
-            addDownloadDialog = AddDownloadDialog.newInstance(initParams);
-            addDownloadDialog.show(fm, TAG_DOWNLOAD_DIALOG);
+            dialogAddDownload = DialogAddDownload.newInstance(initParams);
+            dialogAddDownload.show(fm, TAG_DOWNLOAD_DIALOG);
         }
         batteryDialog = (BatteryOptimizationDialog) fm.findFragmentByTag(TAG_BATTERY_DIALOG);
         if (Utils.shouldShowBatteryOptimizationDialog(this)) {
@@ -106,7 +106,9 @@ public class AddDownloadActivity extends AppCompatActivity
             params.url = getUrlFromIntent();
         }
         if (params.dirPath == null) {
-            params.dirPath = Uri.parse(pref.saveDownloadsIn());
+            if (pref != null) {
+                params.dirPath = Uri.parse(pref.saveDownloadsIn());
+            }
         }
         if (params.retry == null) {
             params.retry = localPref.getBoolean(
@@ -169,6 +171,6 @@ public class AddDownloadActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        addDownloadDialog.onBackPressed();
+        dialogAddDownload.onBackPressed();
     }
 }

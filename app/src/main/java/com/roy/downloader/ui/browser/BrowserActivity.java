@@ -58,7 +58,7 @@ import com.roy.downloader.databinding.ABrowserBottomAppBarBinding;
 import com.roy.downloader.databinding.ABrowserTopAppBarBinding;
 import com.roy.downloader.ui.FragmentCallback;
 import com.roy.downloader.ui.SendTextToClipboard;
-import com.roy.downloader.ui.adddownload.AddDownloadActivity;
+import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
 import com.roy.downloader.ui.browser.bookmarks.BrowserBookmarksActivity;
 import com.roy.downloader.ui.browser.bookmarks.EditBookmarkActivity;
@@ -161,8 +161,8 @@ public class BrowserActivity extends AppCompatActivity
         AddInitParams initParams = new AddInitParams();
         initParams.url = url;
 
-        Intent i = new Intent(this, AddDownloadActivity.class);
-        i.putExtra(AddDownloadActivity.TAG_INIT_PARAMS, initParams);
+        Intent i = new Intent(this, ActivityAddDownload.class);
+        i.putExtra(ActivityAddDownload.TAG_INIT_PARAMS, initParams);
         startActivityForResult(i, 0);
     }
 

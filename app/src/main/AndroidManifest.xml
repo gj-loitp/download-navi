@@ -68,7 +68,7 @@
         </activity>
 
         <activity
-            android:name=".ui.adddownload.AddDownloadActivity"
+            android:name=".ui.adddownload.ActivityAddDownload"
             android:exported="true"
             android:theme="@style/AppTheme.Translucent">
             <intent-filter>

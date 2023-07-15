@@ -60,7 +60,7 @@ import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.databinding.DlgDialogDownloadDetailsBinding;
 import com.roy.downloader.ui.BaseAlertDialog;
 import com.roy.downloader.ui.ClipboardDialog;
-import com.roy.downloader.ui.adddownload.AddDownloadActivity;
+import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.adddownload.AddInitParams;
 
 import java.util.UUID;
@@ -373,8 +373,8 @@ public class DownloadDetailsDialog extends DialogFragment
         initParams.retry = downloadInfo.retry;
         initParams.replaceFile = true;
 
-        Intent i = new Intent(activity, AddDownloadActivity.class);
-        i.putExtra(AddDownloadActivity.TAG_INIT_PARAMS, initParams);
+        Intent i = new Intent(activity, ActivityAddDownload.class);
+        i.putExtra(ActivityAddDownload.TAG_INIT_PARAMS, initParams);
         startActivity(i);
 
         finish();

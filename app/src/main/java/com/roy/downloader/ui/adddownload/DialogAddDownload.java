@@ -61,9 +61,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class AddDownloadDialog extends DialogFragment {
+public class DialogAddDownload extends DialogFragment {
     @SuppressWarnings("unused")
-    private static final String TAG = AddDownloadDialog.class.getSimpleName();
+    private static final String TAG = DialogAddDownload.class.getSimpleName();
 
     private static final String TAG_ADD_USER_AGENT_DIALOG = "add_user_agent_dialog";
     private static final String TAG_INIT_PARAMS = "init_params";
@@ -90,8 +90,8 @@ public class AddDownloadDialog extends DialogFragment {
     private PermissionDeniedDialog permDeniedDialog;
     private PermissionManager permissionManager;
 
-    public static AddDownloadDialog newInstance(@NonNull AddInitParams initParams) {
-        AddDownloadDialog frag = new AddDownloadDialog();
+    public static DialogAddDownload newInstance(@NonNull AddInitParams initParams) {
+        DialogAddDownload frag = new DialogAddDownload();
 
         Bundle args = new Bundle();
         args.putParcelable(TAG_INIT_PARAMS, initParams);
@@ -150,14 +150,9 @@ public class AddDownloadDialog extends DialogFragment {
         disposables.add(d);
         d = clipboardViewModel.observeSelectedItem().subscribe((item) -> {
             switch (item.dialogTag) {
-                case TAG_URL_CLIPBOARD_DIALOG:
-                    handleUrlClipItem(item.str);
-                    break;
-                case TAG_CHECKSUM_CLIPBOARD_DIALOG:
-                    handleChecksumClipItem(item.str);
-                    break;
-                case TAG_REFERER_CLIPBOARD_DIALOG:
-                    handleRefererClipItem(item.str);
+                case TAG_URL_CLIPBOARD_DIALOG -> handleUrlClipItem(item.str);
+                case TAG_CHECKSUM_CLIPBOARD_DIALOG -> handleChecksumClipItem(item.str);
+                case TAG_REFERER_CLIPBOARD_DIALOG -> handleRefererClipItem(item.str);
             }
         });
         disposables.add(d);
@@ -248,36 +243,26 @@ public class AddDownloadDialog extends DialogFragment {
         @Override
         public void onPropertyChanged(Observable sender, int propertyId) {
             switch (propertyId) {
-                case BR.retry:
-                    localPref.edit()
-                            .putBoolean(getString(R.string.add_download_retry_flag),
-                                    viewModel.params.isRetry())
-                            .apply();
-                    break;
-                case BR.replaceFile:
-                    localPref.edit()
-                            .putBoolean(getString(R.string.add_download_replace_file_flag),
-                                    viewModel.params.isReplaceFile())
-                            .apply();
-                    break;
-                case BR.unmeteredConnectionsOnly:
-                    localPref.edit()
-                            .putBoolean(getString(R.string.add_download_unmetered_only_flag),
-                                    viewModel.params.isUnmeteredConnectionsOnly())
-                            .apply();
-                    break;
-                case BR.numPieces:
-                    localPref.edit()
-                            .putInt(getString(R.string.add_download_num_pieces),
-                                    viewModel.params.getNumPieces())
-                            .apply();
-                    break;
-                case BR.uncompressArchive:
-                    localPref.edit()
-                            .putBoolean(getString(R.string.add_download_uncompress_archive_flag),
-                                    viewModel.params.isUncompressArchive())
-                            .apply();
-                    break;
+                case BR.retry -> localPref.edit()
+                        .putBoolean(getString(R.string.add_download_retry_flag),
+                                viewModel.params.isRetry())
+                        .apply();
+                case BR.replaceFile -> localPref.edit()
+                        .putBoolean(getString(R.string.add_download_replace_file_flag),
+                                viewModel.params.isReplaceFile())
+                        .apply();
+                case BR.unmeteredConnectionsOnly -> localPref.edit()
+                        .putBoolean(getString(R.string.add_download_unmetered_only_flag),
+                                viewModel.params.isUnmeteredConnectionsOnly())
+                        .apply();
+                case BR.numPieces -> localPref.edit()
+                        .putInt(getString(R.string.add_download_num_pieces),
+                                viewModel.params.getNumPieces())
+                        .apply();
+                case BR.uncompressArchive -> localPref.edit()
+                        .putBoolean(getString(R.string.add_download_uncompress_archive_flag),
+                                viewModel.params.isUncompressArchive())
+                        .apply();
             }
         }
     };
@@ -292,6 +277,7 @@ public class AddDownloadDialog extends DialogFragment {
         clipboardViewModel = provider.get(ClipboardDialog.SharedViewModel.class);
         localPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
+        assert getArguments() != null;
         AddInitParams initParams = getArguments().getParcelable(TAG_INIT_PARAMS);
         /* Clear init params */
         getArguments().putParcelable(TAG_INIT_PARAMS, null);
@@ -524,21 +510,15 @@ public class AddDownloadDialog extends DialogFragment {
 
         alert.setCanceledOnTouchOutside(false);
         alert.setOnShowListener((DialogInterface dialog) -> {
-            viewModel.fetchState.observe(AddDownloadDialog.this, (state) -> {
+            viewModel.fetchState.observe(DialogAddDownload.this, (state) -> {
                 switch (state.status) {
-                    case FETCHING:
-                        onFetching();
-                        break;
-                    case ERROR:
+                    case FETCHING -> onFetching();
+                    case ERROR -> {
                         onFetched();
                         showFetchError(state.error);
-                        break;
-                    case FETCHED:
-                        onFetched();
-                        break;
-                    case UNKNOWN:
-                        doAutoFetch();
-                        break;
+                    }
+                    case FETCHED -> onFetched();
+                    case UNKNOWN -> doAutoFetch();
                 }
             });
 
@@ -666,8 +646,7 @@ public class AddDownloadDialog extends DialogFragment {
             errorStr = getString(R.string.fetch_error_default_fmt,
                     getString(R.string.fetch_error_network_disconnected));
 
-        } else if (e instanceof HttpException) {
-            HttpException httpErr = (HttpException) e;
+        } else if (e instanceof HttpException httpErr) {
             if (httpErr.getResponseCode() > 0)
                 errorStr = getString(R.string.fetch_error_http_response, httpErr.getResponseCode());
             else
