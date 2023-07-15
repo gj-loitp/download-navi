@@ -40,8 +40,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 @Dao
-public abstract class DownloadDao
-{
+public abstract class DownloadDao {
     private static final String QUERY_GET_ALL_INFO = "SELECT * FROM DownloadInfo";
     private static final String QUERY_GET_INFO_BY_ID = "SELECT * FROM DownloadInfo WHERE id = :id";
     private static final String QUERY_DELETE_INFO_BY_URL = "DELETE FROM DownloadInfo WHERE url = :url";
@@ -52,23 +51,20 @@ public abstract class DownloadDao
     private static final String QUERY_GET_HEADERS = "SELECT * FROM download_info_headers WHERE infoId = :infoId";
 
     @Transaction
-    public void addInfo(DownloadInfo info)
-    {
+    public void addInfo(DownloadInfo info) {
         add_info(info);
         addPieces(info.makePieces());
     }
 
     @Transaction
-    public void addInfo(DownloadInfo info, List<Header> headers)
-    {
+    public void addInfo(DownloadInfo info, List<Header> headers) {
         addInfo(info);
         if (headers != null && !headers.isEmpty())
             addHeaders(headers);
     }
 
     @Transaction
-    public void replaceInfoByUrl(DownloadInfo info, List<Header> headers)
-    {
+    public void replaceInfoByUrl(DownloadInfo info, List<Header> headers) {
         deleteInfoByUrl(info.url);
         addInfo(info, headers);
     }
@@ -83,8 +79,7 @@ public abstract class DownloadDao
     public abstract void updateInfo(DownloadInfo info);
 
     @Transaction
-    public void updateInfoWithPieces(DownloadInfo info)
-    {
+    public void updateInfoWithPieces(DownloadInfo info) {
         updateInfo(info);
         deletePieces(info.id);
         addPieces(info.makePieces());
