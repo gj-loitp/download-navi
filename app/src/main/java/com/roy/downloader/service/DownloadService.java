@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.service;
 
 import android.app.Notification;
@@ -34,6 +14,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+
 import com.roy.downloader.R;
 import com.roy.downloader.core.DownloadNotifier;
 import com.roy.downloader.core.RepositoryHelper;
@@ -52,8 +33,7 @@ import io.reactivex.disposables.CompositeDisposable;
  * Only for work that exceeds 10 minutes and and it's impossible to use WorkManager.
  */
 
-public class DownloadService extends Service
-{
+public class DownloadService extends Service {
     @SuppressWarnings("unused")
     private static final String TAG = DownloadService.class.getSimpleName();
 
@@ -75,19 +55,17 @@ public class DownloadService extends Service
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
-    public void onCreate()
-    {
+    public void onCreate() {
         super.onCreate();
 
-        notifyManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        notifyManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         pref = RepositoryHelper.getSettingsRepository(getApplicationContext());
         engine = DownloadEngine.getInstance(getApplicationContext());
 
         makeForegroundNotify();
     }
 
-    private void init()
-    {
+    private void init() {
         Log.i(TAG, "Start " + TAG);
 
         disposables.add(pref.observeSettingsChanged()
@@ -98,25 +76,21 @@ public class DownloadService extends Service
         makeForegroundNotify();
     }
 
-    private final DownloadEngineListener listener = new DownloadEngineListener()
-    {
+    private final DownloadEngineListener listener = new DownloadEngineListener() {
         @Override
-        public void onDownloadsCompleted()
-        {
+        public void onDownloadsCompleted() {
             if (checkStopService())
                 stopService();
         }
 
         @Override
-        public void onApplyingParams(@NonNull UUID id)
-        {
+        public void onApplyingParams(@NonNull UUID id) {
             downloadsApplyingParams = true;
             makeApplyingParamsNotify();
         }
 
         @Override
-        public void onParamsApplied(@NonNull UUID id, @Nullable String name, @Nullable Throwable e)
-        {
+        public void onParamsApplied(@NonNull UUID id, @Nullable String name, @Nullable Throwable e) {
             downloadsApplyingParams = false;
             makeApplyingParamsNotify();
             if (e != null && name != null)
@@ -126,16 +100,14 @@ public class DownloadService extends Service
         }
     };
 
-    private boolean checkStopService()
-    {
+    private boolean checkStopService() {
         if (downloadsApplyingParams)
             return false;
 
         return !engine.hasActiveDownloads();
     }
 
-    private void stopService()
-    {
+    private void stopService() {
         disposables.clear();
         engine.removeListener(listener);
         isAlreadyRunning = false;
@@ -146,16 +118,14 @@ public class DownloadService extends Service
     }
 
     @Override
-    public void onDestroy()
-    {
+    public void onDestroy() {
         super.onDestroy();
 
         Log.i(TAG, "Stop " + TAG);
     }
 
     @Override
-    public void onLowMemory()
-    {
+    public void onLowMemory() {
         super.onLowMemory();
 
         if (engine != null)
@@ -164,14 +134,12 @@ public class DownloadService extends Service
 
     @Nullable
     @Override
-    public IBinder onBind(Intent intent)
-    {
+    public IBinder onBind(Intent intent) {
         return null;
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId)
-    {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
         /* The first start */
@@ -194,12 +162,12 @@ public class DownloadService extends Service
                         stopService();
                     return START_NOT_STICKY;
                 case ACTION_RUN_DOWNLOAD:
-                    id = (UUID)intent.getSerializableExtra(TAG_DOWNLOAD_ID);
+                    id = (UUID) intent.getSerializableExtra(TAG_DOWNLOAD_ID);
                     if (id != null && engine != null)
                         engine.doRunDownload(id);
                     break;
                 case ACTION_CHANGE_PARAMS:
-                    id = (UUID)intent.getSerializableExtra(TAG_DOWNLOAD_ID);
+                    id = (UUID) intent.getSerializableExtra(TAG_DOWNLOAD_ID);
                     ChangeableParams params = intent.getParcelableExtra(TAG_PARAMS);
                     if (id != null && params != null) {
                         downloadsApplyingParams = true;
@@ -216,12 +184,12 @@ public class DownloadService extends Service
                         engine.resumeDownloads(false);
                     break;
                 case NotificationReceiver.NOTIFY_ACTION_CANCEL:
-                    id = (UUID)intent.getSerializableExtra(NotificationReceiver.TAG_ID);
+                    id = (UUID) intent.getSerializableExtra(NotificationReceiver.TAG_ID);
                     if (id != null && engine != null)
                         engine.deleteDownloads(true, id);
                     break;
                 case NotificationReceiver.NOTIFY_ACTION_PAUSE_RESUME:
-                    id = (UUID)intent.getSerializableExtra(NotificationReceiver.TAG_ID);
+                    id = (UUID) intent.getSerializableExtra(NotificationReceiver.TAG_ID);
                     if (id != null && engine != null)
                         engine.pauseResumeDownload(id);
                     break;
@@ -231,11 +199,10 @@ public class DownloadService extends Service
         return START_STICKY;
     }
 
-    private void setKeepCpuAwake(boolean enable)
-    {
+    private void setKeepCpuAwake(boolean enable) {
         if (enable) {
             if (wakeLock == null) {
-                PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
                 wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
             }
 
@@ -251,8 +218,7 @@ public class DownloadService extends Service
         }
     }
 
-    private void makeForegroundNotify()
-    {
+    private void makeForegroundNotify() {
         /* For starting main activity */
         Intent startupIntent = new Intent(getApplicationContext(), MainActivity.class);
         startupIntent.setAction(Intent.ACTION_MAIN);
@@ -287,8 +253,7 @@ public class DownloadService extends Service
         startForeground(FOREGROUND_NOTIFICATION_ID, foregroundNotify.build());
     }
 
-    private NotificationCompat.Action makePauseAllAction()
-    {
+    private NotificationCompat.Action makePauseAllAction() {
         Intent pauseButtonIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
         pauseButtonIntent.setAction(NotificationReceiver.NOTIFY_ACTION_PAUSE_ALL);
         var flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -308,8 +273,7 @@ public class DownloadService extends Service
                 .build();
     }
 
-    private NotificationCompat.Action makeResumeAllAction()
-    {
+    private NotificationCompat.Action makeResumeAllAction() {
         Intent resumeButtonIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
         resumeButtonIntent.setAction(NotificationReceiver.NOTIFY_ACTION_RESUME_ALL);
         var flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -329,8 +293,7 @@ public class DownloadService extends Service
                 .build();
     }
 
-    private NotificationCompat.Action makeShutdownAction()
-    {
+    private NotificationCompat.Action makeShutdownAction() {
         Intent shutdownIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
         shutdownIntent.setAction(NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP);
         var flags = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -351,8 +314,7 @@ public class DownloadService extends Service
                 .build();
     }
 
-    private void makeApplyingParamsNotify()
-    {
+    private void makeApplyingParamsNotify() {
         if (!downloadsApplyingParams) {
             notifyManager.cancel(APPLYING_PARAMS_NOTIFICATION_ID);
             return;
@@ -375,8 +337,7 @@ public class DownloadService extends Service
         notifyManager.notify(APPLYING_PARAMS_NOTIFICATION_ID, builder.build());
     }
 
-    private void makeApplyingParamsErrorNotify(UUID id, String name, Throwable e)
-    {
+    private void makeApplyingParamsErrorNotify(UUID id, String name, Throwable e) {
         String title = getString(R.string.applying_params_error_title, name);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(),
                 DownloadNotifier.DEFAULT_NOTIFY_CHAN_ID)
@@ -396,8 +357,7 @@ public class DownloadService extends Service
         notifyManager.notify(id.hashCode(), builder.build());
     }
 
-    private NotificationCompat.Action makeReportAction(Throwable e)
-    {
+    private NotificationCompat.Action makeReportAction(Throwable e) {
         Intent reportIntent = new Intent(getApplicationContext(), NotificationReceiver.class);
         reportIntent.setAction(NotificationReceiver.NOTIFY_ACTION_REPORT_APPLYING_PARAMS_ERROR);
         reportIntent.putExtra(NotificationReceiver.TAG_ERR, e);
@@ -419,8 +379,7 @@ public class DownloadService extends Service
                 .build();
     }
 
-    private void handleSettingsChanged(String key)
-    {
+    private void handleSettingsChanged(String key) {
         if (key.equals(getString(R.string.pref_key_cpu_do_not_sleep)))
             setKeepCpuAwake(pref.cpuDoNotSleep());
     }

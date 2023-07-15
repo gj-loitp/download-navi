@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2018, 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.service;
 
 import android.content.Context;
@@ -36,19 +16,16 @@ import java.util.UUID;
  * Used only by DownloadScheduler.
  */
 
-public class RunDownloadWorker extends Worker
-{
+public class RunDownloadWorker extends Worker {
     public static final String TAG_ID = "id";
 
-    public RunDownloadWorker(@NonNull Context context, @NonNull WorkerParameters params)
-    {
+    public RunDownloadWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
     }
 
     @NonNull
     @Override
-    public Result doWork()
-    {
+    public Result doWork() {
         Data data = getInputData();
         String uuid = data.getString(TAG_ID);
         if (uuid == null)
@@ -67,8 +44,7 @@ public class RunDownloadWorker extends Worker
         return Result.success();
     }
 
-    private void runDownloadAction(UUID id)
-    {
+    private void runDownloadAction(UUID id) {
         /*
          * Use a foreground service, because WorkManager has a 10 minute work limit,
          * which may be less than the download time
