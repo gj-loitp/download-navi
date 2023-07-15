@@ -1,32 +1,26 @@
-package com.roy.downloader.ui;
+package com.roy.downloader.ui
 
-import android.app.Dialog;
-import android.os.Bundle;
+import android.app.Dialog
+import android.os.Bundle
+import com.roy.downloader.R
 
-import androidx.annotation.NonNull;
-
-import com.roy.downloader.R;
-
-public class DialogPermissionDenied extends BaseAlertDialog {
-    public static DialogPermissionDenied newInstance() {
-        DialogPermissionDenied frag = new DialogPermissionDenied();
-
-        Bundle args = new Bundle();
-        frag.setArguments(args);
-
-        return frag;
+class DialogPermissionDenied : BaseAlertDialog() {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        super.onCreateDialog(savedInstanceState)
+        val title = getString(R.string.perm_denied_title)
+        val message = getString(R.string.perm_denied_warning)
+        val positiveText = getString(R.string.yes)
+        val negativeText = getString(R.string.no)
+        return buildDialog(title, message, null, positiveText, negativeText, null, false)
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        super.onCreateDialog(savedInstanceState);
-
-        String title = getString(R.string.perm_denied_title);
-        String message = getString(R.string.perm_denied_warning);
-        String positiveText = getString(R.string.yes);
-        String negativeText = getString(R.string.no);
-
-        return buildDialog(title, message, null, positiveText, negativeText, null, false);
+    companion object {
+        @JvmStatic
+        fun newInstance(): DialogPermissionDenied {
+            val frag = DialogPermissionDenied()
+            val args = Bundle()
+            frag.arguments = args
+            return frag
+        }
     }
 }
