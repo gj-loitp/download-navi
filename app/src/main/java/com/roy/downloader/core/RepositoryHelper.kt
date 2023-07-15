@@ -1,41 +1,41 @@
-package com.roy.downloader.core;
+package com.roy.downloader.core
 
-import android.content.Context;
+import android.content.Context
+import com.roy.downloader.core.settings.SettingsRepository
+import com.roy.downloader.core.settings.SettingsRepositoryImpl
+import com.roy.downloader.core.storage.AppDatabase
+import com.roy.downloader.core.storage.BrowserRepository
+import com.roy.downloader.core.storage.BrowserRepositoryImpl
+import com.roy.downloader.core.storage.DataRepository
+import com.roy.downloader.core.storage.DataRepositoryImpl
 
-import androidx.annotation.NonNull;
+object RepositoryHelper {
+    private var dataRepo: DataRepositoryImpl? = null
+    private var settingsRepo: SettingsRepositoryImpl? = null
+    private var browserRepository: BrowserRepository? = null
 
-import com.roy.downloader.core.settings.SettingsRepository;
-import com.roy.downloader.core.settings.SettingsRepositoryImpl;
-import com.roy.downloader.core.storage.AppDatabase;
-import com.roy.downloader.core.storage.BrowserRepository;
-import com.roy.downloader.core.storage.BrowserRepositoryImpl;
-import com.roy.downloader.core.storage.DataRepository;
-import com.roy.downloader.core.storage.DataRepositoryImpl;
-
-public class RepositoryHelper {
-    private static DataRepositoryImpl dataRepo;
-    private static SettingsRepositoryImpl settingsRepo;
-    private static BrowserRepository browserRepository;
-
-    public synchronized static DataRepository getDataRepository(@NonNull Context appContext) {
-        if (dataRepo == null)
-            dataRepo = new DataRepositoryImpl(appContext,
-                    AppDatabase.getInstance(appContext));
-
-        return dataRepo;
+    @JvmStatic
+    @Synchronized
+    fun getDataRepository(appContext: Context): DataRepository? {
+        if (dataRepo == null) dataRepo = DataRepositoryImpl(
+            appContext,
+            AppDatabase.getInstance(appContext)
+        )
+        return dataRepo
     }
 
-    public synchronized static SettingsRepository getSettingsRepository(@NonNull Context appContext) {
-        if (settingsRepo == null)
-            settingsRepo = new SettingsRepositoryImpl(appContext);
-
-        return settingsRepo;
+    @JvmStatic
+    @Synchronized
+    fun getSettingsRepository(appContext: Context): SettingsRepository? {
+        if (settingsRepo == null) settingsRepo = SettingsRepositoryImpl(appContext)
+        return settingsRepo
     }
 
-    public synchronized static BrowserRepository getBrowserRepository(@NonNull Context appContext) {
-        if (browserRepository == null)
-            browserRepository = new BrowserRepositoryImpl(AppDatabase.getInstance(appContext));
-
-        return browserRepository;
+    @JvmStatic
+    @Synchronized
+    fun getBrowserRepository(appContext: Context): BrowserRepository? {
+        if (browserRepository == null) browserRepository =
+            BrowserRepositoryImpl(AppDatabase.getInstance(appContext))
+        return browserRepository
     }
 }
