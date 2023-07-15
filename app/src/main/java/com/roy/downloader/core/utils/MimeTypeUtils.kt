@@ -1,221 +1,295 @@
-package com.roy.downloader.core.utils;
+package com.roy.downloader.core.utils
 
-import android.webkit.MimeTypeMap;
+import android.webkit.MimeTypeMap
+import java.util.Locale
 
-import java.util.HashMap;
+object MimeTypeUtils {
+    const val DEFAULT_MIME_TYPE = "*/*"
+    const val MIME_TYPE_DELIMITER = "/"
 
-public class MimeTypeUtils {
-    public static final String DEFAULT_MIME_TYPE = "*/*";
-    public static final String MIME_TYPE_DELIMITER = "/";
-
-    public enum Category {
-        OTHER,
-        ARCHIVE,
-        VIDEO,
-        AUDIO,
-        IMAGE,
-        DOCUMENT,
-        APK,
+    @JvmStatic
+    fun getCategory(mime: String?): Category {
+        var mime = mime ?: return Category.OTHER
+        mime = mime.lowercase(Locale.getDefault())
+        if (mime.startsWith("video/")) return Category.VIDEO else if (mime.startsWith("audio/")) return Category.AUDIO else if (mime.startsWith(
+                "image/"
+            )
+        ) return Category.IMAGE else if (mime.startsWith("text/")) return Category.DOCUMENT
+        var category: Category?
+        return if (mimeToCategory[mime].also {
+                category = it
+            } == null) Category.OTHER else category!!
     }
 
-    public static Category getCategory(String mime) {
-        if (mime == null)
-            return Category.OTHER;
+    private val mimeToCategory = HashMap<String, Category>()
 
-        mime = mime.toLowerCase();
-
-        if (mime.startsWith("video/"))
-            return Category.VIDEO;
-        else if (mime.startsWith("audio/"))
-            return Category.AUDIO;
-        else if (mime.startsWith("image/"))
-            return Category.IMAGE;
-        else if (mime.startsWith("text/"))
-            return Category.DOCUMENT;
-
-        Category category;
-        return ((category = mimeToCategory.get(mime)) == null ? Category.OTHER : category);
+    init {
+        mimeToCategory["application/atom+xml"] = Category.DOCUMENT
+        mimeToCategory["application/ecmascript"] = Category.DOCUMENT
+        mimeToCategory["application/epub+zip"] = Category.DOCUMENT
+        mimeToCategory["application/gpx+xml"] = Category.DOCUMENT
+        mimeToCategory["application/gzip"] =
+            Category.ARCHIVE
+        mimeToCategory["application/hta"] = Category.DOCUMENT
+        mimeToCategory["application/java-archive"] = Category.ARCHIVE
+        mimeToCategory["application/javascript"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-javascript"] =
+            Category.DOCUMENT
+        mimeToCategory["application/json"] =
+            Category.DOCUMENT
+        mimeToCategory["application/mpegurl"] =
+            Category.VIDEO
+        mimeToCategory["application/msword"] =
+            Category.DOCUMENT
+        mimeToCategory["application/ogg"] =
+            Category.VIDEO
+        mimeToCategory["application/olescript"] =
+            Category.DOCUMENT
+        mimeToCategory["application/onenote"] =
+            Category.DOCUMENT
+        mimeToCategory["application/opensearchdescription+xml"] =
+            Category.DOCUMENT
+        mimeToCategory["application/pdf"] =
+            Category.DOCUMENT
+        mimeToCategory["application/postscript"] = Category.DOCUMENT
+        mimeToCategory["application/rtf"] =
+            Category.DOCUMENT
+        mimeToCategory["application/typescript"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.adobe.air-application-installer-package+zip"] =
+            Category.ARCHIVE
+        mimeToCategory["application/vnd.amazon.ebook"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.android.package-archive"] =
+            Category.APK
+        mimeToCategory["application/vnd.apple.mpegurl"] = Category.VIDEO
+        mimeToCategory["application/vnd.apple.mpegurl.audio"] =
+            Category.AUDIO
+        mimeToCategory["application/vnd.fdf"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.mozilla.xul+xml"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-cab-compressed"] = Category.ARCHIVE
+        mimeToCategory["application/vnd.ms-excel"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-excel.addin.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-excel.sheet.binary.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-excel.sheet.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-excel.template.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-mediapackage"] = Category.IMAGE
+        mimeToCategory["application/vnd.ms-powerpoint"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-powerpoint.addin.macroEnabled.12"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-powerpoint.presentation.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-powerpoint.slide.macroEnabled.12"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-powerpoint.slideshow.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-powerpoint.template.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-project"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-visio.viewer"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-word.document.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-word.template.macroEnabled.12"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-wpl"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.ms-xpsdocument"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.chart"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.database"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.formula"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.graphics"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.graphics-template"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.image"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.presentation"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.presentation-template"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.spreadsheet"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.spreadsheet-template"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.text"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.text-master"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.text-template"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.oasis.opendocument.text-web"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.openofficeorg.extension"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.presentationml.presentation"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.presentationml.slide"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.presentationml.slideshow"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.presentationml.template"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.spreadsheetml.template"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.wordprocessingml.document"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.openxmlformats-officedocument.wordprocessingml.template"] =
+            Category.DOCUMENT
+        mimeToCategory["application/vnd.rn-realmedia"] =
+            Category.VIDEO
+        mimeToCategory["application/vnd.symbian.install"] =
+            Category.ARCHIVE
+        mimeToCategory["application/vnd.visio"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.wap.wmlc"] = Category.DOCUMENT
+        mimeToCategory["application/vnd.wap.wmlscriptc"] = Category.DOCUMENT
+        mimeToCategory["application/vsix"] = Category.ARCHIVE
+        mimeToCategory["application/windows-library+xml"] =
+            Category.DOCUMENT
+        mimeToCategory["application/windows-search-connector+xml"] = Category.DOCUMENT
+        mimeToCategory["application/x-7z-compressed"] = Category.ARCHIVE
+        mimeToCategory["application/x-abiword"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-ace-compressed"] = Category.ARCHIVE
+        mimeToCategory["application/x-astrotite-afa"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-alz-compressed"] = Category.ARCHIVE
+        mimeToCategory["application/x-apple-diskimage"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-arj"] = Category.ARCHIVE
+        mimeToCategory["application/x-b1"] = Category.ARCHIVE
+        mimeToCategory["application/x-bzip"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-bzip2"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-cfs-compressed"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-compress"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-compressed"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-cpio"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-csh"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-dar"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-dgc-compressed"] = Category.ARCHIVE
+        mimeToCategory["application/x-director"] = Category.VIDEO
+        mimeToCategory["application/x-dvi"] = Category.DOCUMENT
+        mimeToCategory["application/x-gtar"] = Category.ARCHIVE
+        mimeToCategory["application/x-gzip"] = Category.ARCHIVE
+        mimeToCategory["application/x-itunes-itlp"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-gca-compressed"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-latex"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-lzip"] = Category.ARCHIVE
+        mimeToCategory["application/x-lzh"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-lzx"] = Category.ARCHIVE
+        mimeToCategory["application/x-lzma"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-lzop"] = Category.ARCHIVE
+        mimeToCategory["application/x-mpegurl"] = Category.VIDEO
+        mimeToCategory["application/x-quicktimeplayer"] = Category.VIDEO
+        mimeToCategory["application/x-rar-compressed"] = Category.ARCHIVE
+        mimeToCategory["application/x-rar"] =
+            Category.ARCHIVE
+        mimeToCategory["application/rar"] = Category.ARCHIVE
+        mimeToCategory["application/vnd.rar"] = Category.ARCHIVE
+        mimeToCategory["application/x-sbx"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-sh"] = Category.DOCUMENT
+        mimeToCategory["application/x-shar"] = Category.ARCHIVE
+        mimeToCategory["application/x-shockwave-flash"] = Category.VIDEO
+        mimeToCategory["application/x-silverlight-app"] = Category.ARCHIVE
+        mimeToCategory["application/x-smaf"] =
+            Category.AUDIO
+        mimeToCategory["application/x-snappy-framed"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-stuffit"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-stuffitx"] = Category.ARCHIVE
+        mimeToCategory["application/x-sv4cpio"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-tar"] =
+            Category.ARCHIVE
+        mimeToCategory["application/x-tcl"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-tex"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-texinfo"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-troff"] = Category.DOCUMENT
+        mimeToCategory["application/x-troff-man"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-troff-me"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-troff-ms"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-ustar"] = Category.ARCHIVE
+        mimeToCategory["application/xaml+xml"] =
+            Category.DOCUMENT
+        mimeToCategory["application/xapk-package-archive"] =
+            Category.APK
+        mimeToCategory["application/xhtml+xml"] =
+            Category.DOCUMENT
+        mimeToCategory["application/xml"] = Category.DOCUMENT
+        mimeToCategory["application/xml-dtd"] = Category.DOCUMENT
+        mimeToCategory["application/xspf+xml"] = Category.DOCUMENT
+        mimeToCategory["application/x-xz"] = Category.ARCHIVE
+        mimeToCategory["application/zip"] = Category.ARCHIVE
+        mimeToCategory["application/x-zoo"] =
+            Category.ARCHIVE
+        mimeToCategory["application/php"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-php"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-httpd-php"] =
+            Category.DOCUMENT
+        mimeToCategory["application/x-httpd-php-source"] = Category.DOCUMENT
     }
 
-    private static final HashMap<String, Category> mimeToCategory = new HashMap<>();
+    private val extensionToMime = HashMap<String, String>()
 
-    static {
-        mimeToCategory.put("application/atom+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/ecmascript", Category.DOCUMENT);
-        mimeToCategory.put("application/epub+zip", Category.DOCUMENT);
-        mimeToCategory.put("application/gpx+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/gzip", Category.ARCHIVE);
-        mimeToCategory.put("application/hta", Category.DOCUMENT);
-        mimeToCategory.put("application/java-archive", Category.ARCHIVE);
-        mimeToCategory.put("application/javascript", Category.DOCUMENT);
-        mimeToCategory.put("application/x-javascript", Category.DOCUMENT);
-        mimeToCategory.put("application/json", Category.DOCUMENT);
-        mimeToCategory.put("application/mpegurl", Category.VIDEO);
-        mimeToCategory.put("application/msword", Category.DOCUMENT);
-        mimeToCategory.put("application/ogg", Category.VIDEO);
-        mimeToCategory.put("application/olescript", Category.DOCUMENT);
-        mimeToCategory.put("application/onenote", Category.DOCUMENT);
-        mimeToCategory.put("application/opensearchdescription+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/pdf", Category.DOCUMENT);
-        mimeToCategory.put("application/postscript", Category.DOCUMENT);
-        mimeToCategory.put("application/rtf", Category.DOCUMENT);
-        mimeToCategory.put("application/typescript", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.adobe.air-application-installer-package+zip", Category.ARCHIVE);
-        mimeToCategory.put("application/vnd.amazon.ebook", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.android.package-archive", Category.APK);
-        mimeToCategory.put("application/vnd.apple.mpegurl", Category.VIDEO);
-        mimeToCategory.put("application/vnd.apple.mpegurl.audio", Category.AUDIO);
-        mimeToCategory.put("application/vnd.fdf", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.mozilla.xul+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-cab-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/vnd.ms-excel", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-excel.addin.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-excel.sheet.binary.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-excel.sheet.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-excel.template.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-mediapackage", Category.IMAGE);
-        mimeToCategory.put("application/vnd.ms-powerpoint", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-powerpoint.addin.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-powerpoint.presentation.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-powerpoint.slide.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-powerpoint.slideshow.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-powerpoint.template.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-project", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-visio.viewer", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-word.document.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-word.template.macroEnabled.12", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-wpl", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.ms-xpsdocument", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.chart", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.database", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.formula", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.graphics", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.graphics-template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.image", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.presentation", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.presentation-template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.spreadsheet", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.spreadsheet-template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.text", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.text-master", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.text-template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.oasis.opendocument.text-web", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openofficeorg.extension", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.presentationml.presentation", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.presentationml.slide", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.presentationml.slideshow", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.presentationml.template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.spreadsheetml.template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.wordprocessingml.document", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.openxmlformats-officedocument.wordprocessingml.template", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.rn-realmedia", Category.VIDEO);
-        mimeToCategory.put("application/vnd.symbian.install", Category.ARCHIVE);
-        mimeToCategory.put("application/vnd.visio", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.wap.wmlc", Category.DOCUMENT);
-        mimeToCategory.put("application/vnd.wap.wmlscriptc", Category.DOCUMENT);
-        mimeToCategory.put("application/vsix", Category.ARCHIVE);
-        mimeToCategory.put("application/windows-library+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/windows-search-connector+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/x-7z-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-abiword", Category.DOCUMENT);
-        mimeToCategory.put("application/x-ace-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-astrotite-afa", Category.ARCHIVE);
-        mimeToCategory.put("application/x-alz-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-apple-diskimage", Category.ARCHIVE);
-        mimeToCategory.put("application/x-arj", Category.ARCHIVE);
-        mimeToCategory.put("application/x-b1", Category.ARCHIVE);
-        mimeToCategory.put("application/x-bzip", Category.ARCHIVE);
-        mimeToCategory.put("application/x-bzip2", Category.ARCHIVE);
-        mimeToCategory.put("application/x-cfs-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-compress", Category.ARCHIVE);
-        mimeToCategory.put("application/x-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-cpio", Category.ARCHIVE);
-        mimeToCategory.put("application/x-csh", Category.ARCHIVE);
-        mimeToCategory.put("application/x-dar", Category.ARCHIVE);
-        mimeToCategory.put("application/x-dgc-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-director", Category.VIDEO);
-        mimeToCategory.put("application/x-dvi", Category.DOCUMENT);
-        mimeToCategory.put("application/x-gtar", Category.ARCHIVE);
-        mimeToCategory.put("application/x-gzip", Category.ARCHIVE);
-        mimeToCategory.put("application/x-itunes-itlp", Category.DOCUMENT);
-        mimeToCategory.put("application/x-gca-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-latex", Category.DOCUMENT);
-        mimeToCategory.put("application/x-lzip", Category.ARCHIVE);
-        mimeToCategory.put("application/x-lzh", Category.ARCHIVE);
-        mimeToCategory.put("application/x-lzx", Category.ARCHIVE);
-        mimeToCategory.put("application/x-lzma", Category.ARCHIVE);
-        mimeToCategory.put("application/x-lzop", Category.ARCHIVE);
-        mimeToCategory.put("application/x-mpegurl", Category.VIDEO);
-        mimeToCategory.put("application/x-quicktimeplayer", Category.VIDEO);
-        mimeToCategory.put("application/x-rar-compressed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-rar", Category.ARCHIVE);
-        mimeToCategory.put("application/rar", Category.ARCHIVE);
-        mimeToCategory.put("application/vnd.rar", Category.ARCHIVE);
-        mimeToCategory.put("application/x-sbx", Category.ARCHIVE);
-        mimeToCategory.put("application/x-sh", Category.DOCUMENT);
-        mimeToCategory.put("application/x-shar", Category.ARCHIVE);
-        mimeToCategory.put("application/x-shockwave-flash", Category.VIDEO);
-        mimeToCategory.put("application/x-silverlight-app", Category.ARCHIVE);
-        mimeToCategory.put("application/x-smaf", Category.AUDIO);
-        mimeToCategory.put("application/x-snappy-framed", Category.ARCHIVE);
-        mimeToCategory.put("application/x-stuffit", Category.ARCHIVE);
-        mimeToCategory.put("application/x-stuffitx", Category.ARCHIVE);
-        mimeToCategory.put("application/x-sv4cpio", Category.ARCHIVE);
-        mimeToCategory.put("application/x-tar", Category.ARCHIVE);
-        mimeToCategory.put("application/x-tcl", Category.DOCUMENT);
-        mimeToCategory.put("application/x-tex", Category.DOCUMENT);
-        mimeToCategory.put("application/x-texinfo", Category.DOCUMENT);
-        mimeToCategory.put("application/x-troff", Category.DOCUMENT);
-        mimeToCategory.put("application/x-troff-man", Category.DOCUMENT);
-        mimeToCategory.put("application/x-troff-me", Category.DOCUMENT);
-        mimeToCategory.put("application/x-troff-ms", Category.DOCUMENT);
-        mimeToCategory.put("application/x-ustar", Category.ARCHIVE);
-        mimeToCategory.put("application/xaml+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/xapk-package-archive", Category.APK);
-        mimeToCategory.put("application/xhtml+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/xml", Category.DOCUMENT);
-        mimeToCategory.put("application/xml-dtd", Category.DOCUMENT);
-        mimeToCategory.put("application/xspf+xml", Category.DOCUMENT);
-        mimeToCategory.put("application/x-xz", Category.ARCHIVE);
-        mimeToCategory.put("application/zip", Category.ARCHIVE);
-        mimeToCategory.put("application/x-zoo", Category.ARCHIVE);
-        mimeToCategory.put("application/php", Category.DOCUMENT);
-        mimeToCategory.put("application/x-php", Category.DOCUMENT);
-        mimeToCategory.put("application/x-httpd-php", Category.DOCUMENT);
-        mimeToCategory.put("application/x-httpd-php-source", Category.DOCUMENT);
+    init {
+        extensionToMime["php"] = "application/php"
+        extensionToMime["json"] = "application/json"
     }
 
-    private static final HashMap<String, String> extensionToMime = new HashMap<>();
+    private val mimeToExtension = HashMap<String, String>()
 
-    static {
-        extensionToMime.put("php", "application/php");
-        extensionToMime.put("json", "application/json");
+    init {
+        mimeToExtension["text/php"] = "php"
+        mimeToExtension["text/x-php"] = "php"
+        mimeToExtension["application/php"] = "php"
+        mimeToExtension["application/x-php"] = "php"
+        mimeToExtension["application/x-httpd-php"] = "php"
+        mimeToExtension["application/x-httpd-php-source"] = "php"
+        mimeToExtension["application/json"] = "json"
     }
 
-    private static final HashMap<String, String> mimeToExtension = new HashMap<>();
-
-    static {
-        mimeToExtension.put("text/php", "php");
-        mimeToExtension.put("text/x-php", "php");
-        mimeToExtension.put("application/php", "php");
-        mimeToExtension.put("application/x-php", "php");
-        mimeToExtension.put("application/x-httpd-php", "php");
-        mimeToExtension.put("application/x-httpd-php-source", "php");
-        mimeToExtension.put("application/json", "json");
+    @JvmStatic
+    fun getExtensionFromMimeType(mimeType: String): String? {
+        val extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
+        return if (extension == null || "bin" == mimeType) mimeToExtension[mimeType] else extension
     }
 
-    public static String getExtensionFromMimeType(String mimeType) {
-        var extension = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType);
-        return extension == null || "bin".equals(mimeType)
-                ? mimeToExtension.get(mimeType)
-                : extension;
+    @JvmStatic
+    fun getMimeTypeFromExtension(extension: String): String? {
+        val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        return if (mimeType == null || "application/octet-stream" == mimeType) extensionToMime[extension] else mimeType
     }
 
-    public static String getMimeTypeFromExtension(String extension) {
-        var mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        return mimeType == null || "application/octet-stream".equals(mimeType)
-                ? extensionToMime.get(extension)
-                : mimeType;
+    enum class Category {
+        OTHER, ARCHIVE, VIDEO, AUDIO, IMAGE, DOCUMENT, APK
     }
 }

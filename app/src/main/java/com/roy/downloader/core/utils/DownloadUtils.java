@@ -59,7 +59,7 @@ public class DownloadUtils {
      * Format as defined in RFC 2616 and RFC 5987
      * Both inline and attachment types are supported.
      * More details can be found
-     * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition
+     * <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Disposition">...</a>
      * <p>
      * The first segment is the [contentDispositionType], there you can find the documentation,
      * Next, it's the filename segment, where we have a filename="filename.ext"
@@ -144,7 +144,7 @@ public class DownloadUtils {
         String extension = null;
 
         /* First, try to use the content disposition */
-        if (filename == null && contentDisposition != null) {
+        if (contentDisposition != null) {
             filename = parseContentDisposition(contentDisposition);
             if (filename != null) {
                 int index = filename.lastIndexOf('/') + 1;
