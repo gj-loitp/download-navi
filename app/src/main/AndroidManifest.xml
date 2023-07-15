@@ -1111,7 +1111,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.filemanager.FileManagerDialog" />
+        <activity android:name=".ui.filemanager.DialogFileManager" />
 
         <activity android:name=".ui.settings.PreferenceActivity" />
 

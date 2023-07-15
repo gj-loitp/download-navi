@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import com.roy.downloader.R;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.filemanager.FileManagerConfig;
-import com.roy.downloader.ui.filemanager.FileManagerDialog;
+import com.roy.downloader.ui.filemanager.DialogFileManager;
 
 public final class FileSystemContracts {
     private FileSystemContracts() {
@@ -31,7 +31,7 @@ public final class FileSystemContracts {
         public Intent createIntent(@NonNull Context context, @Nullable Uri input) {
             super.createIntent(context, input);
 
-            Intent i = new Intent(context, FileManagerDialog.class);
+            Intent i = new Intent(context, DialogFileManager.class);
             String dirPath = null;
             if (input != null && Utils.isFileSystemPath(input)) {
                 dirPath = input.getPath();
@@ -41,7 +41,7 @@ public final class FileSystemContracts {
                     context.getString(R.string.select_folder_to_save),
                     FileManagerConfig.DIR_CHOOSER_MODE
             );
-            i.putExtra(FileManagerDialog.TAG_CONFIG, config);
+            i.putExtra(DialogFileManager.TAG_CONFIG, config);
             return i;
         }
     }
@@ -58,14 +58,14 @@ public final class FileSystemContracts {
         public Intent createIntent(@NonNull Context context, @NonNull String[] input) {
             super.createIntent(context, input);
 
-            Intent i = new Intent(context, FileManagerDialog.class);
+            Intent i = new Intent(context, DialogFileManager.class);
             FileManagerConfig config = new FileManagerConfig(
                     null,
                     null,
                     FileManagerConfig.FILE_CHOOSER_MODE
             );
             config.mimeType = input.length > 0 ? input[0] : null;
-            i.putExtra(FileManagerDialog.TAG_CONFIG, config);
+            i.putExtra(DialogFileManager.TAG_CONFIG, config);
             return i;
         }
     }

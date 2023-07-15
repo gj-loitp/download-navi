@@ -29,8 +29,7 @@ import java.util.List;
  * Specifies the start folder and choose mode (folder or file choose). Part of FileManagerDialog.
  */
 
-public class FileManagerConfig implements Parcelable
-{
+public class FileManagerConfig implements Parcelable {
     public static final int FILE_CHOOSER_MODE = 0;
     public static final int DIR_CHOOSER_MODE = 1;
     public static final int SAVE_FILE_MODE = 2;
@@ -45,15 +44,13 @@ public class FileManagerConfig implements Parcelable
     public boolean canReplace;
     public String mimeType;
 
-    public FileManagerConfig(String path, String title, int mode)
-    {
+    public FileManagerConfig(String path, String title, int mode) {
         this.path = path;
         this.title = title;
         showMode = mode;
     }
 
-    public FileManagerConfig (Parcel source)
-    {
+    public FileManagerConfig(Parcel source) {
         path = source.readString();
         title = source.readString();
         highlightFileTypes = new ArrayList<>();
@@ -64,43 +61,37 @@ public class FileManagerConfig implements Parcelable
         mimeType = source.readString();
     }
 
-    public FileManagerConfig setFileName(String name)
-    {
+    public FileManagerConfig setFileName(String name) {
         fileName = name;
 
         return this;
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(path);
         dest.writeString(title);
         dest.writeStringList(highlightFileTypes);
         dest.writeInt(showMode);
         dest.writeString(fileName);
-        dest.writeByte((byte)(canReplace ? 1 : 0));
+        dest.writeByte((byte) (canReplace ? 1 : 0));
         dest.writeString(mimeType);
     }
 
     public static final Creator<FileManagerConfig> CREATOR =
-            new Creator<FileManagerConfig>()
-            {
+            new Creator<>() {
                 @Override
-                public FileManagerConfig createFromParcel(Parcel source)
-                {
+                public FileManagerConfig createFromParcel(Parcel source) {
                     return new FileManagerConfig(source);
                 }
 
                 @Override
-                public FileManagerConfig[] newArray(int size)
-                {
+                public FileManagerConfig[] newArray(int size) {
                     return new FileManagerConfig[size];
                 }
             };

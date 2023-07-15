@@ -1,29 +1,9 @@
-/*
- * Copyright (C) 2016, 2018, 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of LibreTorrent.
- *
- * LibreTorrent is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * LibreTorrent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with LibreTorrent.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.filemanager;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
@@ -71,11 +51,10 @@ import io.reactivex.disposables.Disposable;
  *  - SAVE_FILE_MODE: Uri of the created file (filesystem or SAF)
  */
 
-public class FileManagerDialog extends AppCompatActivity
-        implements AdapterFileManager.ViewHolder.ClickListener
-{
+public class DialogFileManager extends AppCompatActivity
+        implements AdapterFileManager.ViewHolder.ClickListener {
     @SuppressWarnings("unused")
-    private static final String TAG = FileManagerDialog.class.getSimpleName();
+    private static final String TAG = DialogFileManager.class.getSimpleName();
 
     private static final String TAG_LIST_FILES_STATE = "list_files_state";
     private static final String TAG_INPUT_NAME_DIALOG = "input_name_dialog";
@@ -103,8 +82,7 @@ public class FileManagerDialog extends AppCompatActivity
     private SharedPreferences pref;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         setTheme(Utils.getAppTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
@@ -127,22 +105,19 @@ public class FileManagerDialog extends AppCompatActivity
         binding.setViewModel(viewModel);
 
         FragmentManager fm = getSupportFragmentManager();
-        inputNameDialog = (BaseAlertDialog)fm.findFragmentByTag(TAG_INPUT_NAME_DIALOG);
-        dialogErrorReport = (DialogErrorReport)fm.findFragmentByTag(TAG_ERROR_REPORT_DIALOG);
+        inputNameDialog = (BaseAlertDialog) fm.findFragmentByTag(TAG_INPUT_NAME_DIALOG);
+        dialogErrorReport = (DialogErrorReport) fm.findFragmentByTag(TAG_ERROR_REPORT_DIALOG);
         dialogViewModel = new ViewModelProvider(this).get(BaseAlertDialog.SharedViewModel.class);
 
         String title = viewModel.config.title;
         if (TextUtils.isEmpty(title)) {
             switch (viewModel.config.showMode) {
-                case FileManagerConfig.DIR_CHOOSER_MODE:
-                    binding.toolbar.setTitle(R.string.dir_chooser_title);
-                    break;
-                case FileManagerConfig.FILE_CHOOSER_MODE:
-                    binding.toolbar.setTitle(R.string.file_chooser_title);
-                    break;
-                case FileManagerConfig.SAVE_FILE_MODE:
-                    binding.toolbar.setTitle(R.string.save_file);
-                    break;
+                case FileManagerConfig.DIR_CHOOSER_MODE ->
+                        binding.toolbar.setTitle(R.string.dir_chooser_title);
+                case FileManagerConfig.FILE_CHOOSER_MODE ->
+                        binding.toolbar.setTitle(R.string.file_chooser_title);
+                case FileManagerConfig.SAVE_FILE_MODE ->
+                        binding.toolbar.setTitle(R.string.save_file);
             }
 
         } else {
@@ -158,14 +133,12 @@ public class FileManagerDialog extends AppCompatActivity
 
         if (savedInstanceState == null)
             binding.fileName.setText(viewModel.config.fileName);
-        binding.fileName.addTextChangedListener(new TextWatcher()
-        {
+        binding.fileName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* Nothing */ }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count)
-            {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 binding.layoutFileName.setErrorEnabled(false);
                 binding.layoutFileName.setError(null);
             }
@@ -184,8 +157,7 @@ public class FileManagerDialog extends AppCompatActivity
         binding.swipeContainer.setOnRefreshListener(this::refreshDir);
     }
 
-    private void showInputNameDialog()
-    {
+    private void showInputNameDialog() {
         if (getSupportFragmentManager().findFragmentByTag(TAG_INPUT_NAME_DIALOG) == null) {
             inputNameDialog = BaseAlertDialog.newInstance(
                     getString(R.string.dialog_new_folder_title),
@@ -200,8 +172,7 @@ public class FileManagerDialog extends AppCompatActivity
         }
     }
 
-    private void showSAFDialog()
-    {
+    private void showSAFDialog() {
         String mimeType = viewModel.config.mimeType;
         Intent i;
         int requestCode;
@@ -218,13 +189,6 @@ public class FileManagerDialog extends AppCompatActivity
                 requestCode = SAF_CREATE_FILE_REQUEST_CODE;
                 break;
             case FileManagerConfig.DIR_CHOOSER_MODE:
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    Snackbar.make(binding.coordinatorLayout,
-                            R.string.device_does_not_support_this_feature,
-                            Snackbar.LENGTH_SHORT)
-                            .show();
-                    return;
-                }
                 i = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 requestCode = SAF_OPEN_FILE_TREE_REQUEST_CODE;
                 break;
@@ -247,37 +211,33 @@ public class FileManagerDialog extends AppCompatActivity
 
         } catch (ActivityNotFoundException e) {
             Snackbar.make(binding.coordinatorLayout,
-                    R.string.system_file_manager_not_found,
-                    Snackbar.LENGTH_SHORT)
+                            R.string.system_file_manager_not_found,
+                            Snackbar.LENGTH_SHORT)
                     .show();
         }
     }
 
     @Override
-    protected void onStop()
-    {
+    protected void onStop() {
         super.onStop();
 
         disposable.clear();
     }
 
     @Override
-    protected void onStart()
-    {
+    protected void onStart() {
         super.onStart();
 
         subscribeAlertDialog();
         subscribeAdapter();
     }
 
-    private void subscribeAlertDialog()
-    {
+    private void subscribeAlertDialog() {
         Disposable d = dialogViewModel.observeEvents().subscribe(this::handleAlertDialogEvent);
         disposable.add(d);
     }
 
-    private void subscribeAdapter()
-    {
+    private void subscribeAdapter() {
         disposable.add(viewModel.childNodes
                 .doOnNext((childList) -> {
                     if (binding.swipeContainer.isRefreshing())
@@ -286,8 +246,7 @@ public class FileManagerDialog extends AppCompatActivity
                 .subscribe(adapter::submitList));
     }
 
-    private void handleAlertDialogEvent(BaseAlertDialog.Event event)
-    {
+    private void handleAlertDialogEvent(BaseAlertDialog.Event event) {
         if (event.dialogTag == null)
             return;
 
@@ -338,8 +297,7 @@ public class FileManagerDialog extends AppCompatActivity
         }
     }
 
-    private void showSendErrorDialog(Exception e)
-    {
+    private void showSendErrorDialog(Exception e) {
         viewModel.errorReport = e;
         if (getSupportFragmentManager().findFragmentByTag(TAG_ERROR_REPORT_DIALOG) == null) {
             dialogErrorReport = DialogErrorReport.newInstance(
@@ -351,16 +309,14 @@ public class FileManagerDialog extends AppCompatActivity
         }
     }
 
-    private void permissionDeniedToast()
-    {
+    private void permissionDeniedToast() {
         Snackbar.make(binding.coordinatorLayout,
-                R.string.permission_denied,
-                Snackbar.LENGTH_SHORT)
+                        R.string.permission_denied,
+                        Snackbar.LENGTH_SHORT)
                 .show();
     }
 
-    private void showCreateFolderErrDialog()
-    {
+    private void showCreateFolderErrDialog() {
         if (getSupportFragmentManager().findFragmentByTag(TAG_ERR_CREATE_DIR) == null) {
             BaseAlertDialog errDialog = BaseAlertDialog.newInstance(
                     getString(R.string.error),
@@ -376,8 +332,7 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         filesListState = layoutManager.onSaveInstanceState();
         outState.putParcelable(TAG_LIST_FILES_STATE, filesListState);
 
@@ -385,8 +340,7 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState)
-    {
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
 
         if (savedInstanceState != null)
@@ -394,8 +348,7 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
 
         if (filesListState != null)
@@ -403,8 +356,8 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    public void onItemClicked(FileManagerNode item)
-    {
+    public void onItemClicked(FileManagerNode item) {
+        assert item.getName() != null;
         if (item.getName().equals(FileManagerNode.PARENT_DIR)) {
             try {
                 viewModel.upToParentDirectory();
@@ -421,26 +374,24 @@ public class FileManagerDialog extends AppCompatActivity
 
             } catch (SecurityException e) {
                 permissionDeniedToast();
-            }  catch (IOException e) {
+            } catch (IOException e) {
                 Log.e(TAG, Log.getStackTraceString(e));
                 showSendErrorDialog(e);
             }
 
         } else if (item.getType() == FileManagerNode.Type.FILE &&
-                   viewModel.config.showMode == FileManagerConfig.FILE_CHOOSER_MODE) {
+                viewModel.config.showMode == FileManagerConfig.FILE_CHOOSER_MODE) {
             saveCurDirectoryPath();
             returnFileUri(item.getName());
         }
     }
 
-    private void refreshDir()
-    {
+    private void refreshDir() {
         binding.swipeContainer.setRefreshing(true);
         viewModel.refreshCurDirectory();
     }
 
-    private void saveCurDirectoryPath()
-    {
+    private void saveCurDirectoryPath() {
         String path = viewModel.curDir.get();
         if (path == null)
             return;
@@ -451,8 +402,7 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
         getMenuInflater().inflate(R.menu.menu_file_manager, menu);
@@ -461,8 +411,7 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 
         if (viewModel.config.showMode == FileManagerConfig.FILE_CHOOSER_MODE)
@@ -472,14 +421,12 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         finish();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
             onBackPressed();
@@ -496,8 +443,7 @@ public class FileManagerDialog extends AppCompatActivity
         return true;
     }
 
-    private void openHomeDirectory()
-    {
+    private void openHomeDirectory() {
         String path = viewModel.fs.getUserDirPath();
         if (!TextUtils.isEmpty(path)) {
             try {
@@ -522,8 +468,7 @@ public class FileManagerDialog extends AppCompatActivity
         }
     }
 
-    private void returnDirectoryUri()
-    {
+    private void returnDirectoryUri() {
         Intent i = new Intent();
         try {
             i.setData(viewModel.getCurDirectoryUri());
@@ -536,8 +481,7 @@ public class FileManagerDialog extends AppCompatActivity
         finish();
     }
 
-    private void createFile(boolean replace)
-    {
+    private void createFile(boolean replace) {
         if (!checkFileNameField())
             return;
 
@@ -560,8 +504,7 @@ public class FileManagerDialog extends AppCompatActivity
         finish();
     }
 
-    private void returnFileUri(String fileName)
-    {
+    private void returnFileUri(String fileName) {
         Intent i = new Intent();
         try {
             i.setData(viewModel.getFileUri(fileName));
@@ -574,8 +517,7 @@ public class FileManagerDialog extends AppCompatActivity
         finish();
     }
 
-    private void showReplaceFileDialog()
-    {
+    private void showReplaceFileDialog() {
         if (getSupportFragmentManager().findFragmentByTag(TAG_REPLACE_FILE_DIALOG) == null) {
             BaseAlertDialog replaceFileDialog = BaseAlertDialog.newInstance(
                     getString(R.string.replace_file),
@@ -590,8 +532,7 @@ public class FileManagerDialog extends AppCompatActivity
         }
     }
 
-    private boolean checkFileNameField()
-    {
+    private boolean checkFileNameField() {
         if (TextUtils.isEmpty(binding.fileName.getText())) {
             binding.layoutFileName.setErrorEnabled(true);
             binding.layoutFileName.setError(getString(R.string.file_name_is_empty));
@@ -607,24 +548,20 @@ public class FileManagerDialog extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (data == null)
             return;
 
         switch (requestCode) {
-            case SAF_OPEN_FILE_TREE_REQUEST_CODE:
-            case SAF_CREATE_FILE_REQUEST_CODE:
-            case SAF_OPEN_FILE_REQUEST_CODE:
+            case SAF_OPEN_FILE_TREE_REQUEST_CODE, SAF_CREATE_FILE_REQUEST_CODE, SAF_OPEN_FILE_REQUEST_CODE -> {
                 viewModel.takeSafPermissions(data);
-
                 Intent i = new Intent();
                 i.setData(data.getData());
                 setResult(RESULT_OK, i);
                 finish();
-                break;
+            }
         }
     }
 }
