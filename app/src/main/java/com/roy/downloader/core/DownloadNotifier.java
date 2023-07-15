@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019 Tachibana General Laboratories, LLC
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core;
 
 import android.app.NotificationChannel;
@@ -49,6 +29,7 @@ import com.roy.downloader.core.utils.DateUtils;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.receiver.NotificationReceiver;
 import com.roy.downloader.ui.main.MainActivity;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -71,8 +52,7 @@ import static com.roy.downloader.core.model.data.entity.DownloadInfo.VISIBILITY_
  * Collapses similar downloads into a single notification.
  */
 
-public class DownloadNotifier
-{
+public class DownloadNotifier {
     @SuppressWarnings("unused")
     private static final String TAG = DownloadNotifier.class.getSimpleName();
 
@@ -105,22 +85,19 @@ public class DownloadNotifier
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final FileSystemFacade fs;
 
-    private class Notification
-    {
+    private class Notification {
         public UUID downloadId;
         public String tag;
         public long timestamp;
         public long lastUpdateTime;
 
-        public Notification(UUID downloadId, long lastUpdateTime)
-        {
+        public Notification(UUID downloadId, long lastUpdateTime) {
             this.downloadId = downloadId;
             this.lastUpdateTime = lastUpdateTime;
         }
     }
 
-    public static DownloadNotifier getInstance(@NonNull Context appContext)
-    {
+    public static DownloadNotifier getInstance(@NonNull Context appContext) {
         if (INSTANCE == null) {
             synchronized (DownloadNotifier.class) {
                 if (INSTANCE == null)
@@ -130,17 +107,15 @@ public class DownloadNotifier
         return INSTANCE;
     }
 
-    private DownloadNotifier(Context appContext)
-    {
+    private DownloadNotifier(Context appContext) {
         this.appContext = appContext;
-        notifyManager = (NotificationManager)appContext.getSystemService(NOTIFICATION_SERVICE);
+        notifyManager = (NotificationManager) appContext.getSystemService(NOTIFICATION_SERVICE);
         repo = RepositoryHelper.getDataRepository(appContext);
         pref = RepositoryHelper.getSettingsRepository(appContext);
         fs = SystemFacadeHelper.getFileSystemFacade(appContext);
     }
 
-    public void makeNotifyChans()
-    {
+    public void makeNotifyChans() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
             return;
 
@@ -167,8 +142,7 @@ public class DownloadNotifier
         notifyManager.createNotificationChannels(channels);
     }
 
-    public void startUpdate()
-    {
+    public void startUpdate() {
         disposables.add(repo.observeAllInfoAndPieces()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -178,8 +152,7 @@ public class DownloadNotifier
                 ));
     }
 
-    public void stopUpdate()
-    {
+    public void stopUpdate() {
         disposables.clear();
     }
 
@@ -255,8 +228,7 @@ public class DownloadNotifier
         notifyManager.notify(UNCOMPRESS_ARCHIVE_ERROR_TAG, id.hashCode(), builder.build());
     }
 
-    private void update(@NonNull List<InfoAndPieces> infoAndPiecesList)
-    {
+    private void update(@NonNull List<InfoAndPieces> infoAndPiecesList) {
         synchronized (activeNotifs) {
             HashSet<UUID> ids = new HashSet<>();
             for (InfoAndPieces infoAndPieces : infoAndPiecesList) {
@@ -296,8 +268,7 @@ public class DownloadNotifier
         }
     }
 
-    private boolean checkShowNotification(int type)
-    {
+    private boolean checkShowNotification(int type) {
         switch (type) {
             case TYPE_ACTIVE:
                 return pref.progressNotify();
@@ -310,8 +281,7 @@ public class DownloadNotifier
         return false;
     }
 
-    private boolean checkUpdateTime(DownloadInfo info)
-    {
+    private boolean checkUpdateTime(DownloadInfo info) {
         Notification notify = activeNotifs.get(info.id);
         /* Force first notification */
         if (notify == null)
@@ -323,8 +293,7 @@ public class DownloadNotifier
         return timeDelta > MIN_PROGRESS_TIME;
     }
 
-    private void updateWithLocked(InfoAndPieces infoAndPieces, Notification notify, String tag, int type)
-    {
+    private void updateWithLocked(InfoAndPieces infoAndPieces, Notification notify, String tag, int type) {
         DownloadInfo info = infoAndPieces.info;
         if (info.statusCode == StatusCode.STATUS_STOPPED) {
             notifyManager.cancel(tag, 0);
@@ -467,10 +436,10 @@ public class DownloadNotifier
                         | PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
                 PendingIntent openPendingIntent =
                         PendingIntent.getActivity(
-                            appContext,
-                            tag.hashCode(),
-                            i,
-                            flags
+                                appContext,
+                                tag.hashCode(),
+                                i,
+                                flags
                         );
 
                 builder.setContentIntent(openPendingIntent);
@@ -497,7 +466,7 @@ public class DownloadNotifier
                 builder.setProgress(100, 0, true);
             } else {
                 if (info.totalBytes > 0) {
-                    progress = (int)((downloadBytes * 100) / info.totalBytes);
+                    progress = (int) ((downloadBytes * 100) / info.totalBytes);
                     if (StatusCode.isStatusStoppedOrPaused(info.statusCode))
                         builder.setProgress(0, 0, false);
                     else
@@ -612,8 +581,7 @@ public class DownloadNotifier
      * Disable notifications for download
      */
 
-    private void markAsHidden(DownloadInfo info)
-    {
+    private void markAsHidden(DownloadInfo info) {
         info.visibility = VISIBILITY_HIDDEN;
 
         disposables.add(Completable.fromAction(() -> repo.updateInfo(info, false, false))
@@ -621,8 +589,7 @@ public class DownloadNotifier
                 .subscribe());
     }
 
-    private void cleanNotifs(@NonNull Set<UUID> excludedIds)
-    {
+    private void cleanNotifs(@NonNull Set<UUID> excludedIds) {
         for (int i = 0; i < activeNotifs.size(); i++) {
             UUID id = activeNotifs.keyAt(i);
             if (excludedIds.contains(id))
@@ -634,8 +601,7 @@ public class DownloadNotifier
         }
     }
 
-    private static String makeNotificationTag(DownloadInfo info)
-    {
+    private static String makeNotificationTag(DownloadInfo info) {
         if (isActiveAndVisible(info.statusCode, info.visibility))
             return TYPE_ACTIVE + ":" + info.id;
         else if (isPendingAndVisible(info.statusCode, info.visibility))
@@ -646,34 +612,30 @@ public class DownloadNotifier
             return null;
     }
 
-    private static int getNotificationTagType(String tag)
-    {
+    private static int getNotificationTagType(String tag) {
         return (tag == null ? -1 : Integer.parseInt(tag.substring(0, tag.indexOf(':'))));
     }
 
-    private static boolean isPendingAndVisible(int statusCode, int visibility)
-    {
+    private static boolean isPendingAndVisible(int statusCode, int visibility) {
         return (statusCode == StatusCode.STATUS_PENDING ||
                 statusCode == StatusCode.STATUS_WAITING_FOR_NETWORK ||
                 statusCode == StatusCode.STATUS_WAITING_TO_RETRY) &&
                 (visibility == VISIBILITY_VISIBLE ||
-                 visibility == VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        visibility == VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
     }
 
-    private static boolean isActiveAndVisible(int statusCode, int visibility)
-    {
+    private static boolean isActiveAndVisible(int statusCode, int visibility) {
         return (statusCode == StatusCode.STATUS_RUNNING ||
                 statusCode == StatusCode.STATUS_PAUSED ||
                 statusCode == StatusCode.STATUS_FETCH_METADATA) &&
                 (visibility == VISIBILITY_VISIBLE ||
-                 visibility == VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                        visibility == VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
     }
 
-    private static boolean isCompleteAndVisible(int statusCode, int visibility)
-    {
+    private static boolean isCompleteAndVisible(int statusCode, int visibility) {
         return StatusCode.isStatusCompleted(statusCode) &&
                 (visibility == VISIBILITY_VISIBLE_NOTIFY_COMPLETED ||
-                 visibility == VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
+                        visibility == VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
     }
 
     /*
@@ -682,8 +644,7 @@ public class DownloadNotifier
      * you can change them only in the settings of Android 8.0
      */
 
-    private void applyLegacyNotifySettings(NotificationCompat.Builder builder)
-    {
+    private void applyLegacyNotifySettings(NotificationCompat.Builder builder) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             return;
 
@@ -693,7 +654,7 @@ public class DownloadNotifier
             builder.setSound(Uri.parse(pref.notifySound()));
 
         if (pref.vibrationNotify())
-            builder.setVibrate(new long[] {1000}); /* ms */
+            builder.setVibrate(new long[]{1000}); /* ms */
 
         if (pref.ledIndicatorNotify())
             builder.setLights(pref.ledIndicatorColorNotify(), 1000, 1000); /* ms */

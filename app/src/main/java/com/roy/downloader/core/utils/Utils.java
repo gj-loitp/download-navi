@@ -341,6 +341,7 @@ public class Utils {
                 continue;
 
             DownloadInfo info = item.info;
+            assert fs != null;
             Uri filePath = fs.getFileUri(info.dirPath, info.fileName);
             if (filePath != null && fs.exists(filePath)) {
                 if (Utils.isFileSystemPath(filePath))
@@ -554,15 +555,11 @@ public class Utils {
     }
 
     public static boolean isStatusRetryable(int statusCode) {
-        switch (statusCode) {
-            case STATUS_HTTP_DATA_ERROR:
-            case HTTP_UNAVAILABLE:
-            case HTTP_INTERNAL_ERROR:
-            case STATUS_FILE_ERROR:
-                return true;
-            default:
-                return false;
-        }
+        return switch (statusCode) {
+            case STATUS_HTTP_DATA_ERROR, HTTP_UNAVAILABLE, HTTP_INTERNAL_ERROR, STATUS_FILE_ERROR ->
+                    true;
+            default -> false;
+        };
     }
 
     public static boolean isWebViewAvailable(@NonNull Context context) {
@@ -591,12 +588,8 @@ public class Utils {
 
     public static void deleteCookies() {
         CookieManager cookieManager = CookieManager.getInstance();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            cookieManager.removeAllCookies(null);
-            cookieManager.flush();
-        } else {
-            cookieManager.removeAllCookie();
-        }
+        cookieManager.removeAllCookies(null);
+        cookieManager.flush();
     }
 
     /*
@@ -620,6 +613,7 @@ public class Utils {
         if (matcher.matches()) {
             /* Force scheme to lowercase */
             String scheme = matcher.group(1);
+            assert scheme != null;
             String lcScheme = scheme.toLowerCase(Locale.getDefault());
             if (!lcScheme.equals(scheme))
                 inUrl = lcScheme + matcher.group(2);

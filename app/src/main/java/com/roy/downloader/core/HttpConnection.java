@@ -1,24 +1,3 @@
-/*
- * Copyright (C) 2018-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2018-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- * Copyright (C) 2020 8176135 <elsecaller@8176135.xyz>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.core;
 
 import android.webkit.CookieManager;
@@ -40,11 +19,10 @@ import static java.net.HttpURLConnection.HTTP_SEE_OTHER;
  * The wrapper for HttpUrlConnection.
  */
 
-public class HttpConnection implements Runnable
-{
+public class HttpConnection implements Runnable {
     /* Can't be more than 7 */
     private static final int MAX_REDIRECTS = 5;
-    public static final int DEFAULT_TIMEOUT = (int)(20 * SECOND_IN_MILLIS);
+    public static final int DEFAULT_TIMEOUT = (int) (20 * SECOND_IN_MILLIS);
     public static final int HTTP_TEMPORARY_REDIRECT = 307;
     public static final int HTTP_PERMANENT_REDIRECT = 308;
 
@@ -55,8 +33,7 @@ public class HttpConnection implements Runnable
     private String referer;
     private boolean contentRangeLength = false;
 
-    public interface Listener
-    {
+    public interface Listener {
         void onConnectionCreated(HttpURLConnection conn);
 
         void onResponseHandle(HttpURLConnection conn, int code, String message);
@@ -68,8 +45,7 @@ public class HttpConnection implements Runnable
         void onTooManyRedirects();
     }
 
-    public HttpConnection(String url) throws MalformedURLException, GeneralSecurityException
-    {
+    public HttpConnection(String url) throws MalformedURLException, GeneralSecurityException {
         this.url = new URL(url);
         this.socketFactory = new TLSSocketFactory();
     }
@@ -96,20 +72,18 @@ public class HttpConnection implements Runnable
      * Zero is interpreted as an infinite timeout
      */
 
-    public void setTimeout(int timeout)
-    {
+    public void setTimeout(int timeout) {
         this.timeout = timeout;
     }
 
     @Override
-    public void run()
-    {
+    public void run() {
         var redirectionCount = 0;
         var requestContentRange = false;
         while (redirectionCount++ < MAX_REDIRECTS) {
             HttpURLConnection conn = null;
             try {
-                conn = (HttpURLConnection)url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
                 conn.setInstanceFollowRedirects(false);
                 conn.setConnectTimeout(timeout);
                 conn.setReadTimeout(timeout);
@@ -156,7 +130,7 @@ public class HttpConnection implements Runnable
                     default:
                         if (requestContentRange) {
                             if (responseCode != HttpURLConnection.HTTP_OK &&
-                                responseCode != HttpURLConnection.HTTP_PARTIAL) {
+                                    responseCode != HttpURLConnection.HTTP_PARTIAL) {
                                 // Try without range
                                 requestContentRange = false;
                                 continue;
