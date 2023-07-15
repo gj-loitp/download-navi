@@ -1,23 +1,3 @@
-/*
- * Copyright (C) 2019-2021 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2021 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.main;
 
 import android.content.Context;
@@ -52,9 +32,9 @@ import com.roy.downloader.core.utils.DateUtils;
 import com.roy.downloader.core.utils.MimeTypeUtils;
 import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.Selectable;
+
 public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListAdapter.ViewHolder>
-    implements Selectable<DownloadItem>
-{
+        implements Selectable<DownloadItem> {
     private static final int VIEW_QUEUE = 0;
     private static final int VIEW_FINISH = 1;
     private static final int VIEW_ERROR = 2;
@@ -62,39 +42,31 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
     private final ClickListener listener;
     private SelectionTracker<DownloadItem> selectionTracker;
 
-    public DownloadListAdapter(ClickListener listener)
-    {
+    public DownloadListAdapter(ClickListener listener) {
         super(diffCallback);
 
         this.listener = listener;
     }
 
-    public void setSelectionTracker(SelectionTracker<DownloadItem> selectionTracker)
-    {
+    public void setSelectionTracker(SelectionTracker<DownloadItem> selectionTracker) {
         this.selectionTracker = selectionTracker;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-
-        switch (viewType) {
-            case VIEW_ERROR:
-                return new ErrorViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.v_item_download_list_error, parent, false));
-            case VIEW_FINISH:
-                return new FinishViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.v_item_download_list_finish, parent, false));
-            default:
-                return new QueueViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.v_item_download_list_queue, parent, false));
-        }
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return switch (viewType) {
+            case VIEW_ERROR -> new ErrorViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.v_item_download_list_error, parent, false));
+            case VIEW_FINISH -> new FinishViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.v_item_download_list_finish, parent, false));
+            default -> new QueueViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.v_item_download_list_queue, parent, false));
+        };
     }
 
     @Override
-    public int getItemViewType(int position)
-    {
+    public int getItemViewType(int position) {
         DownloadItem item = getItem(position);
 
         if (StatusCode.isStatusError(item.info.statusCode))
@@ -106,28 +78,23 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         DownloadItem item = getItem(position);
 
         if (selectionTracker != null)
             holder.setSelected(selectionTracker.isSelected(item));
 
-        if (holder instanceof QueueViewHolder) {
-            QueueViewHolder queueHolder = (QueueViewHolder)holder;
-            queueHolder.bind(item, (QueueClickListener)listener);
-        } else if (holder instanceof FinishViewHolder) {
-            FinishViewHolder finishHolder = (FinishViewHolder)holder;
-            finishHolder.bind(item, (FinishClickListener)listener);
-        }  else if (holder instanceof ErrorViewHolder) {
-            ErrorViewHolder errorHolder = (ErrorViewHolder)holder;
-            errorHolder.bind(item, (ErrorClickListener)listener);
+        if (holder instanceof QueueViewHolder queueHolder) {
+            queueHolder.bind(item, (QueueClickListener) listener);
+        } else if (holder instanceof FinishViewHolder finishHolder) {
+            finishHolder.bind(item, (FinishClickListener) listener);
+        } else if (holder instanceof ErrorViewHolder errorHolder) {
+            errorHolder.bind(item, (ErrorClickListener) listener);
         }
     }
 
     @Override
-    public DownloadItem getItemKey(int position)
-    {
+    public DownloadItem getItemKey(int position) {
         if (position < 0 || position >= getCurrentList().size())
             return null;
 
@@ -135,19 +102,16 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
     }
 
     @Override
-    public int getItemPosition(DownloadItem key)
-    {
+    public int getItemPosition(DownloadItem key) {
         return getCurrentList().indexOf(key);
     }
 
-    interface ViewHolderWithDetails
-    {
+    interface ViewHolderWithDetails {
         ItemDetails getItemDetails();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder
-        implements ViewHolderWithDetails
-    {
+            implements ViewHolderWithDetails {
         protected CardView cardView;
         protected TextView filename;
         protected TextView status;
@@ -155,20 +119,18 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         private DownloadItem selectionKey;
         private boolean isSelected;
 
-        ViewHolder(View itemView)
-        {
+        ViewHolder(View itemView) {
             super(itemView);
 
             filename = itemView.findViewById(R.id.filename);
             status = itemView.findViewById(R.id.status);
         }
 
-        void bind(DownloadItem item, ClickListener listener)
-        {
+        void bind(DownloadItem item, ClickListener listener) {
             Context context = itemView.getContext();
             selectionKey = item;
 
-            cardView = (CardView)itemView;
+            cardView = (CardView) itemView;
             if (isSelected)
                 cardView.setCardBackgroundColor(Utils.getAttributeColor(context, R.attr.selectableColor));
             else
@@ -186,20 +148,17 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
             filename.setText(item.info.fileName);
         }
 
-        private void setSelected(boolean isSelected)
-        {
+        private void setSelected(boolean isSelected) {
             this.isSelected = isSelected;
         }
 
         @Override
-        public ItemDetails getItemDetails()
-        {
+        public ItemDetails getItemDetails() {
             return new ItemDetails(selectionKey, getBindingAdapterPosition());
         }
     }
 
-    public static class QueueViewHolder extends ViewHolder
-    {
+    public static class QueueViewHolder extends ViewHolder {
         private final ImageButton pauseButton;
         private final AnimatedVectorDrawableCompat playToPauseAnim;
         private final AnimatedVectorDrawableCompat pauseToPlayAnim;
@@ -207,8 +166,7 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         private final ProgressBar progressBar;
         private final ImageButton cancelButton;
 
-        QueueViewHolder(View itemView)
-        {
+        QueueViewHolder(View itemView) {
             super(itemView);
 
             playToPauseAnim = AnimatedVectorDrawableCompat.create(itemView.getContext(), R.drawable.anim_play_to_pause);
@@ -219,8 +177,7 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
             cancelButton = itemView.findViewById(R.id.cancel);
         }
 
-        void bind(DownloadItem item, QueueClickListener listener)
-        {
+        void bind(DownloadItem item, QueueClickListener listener) {
             super.bind(item, listener);
 
             setPauseButtonState(StatusCode.isStatusStoppedOrPaused(item.info.statusCode));
@@ -248,7 +205,7 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
             if (item.info.statusCode == StatusCode.STATUS_RUNNING) {
                 progressBar.setVisibility(View.VISIBLE);
                 if (item.info.totalBytes > 0) {
-                    int progress = (int)((downloadedBytes * 100) / item.info.totalBytes);
+                    int progress = (int) ((downloadedBytes * 100) / item.info.totalBytes);
                     progressBar.setIndeterminate(false);
                     progressBar.setProgress(progress);
                 } else {
@@ -262,27 +219,18 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
                                 DateUtils.formatElapsedTime(context, ETA)),
                         Formatter.formatFileSize(context, speed)));
             } else {
-                String statusStr = "";
-                switch (item.info.statusCode) {
-                    case StatusCode.STATUS_PAUSED:
-                        statusStr = context.getString(R.string.pause);
-                        break;
-                    case StatusCode.STATUS_STOPPED:
-                        statusStr = context.getString(R.string.stopped);
-                        break;
-                    case StatusCode.STATUS_PENDING:
-                        statusStr = context.getString(R.string.pending);
-                        break;
-                    case StatusCode.STATUS_WAITING_FOR_NETWORK:
-                        statusStr = context.getString(R.string.waiting_for_network);
-                        break;
-                    case StatusCode.STATUS_WAITING_TO_RETRY:
-                        statusStr = context.getString(R.string.waiting_for_retry);
-                        break;
-                    case StatusCode.STATUS_FETCH_METADATA:
-                        statusStr = context.getString(R.string.downloading_metadata);
-                        break;
-                }
+                String statusStr = switch (item.info.statusCode) {
+                    case StatusCode.STATUS_PAUSED -> context.getString(R.string.pause);
+                    case StatusCode.STATUS_STOPPED -> context.getString(R.string.stopped);
+                    case StatusCode.STATUS_PENDING -> context.getString(R.string.pending);
+                    case StatusCode.STATUS_WAITING_FOR_NETWORK ->
+                            context.getString(R.string.waiting_for_network);
+                    case StatusCode.STATUS_WAITING_TO_RETRY ->
+                            context.getString(R.string.waiting_for_retry);
+                    case StatusCode.STATUS_FETCH_METADATA ->
+                            context.getString(R.string.downloading_metadata);
+                    default -> "";
+                };
                 if (item.info.statusCode == StatusCode.STATUS_FETCH_METADATA) {
                     progressBar.setVisibility(View.VISIBLE);
                     progressBar.setIndeterminate(true);
@@ -298,8 +246,7 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
             }
         }
 
-        void setPauseButtonState(boolean isPause)
-        {
+        void setPauseButtonState(boolean isPause) {
             AnimatedVectorDrawableCompat prevAnim = currAnim;
             currAnim = (isPause ? pauseToPlayAnim : playToPauseAnim);
             pauseButton.setImageDrawable(currAnim);
@@ -308,21 +255,18 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         }
     }
 
-    public static class FinishViewHolder extends ViewHolder
-    {
+    public static class FinishViewHolder extends ViewHolder {
         private final ImageView icon;
         private final ImageButton menu;
 
-        FinishViewHolder(View itemView)
-        {
+        FinishViewHolder(View itemView) {
             super(itemView);
 
             icon = itemView.findViewById(R.id.icon);
             menu = itemView.findViewById(R.id.menu);
         }
 
-        void bind(DownloadItem item, FinishClickListener listener)
-        {
+        void bind(DownloadItem item, FinishClickListener listener) {
             super.bind(item, listener);
 
             Context context = itemView.getContext();
@@ -338,30 +282,15 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
                 popup.show();
             });
 
-           int resId;
-            switch (MimeTypeUtils.getCategory(item.info.mimeType)) {
-                case DOCUMENT:
-                    resId = R.drawable.ic_file_document_grey600_24dp;
-                    break;
-                case IMAGE:
-                    resId = R.drawable.ic_image_grey600_24dp;
-                    break;
-                case VIDEO:
-                    resId = R.drawable.ic_video_grey600_24dp;
-                    break;
-                case APK:
-                    resId = R.drawable.ic_android_grey600_24dp;
-                    break;
-                case AUDIO:
-                    resId = R.drawable.ic_music_note_grey600_24dp;
-                    break;
-                case ARCHIVE:
-                    resId = R.drawable.ic_zip_box_grey600_24dp;
-                    break;
-                default:
-                    resId = R.drawable.ic_file_grey600_24dp;
-                    break;
-            }
+            int resId = switch (MimeTypeUtils.getCategory(item.info.mimeType)) {
+                case DOCUMENT -> R.drawable.ic_file_document_grey600_24dp;
+                case IMAGE -> R.drawable.ic_image_grey600_24dp;
+                case VIDEO -> R.drawable.ic_video_grey600_24dp;
+                case APK -> R.drawable.ic_android_grey600_24dp;
+                case AUDIO -> R.drawable.ic_music_note_grey600_24dp;
+                case ARCHIVE -> R.drawable.ic_zip_box_grey600_24dp;
+                default -> R.drawable.ic_file_grey600_24dp;
+            };
             icon.setImageDrawable(ContextCompat.getDrawable(context, resId));
 
             String hostname = Utils.getHostFromUrl(item.info.url);
@@ -372,14 +301,12 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         }
     }
 
-    public static class ErrorViewHolder extends ViewHolder
-    {
+    public static class ErrorViewHolder extends ViewHolder {
         private final ImageButton resumeButton;
         private final ImageButton menu;
         private final TextView error;
 
-        ErrorViewHolder(View itemView)
-        {
+        ErrorViewHolder(View itemView) {
             super(itemView);
 
             resumeButton = itemView.findViewById(R.id.resume);
@@ -387,8 +314,7 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
             error = itemView.findViewById(R.id.error);
         }
 
-        void bind(DownloadItem item, ErrorClickListener listener)
-        {
+        void bind(DownloadItem item, ErrorClickListener listener) {
             super.bind(item, listener);
 
             Context context = itemView.getContext();
@@ -424,43 +350,36 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
         }
     }
 
-    public interface ClickListener
-    {
+    public interface ClickListener {
         void onItemClicked(@NonNull DownloadItem item);
     }
 
-    public interface QueueClickListener extends ClickListener
-    {
+    public interface QueueClickListener extends ClickListener {
         void onItemPauseClicked(@NonNull DownloadItem item);
 
         void onItemCancelClicked(@NonNull DownloadItem item);
     }
 
-    public interface FinishClickListener extends ClickListener
-    {
+    public interface FinishClickListener extends ClickListener {
         void onItemMenuClicked(int menuId, @NonNull DownloadItem item);
     }
 
-    public interface ErrorClickListener extends ClickListener
-    {
+    public interface ErrorClickListener extends ClickListener {
         void onItemResumeClicked(@NonNull DownloadItem item);
 
         void onItemMenuClicked(int menuId, @NonNull DownloadItem item);
     }
 
-    public static final DiffUtil.ItemCallback<DownloadItem> diffCallback = new DiffUtil.ItemCallback<DownloadItem>()
-    {
+    public static final DiffUtil.ItemCallback<DownloadItem> diffCallback = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areContentsTheSame(@NonNull DownloadItem oldItem,
-                                          @NonNull DownloadItem newItem)
-        {
+                                          @NonNull DownloadItem newItem) {
             return oldItem.equalsContent(newItem);
         }
 
         @Override
         public boolean areItemsTheSame(@NonNull DownloadItem oldItem,
-                                       @NonNull DownloadItem newItem)
-        {
+                                       @NonNull DownloadItem newItem) {
             return oldItem.equals(newItem);
         }
     };
@@ -469,12 +388,10 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
      * Selection support stuff
      */
 
-    public static final class KeyProvider extends ItemKeyProvider<DownloadItem>
-    {
+    public static final class KeyProvider extends ItemKeyProvider<DownloadItem> {
         private final Selectable<DownloadItem> selectable;
 
-        KeyProvider(Selectable<DownloadItem> selectable)
-        {
+        KeyProvider(Selectable<DownloadItem> selectable) {
             super(SCOPE_MAPPED);
 
             this.selectable = selectable;
@@ -482,61 +399,52 @@ public class DownloadListAdapter extends ListAdapter<DownloadItem, DownloadListA
 
         @Nullable
         @Override
-        public DownloadItem getKey(int position)
-        {
+        public DownloadItem getKey(int position) {
             return selectable.getItemKey(position);
         }
 
         @Override
-        public int getPosition(@NonNull DownloadItem key)
-        {
+        public int getPosition(@NonNull DownloadItem key) {
             return selectable.getItemPosition(key);
         }
     }
 
-    public static final class ItemDetails extends ItemDetailsLookup.ItemDetails<DownloadItem>
-    {
+    public static final class ItemDetails extends ItemDetailsLookup.ItemDetails<DownloadItem> {
         private final DownloadItem selectionKey;
         private final int adapterPosition;
 
-        ItemDetails(DownloadItem selectionKey, int adapterPosition)
-        {
+        ItemDetails(DownloadItem selectionKey, int adapterPosition) {
             this.selectionKey = selectionKey;
             this.adapterPosition = adapterPosition;
         }
 
         @Nullable
         @Override
-        public DownloadItem getSelectionKey()
-        {
+        public DownloadItem getSelectionKey() {
             return selectionKey;
         }
 
         @Override
-        public int getPosition()
-        {
+        public int getPosition() {
             return adapterPosition;
         }
     }
 
-    public static class ItemLookup extends ItemDetailsLookup<DownloadItem>
-    {
+    public static class ItemLookup extends ItemDetailsLookup<DownloadItem> {
         private final RecyclerView recyclerView;
 
-        ItemLookup(RecyclerView recyclerView)
-        {
+        ItemLookup(RecyclerView recyclerView) {
             this.recyclerView = recyclerView;
         }
 
         @Nullable
         @Override
-        public ItemDetails<DownloadItem> getItemDetails(@NonNull MotionEvent e)
-        {
+        public ItemDetails<DownloadItem> getItemDetails(@NonNull MotionEvent e) {
             View view = recyclerView.findChildViewUnder(e.getX(), e.getY());
             if (view != null) {
                 RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
                 if (viewHolder instanceof DownloadListAdapter.ViewHolder)
-                    return ((ViewHolder)viewHolder).getItemDetails();
+                    return ((ViewHolder) viewHolder).getItemDetails();
             }
 
             return null;
