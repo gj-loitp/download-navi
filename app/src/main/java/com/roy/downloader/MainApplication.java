@@ -14,6 +14,7 @@ import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 
 //TODO firebase analytic
+
 //TODO ic_launcher
 //TODO proguard
 //TODO keystore
