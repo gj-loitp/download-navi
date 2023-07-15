@@ -70,7 +70,7 @@ import com.roy.downloader.ui.BaseAlertDialog;
 import com.roy.downloader.ui.PermissionManager;
 import com.roy.downloader.ui.adddownload.ActivityAddDownload;
 import com.roy.downloader.ui.browser.ActivityBrowser;
-import com.roy.downloader.ui.main.drawer.DrawerExpandableAdapter;
+import com.roy.downloader.ui.main.drawer.AdapterDrawerExpandable;
 import com.roy.downloader.ui.main.drawer.DrawerGroup;
 import com.roy.downloader.ui.main.drawer.DrawerGroupItem;
 import com.roy.downloader.ui.settings.SettingsActivity;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private RecyclerView drawerItemsList;
     private LinearLayoutManager layoutManager;
-    private DrawerExpandableAdapter drawerAdapter;
+    private AdapterDrawerExpandable drawerAdapter;
     private RecyclerView.Adapter wrappedDrawerAdapter;
     private RecyclerViewExpandableItemManager drawerItemManager;
 
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity
 
         List<DrawerGroup> groups = Utils.getNavigationDrawerItems(this,
                 PreferenceManager.getDefaultSharedPreferences(this));
-        drawerAdapter = new DrawerExpandableAdapter(groups, drawerItemManager, this::onDrawerItemSelected);
+        drawerAdapter = new AdapterDrawerExpandable(groups, drawerItemManager, this::onDrawerItemSelected);
         wrappedDrawerAdapter = drawerItemManager.createWrappedAdapter(drawerAdapter);
         onDrawerGroupsCreated();
 
