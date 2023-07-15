@@ -39,8 +39,8 @@ import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
 import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
 import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
-import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
-import com.roy.downloader.ui.settings.sections.StorageSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentLimitationsSettings;
+import com.roy.downloader.ui.settings.sections.FragmentStorageSettings;
 import static com.roy.downloader.ui.settings.SettingsActivity.AppearanceSettings;
 import static com.roy.downloader.ui.settings.SettingsActivity.BehaviorSettings;
 import static com.roy.downloader.ui.settings.SettingsActivity.BrowserSettings;
@@ -102,13 +102,13 @@ public class SettingsFragment extends PreferenceFragmentCompat
         Preference behavior = findPreference(FragmentBehaviorSettings.class.getSimpleName());
         behavior.setOnPreferenceClickListener(prefClickListener);
 
-        Preference storage = findPreference(StorageSettingsFragment.class.getSimpleName());
+        Preference storage = findPreference(FragmentStorageSettings.class.getSimpleName());
         storage.setOnPreferenceClickListener(prefClickListener);
 
         Preference browser = findPreference(FragmentBrowserSettings.class.getSimpleName());
         browser.setOnPreferenceClickListener(prefClickListener);
 
-        Preference limitations = findPreference(LimitationsSettingsFragment.class.getSimpleName());
+        Preference limitations = findPreference(FragmentLimitationsSettings.class.getSimpleName());
         limitations.setOnPreferenceClickListener(prefClickListener);
     }
 
@@ -140,10 +140,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 break;
             case StorageSettings:
                 if (Utils.isLargeScreenDevice(activity)) {
-                    setFragment(StorageSettingsFragment.newInstance(),
+                    setFragment(FragmentStorageSettings.newInstance(),
                             getString(R.string.pref_header_storage));
                 } else {
-                    startActivity(StorageSettingsFragment.class,
+                    startActivity(FragmentStorageSettings.class,
                             getString(R.string.pref_header_storage));
                 }
                 break;
@@ -158,10 +158,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
                 break;
             case LimitationsSettings:
                 if (Utils.isLargeScreenDevice(activity)) {
-                    setFragment(LimitationsSettingsFragment.newInstance(),
+                    setFragment(FragmentLimitationsSettings.newInstance(),
                             getString(R.string.pref_header_limitations));
                 } else {
-                    startActivity(LimitationsSettingsFragment.class,
+                    startActivity(FragmentLimitationsSettings.class,
                             getString(R.string.pref_header_limitations));
                 }
                 break;

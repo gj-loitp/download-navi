@@ -1,31 +1,11 @@
-/*
- * Copyright (C) 2019-2022 Tachibana General Laboratories, LLC
- * Copyright (C) 2019-2022 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of Download Navi.
- *
- * Download Navi is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Download Navi is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Download Navi.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.settings.sections;
 
 import android.content.Context;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
@@ -37,11 +17,9 @@ import com.roy.downloader.core.system.FileSystemContracts;
 import com.roy.downloader.core.system.FileSystemFacade;
 import com.roy.downloader.core.system.SystemFacadeHelper;
 
-public class StorageSettingsFragment extends PreferenceFragmentCompat
-    implements Preference.OnPreferenceChangeListener
-{
+public class FragmentStorageSettings extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
     @SuppressWarnings("unused")
-    private static final String TAG = StorageSettingsFragment.class.getSimpleName();
+    private static final String TAG = FragmentStorageSettings.class.getSimpleName();
 
     private static final String TAG_DIR_CHOOSER_BIND_PREF = "dir_chooser_bind_pref";
 
@@ -50,17 +28,15 @@ public class StorageSettingsFragment extends PreferenceFragmentCompat
     private String dirChooserBindPref;
     private FileSystemFacade fs;
 
-    public static StorageSettingsFragment newInstance()
-    {
-        StorageSettingsFragment fragment = new StorageSettingsFragment();
+    public static FragmentStorageSettings newInstance() {
+        FragmentStorageSettings fragment = new FragmentStorageSettings();
         fragment.setArguments(new Bundle());
 
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null)
@@ -120,62 +96,55 @@ public class StorageSettingsFragment extends PreferenceFragmentCompat
         SwitchPreferenceCompat preallocateDiskSpace = findPreference(keyPreallocateDiskSpace);
         if (preallocateDiskSpace != null) {
             preallocateDiskSpace.setChecked(pref.preallocateDiskSpace());
-            preallocateDiskSpace.setEnabled(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP);
+            preallocateDiskSpace.setEnabled(true);
             bindOnPreferenceChangeListener(preallocateDiskSpace);
         }
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
         outState.putString(TAG_DIR_CHOOSER_BIND_PREF, dirChooserBindPref);
     }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
-    {
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.pref_storage, rootKey);
     }
 
-    private void bindOnPreferenceChangeListener(Preference preference)
-    {
+    private void bindOnPreferenceChangeListener(Preference preference) {
         preference.setOnPreferenceChangeListener(this);
     }
 
-    final ActivityResultLauncher<Uri> dirChoose = registerForActivityResult(
-            new FileSystemContracts.OpenDirectory(),
-            uri -> {
-                if (uri == null || dirChooserBindPref == null) {
-                    return;
-                }
-                Preference p = findPreference(dirChooserBindPref);
-                if (p == null) {
-                    return;
-                }
+    final ActivityResultLauncher<Uri> dirChoose = registerForActivityResult(new FileSystemContracts.OpenDirectory(), uri -> {
+        if (uri == null || dirChooserBindPref == null) {
+            return;
+        }
+        Preference p = findPreference(dirChooserBindPref);
+        if (p == null) {
+            return;
+        }
 
-                fs.takePermissions(uri);
-                if (dirChooserBindPref.equals(getString(R.string.pref_key_save_downloads_in))) {
-                    pref.saveDownloadsIn(uri.toString());
-                } else if (dirChooserBindPref.equals(getString(R.string.pref_key_move_after_download_in))) {
-                    pref.moveAfterDownloadIn(uri.toString());
-                }
-                p.setSummary(fs.getDirName(uri));
-            }
-    );
+        fs.takePermissions(uri);
+        if (dirChooserBindPref.equals(getString(R.string.pref_key_save_downloads_in))) {
+            pref.saveDownloadsIn(uri.toString());
+        } else if (dirChooserBindPref.equals(getString(R.string.pref_key_move_after_download_in))) {
+            pref.moveAfterDownloadIn(uri.toString());
+        }
+        p.setSummary(fs.getDirName(uri));
+    });
 
     @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue)
-    {
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference.getKey().equals(getString(R.string.pref_key_move_after_download))) {
-            pref.moveAfterDownload((boolean)newValue);
+            pref.moveAfterDownload((boolean) newValue);
 
         } else if (preference.getKey().equals(getString(R.string.pref_key_delete_file_if_error))) {
-            pref.deleteFileIfError((boolean)newValue);
+            pref.deleteFileIfError((boolean) newValue);
 
         } else if (preference.getKey().equals(getString(R.string.pref_key_preallocate_disk_space))) {
-            pref.preallocateDiskSpace((boolean)newValue);
+            pref.preallocateDiskSpace((boolean) newValue);
         }
 
         return true;

@@ -33,8 +33,8 @@ import com.roy.downloader.core.utils.Utils;
 import com.roy.downloader.ui.settings.sections.FragmentAppearanceSettings;
 import com.roy.downloader.ui.settings.sections.FragmentBehaviorSettings;
 import com.roy.downloader.ui.settings.sections.FragmentBrowserSettings;
-import com.roy.downloader.ui.settings.sections.LimitationsSettingsFragment;
-import com.roy.downloader.ui.settings.sections.StorageSettingsFragment;
+import com.roy.downloader.ui.settings.sections.FragmentLimitationsSettings;
+import com.roy.downloader.ui.settings.sections.FragmentStorageSettings;
 
 public class PreferenceActivity extends AppCompatActivity
 {
@@ -95,12 +95,12 @@ public class PreferenceActivity extends AppCompatActivity
                 return (F) FragmentAppearanceSettings.newInstance();
             else if (fragment.equals(FragmentBehaviorSettings.class.getSimpleName()))
                 return (F) FragmentBehaviorSettings.newInstance();
-            else if (fragment.equals(StorageSettingsFragment.class.getSimpleName()))
-                return (F)StorageSettingsFragment.newInstance();
+            else if (fragment.equals(FragmentStorageSettings.class.getSimpleName()))
+                return (F) FragmentStorageSettings.newInstance();
             else if (fragment.equals(FragmentBrowserSettings.class.getSimpleName()))
                 return (F) FragmentBrowserSettings.newInstance();
-            else if (fragment.equals(LimitationsSettingsFragment.class.getSimpleName()))
-                return (F)LimitationsSettingsFragment.newInstance();
+            else if (fragment.equals(FragmentLimitationsSettings.class.getSimpleName()))
+                return (F) FragmentLimitationsSettings.newInstance();
             else
                 return null;
         }
