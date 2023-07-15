@@ -1,22 +1,3 @@
-/*
- * Copyright (C) 2019 Yaroslav Pronin <proninyaroslav@mail.ru>
- *
- * This file is part of LibreTorrent.
- *
- * LibreTorrent is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * LibreTorrent is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with LibreTorrent.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package com.roy.downloader.ui.filemanager;
 
 import android.content.ContentResolver;
@@ -42,8 +23,7 @@ import java.util.List;
 
 import io.reactivex.subjects.BehaviorSubject;
 
-public class FileManagerViewModel extends ViewModel
-{
+public class FileManagerViewModel extends ViewModel {
     @SuppressWarnings("unused")
     private static final String TAG = FileManagerViewModel.class.getSimpleName();
 
@@ -56,8 +36,7 @@ public class FileManagerViewModel extends ViewModel
     public Exception errorReport;
     public FileSystemFacade fs;
 
-    public FileManagerViewModel(@NonNull Context appContext, FileManagerConfig config, String startDir)
-    {
+    public FileManagerViewModel(@NonNull Context appContext, FileManagerConfig config, String startDir) {
         this.appContext = appContext;
         this.config = config;
         this.fs = SystemFacadeHelper.getFileSystemFacade(appContext);
@@ -91,13 +70,11 @@ public class FileManagerViewModel extends ViewModel
         }
     }
 
-    public void refreshCurDirectory()
-    {
+    public void refreshCurDirectory() {
         childNodes.onNext(getChildItems());
     }
 
-    private void updateCurDir(String newPath)
-    {
+    private void updateCurDir(String newPath) {
         if (newPath == null)
             return;
         curDir.set(newPath);
@@ -108,8 +85,7 @@ public class FileManagerViewModel extends ViewModel
      * Get subfolders or files.
      */
 
-    private List<FileManagerNode> getChildItems()
-    {
+    private List<FileManagerNode> getChildItems() {
         List<FileManagerNode> items = new ArrayList<>();
         String dir = curDir.get();
         if (dir == null)
@@ -158,8 +134,7 @@ public class FileManagerViewModel extends ViewModel
         return filtered;
     }
 
-    public boolean createDirectory(String name)
-    {
+    public boolean createDirectory(String name) {
         if (TextUtils.isEmpty(name))
             return false;
 
@@ -168,8 +143,7 @@ public class FileManagerViewModel extends ViewModel
         return !newDir.exists() && newDir.mkdir();
     }
 
-    public void openDirectory(String name) throws IOException, SecurityException
-    {
+    public void openDirectory(String name) throws IOException, SecurityException {
         File dir = new File(curDir.get(), name);
         String path = dir.getCanonicalPath();
 
@@ -181,8 +155,7 @@ public class FileManagerViewModel extends ViewModel
         updateCurDir(path);
     }
 
-    public void jumpToDirectory(String path) throws SecurityException
-    {
+    public void jumpToDirectory(String path) throws SecurityException {
         File dir = new File(path);
 
         if (!(dir.exists() && dir.isDirectory()))
@@ -197,8 +170,7 @@ public class FileManagerViewModel extends ViewModel
      * Navigate back to an upper directory.
      */
 
-    public void upToParentDirectory() throws SecurityException
-    {
+    public void upToParentDirectory() throws SecurityException {
         String path = curDir.get();
         if (path == null)
             return;
@@ -211,23 +183,23 @@ public class FileManagerViewModel extends ViewModel
         updateCurDir(dir.getParent());
     }
 
-    public boolean fileExists(String fileName)
-    {
+    public boolean fileExists(String fileName) {
         if (fileName == null)
             return false;
 
         fileName = fs.appendExtension(fileName, config.mimeType);
 
+        assert fileName != null;
         return new File(curDir.get(), fileName).exists();
     }
 
-    public Uri createFile(String fileName) throws SecurityException
-    {
+    public Uri createFile(String fileName) throws SecurityException {
         if (TextUtils.isEmpty(fileName))
             fileName = config.fileName;
 
         fileName = fs.appendExtension(fs.buildValidFatFilename(fileName), config.mimeType);
 
+        assert fileName != null;
         File f = new File(curDir.get(), fileName);
         if (!f.getParentFile().canWrite())
             throw new SecurityException("Permission denied");
@@ -244,8 +216,7 @@ public class FileManagerViewModel extends ViewModel
         return Uri.fromFile(f);
     }
 
-    public Uri getCurDirectoryUri() throws SecurityException
-    {
+    public Uri getCurDirectoryUri() throws SecurityException {
         String path = curDir.get();
         if (path == null)
             return null;
@@ -257,8 +228,7 @@ public class FileManagerViewModel extends ViewModel
         return Uri.fromFile(dir);
     }
 
-    public Uri getFileUri(String fileName) throws SecurityException
-    {
+    public Uri getFileUri(String fileName) throws SecurityException {
         String path = curDir.get();
         if (path == null)
             return null;
@@ -270,8 +240,7 @@ public class FileManagerViewModel extends ViewModel
         return Uri.fromFile(f);
     }
 
-    public void takeSafPermissions(Intent data)
-    {
+    public void takeSafPermissions(Intent data) {
         ContentResolver resolver = appContext.getContentResolver();
 
         var takeFlags = data.getFlags();
