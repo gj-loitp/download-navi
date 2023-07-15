@@ -32,6 +32,7 @@ public class RestoreDownloadsWorker extends Worker {
         Context context = getApplicationContext();
         DataRepository repo = RepositoryHelper.getDataRepository(context);
 
+        assert repo != null;
         List<DownloadInfo> infoList = repo.getAllInfo();
         if (infoList.isEmpty())
             return Result.success();

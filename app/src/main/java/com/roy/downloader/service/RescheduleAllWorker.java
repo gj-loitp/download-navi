@@ -55,6 +55,7 @@ public class RescheduleAllWorker extends Worker {
 
                 DownloadInfo info;
                 try {
+                    assert repo != null;
                     info = repo.getInfoById(UUID.fromString(downloadId));
 
                 } catch (Exception e) {

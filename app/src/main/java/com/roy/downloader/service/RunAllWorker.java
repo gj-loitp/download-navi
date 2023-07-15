@@ -35,6 +35,7 @@ public class RunAllWorker extends Worker {
         DataRepository repo = RepositoryHelper.getDataRepository(context);
         boolean ignorePaused = getInputData().getBoolean(TAG_IGNORE_PAUSED, false);
 
+        assert repo != null;
         List<DownloadInfo> infoList = repo.getAllInfo();
         if (infoList.isEmpty())
             return Result.success();

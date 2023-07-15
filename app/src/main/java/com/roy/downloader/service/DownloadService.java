@@ -25,6 +25,7 @@ import com.roy.downloader.core.settings.SettingsRepository;
 import com.roy.downloader.receiver.NotificationReceiver;
 import com.roy.downloader.ui.main.MainActivity;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -47,7 +48,6 @@ public class DownloadService extends Service {
 
     private boolean isAlreadyRunning;
     private NotificationManager notifyManager;
-    private NotificationCompat.Builder foregroundNotify;
     private DownloadEngine engine;
     private SettingsRepository pref;
     private PowerManager.WakeLock wakeLock;
@@ -68,7 +68,7 @@ public class DownloadService extends Service {
     private void init() {
         Log.i(TAG, "Start " + TAG);
 
-        disposables.add(pref.observeSettingsChanged()
+        disposables.add(Objects.requireNonNull(pref.observeSettingsChanged())
                 .subscribe(this::handleSettingsChanged));
         setKeepCpuAwake(pref.cpuDoNotSleep());
         engine.addListener(listener);
@@ -235,7 +235,7 @@ public class DownloadService extends Service {
                 flags
         );
 
-        foregroundNotify = new NotificationCompat.Builder(getApplicationContext(),
+        NotificationCompat.Builder foregroundNotify = new NotificationCompat.Builder(getApplicationContext(),
                 DownloadNotifier.FOREGROUND_NOTIFY_CHAN_ID)
                 .setSmallIcon(R.drawable.ic_app_notification)
                 .setContentIntent(startupPendingIntent)

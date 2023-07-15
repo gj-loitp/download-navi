@@ -42,6 +42,7 @@ public class GetAndRunDownloadWorker extends Worker {
             return Result.failure();
         }
 
+        assert repo != null;
         DownloadInfo info = repo.getInfoById(id);
         if (info == null)
             return Result.failure();
