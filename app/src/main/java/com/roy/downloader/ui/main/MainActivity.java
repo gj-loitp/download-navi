@@ -68,24 +68,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG_PERM_DENIED_DIALOG = "perm_denied_dialog";
     private static final String TAG_BATTERY_DIALOG = "battery_dialog";
 
-    /* Android data binding doesn't work with layout aliases */
-    private CoordinatorLayout coordinatorLayout;
-    private Toolbar toolbar;
-
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
     private RecyclerView drawerItemsList;
     private LinearLayoutManager layoutManager;
     private AdapterDrawerExpandable drawerAdapter;
-    private RecyclerView.Adapter wrappedDrawerAdapter;
     private RecyclerViewExpandableItemManager drawerItemManager;
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
-    private DownloadListPagerAdapter pagerAdapter;
     private DownloadsViewModel fragmentViewModel;
-    private FloatingActionButton fab;
     private SearchView searchView;
     private DownloadEngine engine;
     private SettingsRepository pref;
@@ -101,8 +91,7 @@ public class MainActivity extends AppCompatActivity {
         setTheme(Utils.getAppTheme(getApplicationContext()));
         super.onCreate(savedInstanceState);
 
-        if (getIntent().getAction() != null &&
-                getIntent().getAction().equals(NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP)) {
+        if (getIntent().getAction() != null && getIntent().getAction().equals(NotificationReceiver.NOTIFY_ACTION_SHUTDOWN_APP)) {
             finish();
             return;
         }
@@ -155,48 +144,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initLayout() {
-        toolbar = findViewById(R.id.toolbar);
-        coordinatorLayout = findViewById(R.id.coordinator);
-        navigationView = findViewById(R.id.navigationView);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        /* Android data binding doesn't work with layout aliases */
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+        NavigationView navigationView = findViewById(R.id.navigationView);
         drawerLayout = findViewById(R.id.drawerLayout);
-        tabLayout = findViewById(R.id.downloadListTabs);
-        viewPager = findViewById(R.id.downloadListViewPager);
-        fab = findViewById(R.id.addFab);
+        TabLayout tabLayout = findViewById(R.id.downloadListTabs);
+        ViewPager2 viewPager = findViewById(R.id.downloadListViewPager);
+        FloatingActionButton fab = findViewById(R.id.addFab);
         drawerItemsList = findViewById(R.id.drawerItemsList);
         layoutManager = new LinearLayoutManager(this);
 
         toolbar.setTitle(R.string.app_name);
         /* Disable elevation for portrait mode */
-        if (!Utils.isTwoPane(this) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        if (!Utils.isTwoPane(this))
             toolbar.setElevation(0);
         setSupportActionBar(toolbar);
 
         if (drawerLayout != null) {
-            toggle = new ActionBarDrawerToggle(this,
-                    drawerLayout,
-                    toolbar,
-                    R.string.open_navigation_drawer,
-                    R.string.close_navigation_drawer);
+            toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_navigation_drawer, R.string.close_navigation_drawer);
             drawerLayout.addDrawerListener(toggle);
         }
         initDrawer();
         fragmentViewModel.resetSearch();
 
-        pagerAdapter = new DownloadListPagerAdapter(this);
+        DownloadListPagerAdapter pagerAdapter = new DownloadListPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(DownloadListPagerAdapter.NUM_FRAGMENTS);
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    switch (position) {
-                        case DownloadListPagerAdapter.QUEUED_FRAG_POS:
-                            tab.setText(R.string.fragment_title_queued);
-                            break;
-                        case DownloadListPagerAdapter.COMPLETED_FRAG_POS:
-                            tab.setText(R.string.fragment_title_completed);
-                            break;
-                    }
-                }
-        ).attach();
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case DownloadListPagerAdapter.QUEUED_FRAG_POS ->
+                        tab.setText(R.string.fragment_title_queued);
+                case DownloadListPagerAdapter.COMPLETED_FRAG_POS ->
+                        tab.setText(R.string.fragment_title_completed);
+            }
+        }).attach();
 
         fab.setOnClickListener((v) -> startActivity(new Intent(this, ActivityAddDownload.class)));
     }
@@ -205,12 +187,10 @@ public class MainActivity extends AppCompatActivity {
         drawerItemManager = new RecyclerViewExpandableItemManager(null);
         drawerItemManager.setDefaultGroupsExpandedState(false);
         drawerItemManager.setOnGroupCollapseListener((groupPosition, fromUser, payload) -> {
-            if (fromUser)
-                saveGroupExpandState(groupPosition, false);
+            if (fromUser) saveGroupExpandState(groupPosition, false);
         });
         drawerItemManager.setOnGroupExpandListener((groupPosition, fromUser, payload) -> {
-            if (fromUser)
-                saveGroupExpandState(groupPosition, true);
+            if (fromUser) saveGroupExpandState(groupPosition, true);
         });
         GeneralItemAnimator animator = new RefactoredDefaultItemAnimator();
         /*
@@ -219,10 +199,9 @@ public class MainActivity extends AppCompatActivity {
          */
         animator.setSupportsChangeAnimations(false);
 
-        List<DrawerGroup> groups = Utils.getNavigationDrawerItems(this,
-                PreferenceManager.getDefaultSharedPreferences(this));
+        List<DrawerGroup> groups = Utils.getNavigationDrawerItems(this, PreferenceManager.getDefaultSharedPreferences(this));
         drawerAdapter = new AdapterDrawerExpandable(groups, drawerItemManager, this::onDrawerItemSelected);
-        wrappedDrawerAdapter = drawerItemManager.createWrappedAdapter(drawerAdapter);
+        RecyclerView.Adapter wrappedDrawerAdapter = drawerItemManager.createWrappedAdapter(drawerAdapter);
         onDrawerGroupsCreated();
 
         drawerItemsList.setLayoutManager(layoutManager);
@@ -237,8 +216,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        if (toggle != null)
-            toggle.syncState();
+        if (toggle != null) toggle.syncState();
     }
 
     @Override
@@ -257,37 +235,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void subscribeAlertDialog() {
-        Disposable d = dialogViewModel.observeEvents()
-                .subscribe((event) -> {
-                    if (event.dialogTag == null) {
-                        return;
+        Disposable d = dialogViewModel.observeEvents().subscribe((event) -> {
+            if (event.dialogTag == null) {
+                return;
+            }
+            switch (event.dialogTag) {
+                case TAG_ABOUT_DIALOG:
+                    switch (event.type) {
+                        case NEGATIVE_BUTTON_CLICKED -> openChangelogLink();
+                        case DIALOG_SHOWN -> initAboutDialog();
                     }
-                    if (event.dialogTag.equals(TAG_ABOUT_DIALOG)) {
-                        switch (event.type) {
-                            case NEGATIVE_BUTTON_CLICKED:
-                                openChangelogLink();
-                                break;
-                            case DIALOG_SHOWN:
-                                initAboutDialog();
-                                break;
-                        }
-                    } else if (event.dialogTag.equals(TAG_PERM_DENIED_DIALOG)) {
-                        if (event.type != BaseAlertDialog.EventType.DIALOG_SHOWN) {
-                            permDeniedDialog.dismiss();
-                        }
-                        if (event.type == BaseAlertDialog.EventType.NEGATIVE_BUTTON_CLICKED) {
-                            permissionManager.requestPermissions();
-                        }
-                    } else if (event.dialogTag.equals(TAG_BATTERY_DIALOG)) {
-                        if (event.type != BaseAlertDialog.EventType.DIALOG_SHOWN) {
-                            batteryDialog.dismiss();
-                            pref.askDisableBatteryOptimization(false);
-                        }
-                        if (event.type == BaseAlertDialog.EventType.POSITIVE_BUTTON_CLICKED) {
-                            Utils.requestDisableBatteryOptimization(this);
-                        }
+                    break;
+                case TAG_PERM_DENIED_DIALOG:
+                    if (event.type != BaseAlertDialog.EventType.DIALOG_SHOWN) {
+                        permDeniedDialog.dismiss();
                     }
-                });
+                    if (event.type == BaseAlertDialog.EventType.NEGATIVE_BUTTON_CLICKED) {
+                        permissionManager.requestPermissions();
+                    }
+                    break;
+                case TAG_BATTERY_DIALOG:
+                    if (event.type != BaseAlertDialog.EventType.DIALOG_SHOWN) {
+                        batteryDialog.dismiss();
+                        pref.askDisableBatteryOptimization(false);
+                    }
+                    if (event.type == BaseAlertDialog.EventType.POSITIVE_BUTTON_CLICKED) {
+                        Utils.requestDisableBatteryOptimization(this);
+                    }
+                    break;
+            }
+        });
         disposables.add(d);
     }
 
@@ -303,32 +280,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void subscribeSettingsChanged() {
         invalidateOptionsMenu();
-        disposables.add(pref.observeSettingsChanged()
-                .subscribe((key) -> {
-                    if (key.equals(getString(R.string.pref_key_browser_hide_menu_icon))) {
-                        invalidateOptionsMenu();
-                    }
-                }));
+        disposables.add(pref.observeSettingsChanged().subscribe((key) -> {
+            if (key.equals(getString(R.string.pref_key_browser_hide_menu_icon))) {
+                invalidateOptionsMenu();
+            }
+        }));
     }
 
     private void onDrawerGroupsCreated() {
         for (int pos = 0; pos < drawerAdapter.getGroupCount(); pos++) {
             DrawerGroup group = drawerAdapter.getGroup(pos);
-            if (group == null)
-                return;
+            if (group == null) return;
 
             Resources res = getResources();
             if (group.id == res.getInteger(R.integer.drawer_category_id)) {
-                fragmentViewModel.setCategoryFilter(
-                        Utils.getDrawerGroupCategoryFilter(this, group.getSelectedItemId()), false);
+                fragmentViewModel.setCategoryFilter(Utils.getDrawerGroupCategoryFilter(this, group.getSelectedItemId()), false);
 
             } else if (group.id == res.getInteger(R.integer.drawer_status_id)) {
-                fragmentViewModel.setStatusFilter(
-                        Utils.getDrawerGroupStatusFilter(this, group.getSelectedItemId()), false);
+                fragmentViewModel.setStatusFilter(Utils.getDrawerGroupStatusFilter(this, group.getSelectedItemId()), false);
 
             } else if (group.id == res.getInteger(R.integer.drawer_date_added_id)) {
-                fragmentViewModel.setDateAddedFilter(
-                        Utils.getDrawerGroupDateAddedFilter(this, group.getSelectedItemId()), false);
+                fragmentViewModel.setDateAddedFilter(Utils.getDrawerGroupDateAddedFilter(this, group.getSelectedItemId()), false);
 
             } else if (group.id == res.getInteger(R.integer.drawer_sorting_id)) {
                 fragmentViewModel.setSort(Utils.getDrawerGroupItemSorting(this, group.getSelectedItemId()), false);
@@ -339,16 +311,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void applyExpandState(DrawerGroup group, int pos) {
-        if (group.getDefaultExpandState())
-            drawerItemManager.expandGroup(pos);
-        else
-            drawerItemManager.collapseGroup(pos);
+        if (group.getDefaultExpandState()) drawerItemManager.expandGroup(pos);
+        else drawerItemManager.collapseGroup(pos);
     }
 
     private void saveGroupExpandState(int groupPosition, boolean expanded) {
         DrawerGroup group = drawerAdapter.getGroup(groupPosition);
-        if (group == null)
-            return;
+        if (group == null) return;
 
         Resources res = getResources();
         String prefKey = null;
@@ -365,10 +334,7 @@ public class MainActivity extends AppCompatActivity {
             prefKey = getString(R.string.drawer_sorting_is_expanded);
 
         if (prefKey != null)
-            PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit()
-                    .putBoolean(prefKey, expanded)
-                    .apply();
+            PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(prefKey, expanded).apply();
     }
 
     private void onDrawerItemSelected(DrawerGroup group, DrawerGroupItem item) {
@@ -376,36 +342,28 @@ public class MainActivity extends AppCompatActivity {
         String prefKey = null;
         if (group.id == res.getInteger(R.integer.drawer_category_id)) {
             prefKey = getString(R.string.drawer_category_selected_item);
-            fragmentViewModel.setCategoryFilter(
-                    Utils.getDrawerGroupCategoryFilter(this, item.getId()), true);
+            fragmentViewModel.setCategoryFilter(Utils.getDrawerGroupCategoryFilter(this, item.getId()), true);
 
         } else if (group.id == res.getInteger(R.integer.drawer_status_id)) {
             prefKey = getString(R.string.drawer_status_selected_item);
-            fragmentViewModel.setStatusFilter(
-                    Utils.getDrawerGroupStatusFilter(this, item.getId()), true);
+            fragmentViewModel.setStatusFilter(Utils.getDrawerGroupStatusFilter(this, item.getId()), true);
 
         } else if (group.id == res.getInteger(R.integer.drawer_date_added_id)) {
             prefKey = getString(R.string.drawer_time_selected_item);
-            fragmentViewModel.setDateAddedFilter(
-                    Utils.getDrawerGroupDateAddedFilter(this, item.getId()), true);
+            fragmentViewModel.setDateAddedFilter(Utils.getDrawerGroupDateAddedFilter(this, item.getId()), true);
 
         } else if (group.id == res.getInteger(R.integer.drawer_sorting_id)) {
             prefKey = getString(R.string.drawer_sorting_selected_item);
             fragmentViewModel.setSort(Utils.getDrawerGroupItemSorting(this, item.getId()), true);
         }
 
-        if (prefKey != null)
-            saveSelectionState(prefKey, item);
+        if (prefKey != null) saveSelectionState(prefKey, item);
 
-        if (drawerLayout != null)
-            drawerLayout.closeDrawer(GravityCompat.START);
+        if (drawerLayout != null) drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     private void saveSelectionState(String prefKey, DrawerGroupItem item) {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putLong(prefKey, item.getId())
-                .apply();
+        PreferenceManager.getDefaultSharedPreferences(this).edit().putLong(prefKey, item.getId()).apply();
     }
 
     @Override
@@ -487,29 +445,20 @@ public class MainActivity extends AppCompatActivity {
     private void showAboutDialog() {
         FragmentManager fm = getSupportFragmentManager();
         if (fm.findFragmentByTag(TAG_ABOUT_DIALOG) == null) {
-            aboutDialog = BaseAlertDialog.newInstance(
-                    getString(R.string.about_title),
-                    null,
-                    R.layout.dlg_dialog_about,
-                    getString(R.string.ok),
-                    getString(R.string.about_changelog),
-                    null,
-                    true);
+            aboutDialog = BaseAlertDialog.newInstance(getString(R.string.about_title), null, R.layout.dlg_dialog_about, getString(R.string.ok), getString(R.string.about_changelog), null, true);
             aboutDialog.show(fm, TAG_ABOUT_DIALOG);
         }
     }
 
     private void initAboutDialog() {
-        if (aboutDialog == null)
-            return;
+        if (aboutDialog == null) return;
 
         Dialog dialog = aboutDialog.getDialog();
         if (dialog != null) {
             TextView versionTextView = dialog.findViewById(R.id.about_version);
             TextView descriptionTextView = dialog.findViewById(R.id.aboutDescription);
             String versionName = Utils.getAppVersionName(this);
-            if (versionName != null)
-                versionTextView.setText(versionName);
+            if (versionName != null) versionTextView.setText(versionName);
             descriptionTextView.setText(Html.fromHtml(getString(R.string.about_description)));
             descriptionTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
