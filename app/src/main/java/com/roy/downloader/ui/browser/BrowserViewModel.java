@@ -327,16 +327,7 @@ public class BrowserViewModel extends AndroidViewModel {
         }
     };
 
-    private final DownloadListener downloadListener = new DownloadListener() {
-        @Override
-        public void onDownloadStart(String url,
-                                    String userAgent,
-                                    String contentDisposition,
-                                    String mimeType,
-                                    long contentLength) {
-            downloadRequestEvent.onNext(new DownloadRequest(url));
-        }
-    };
+    private final DownloadListener downloadListener = (url, userAgent, contentDisposition, mimeType, contentLength) -> downloadRequestEvent.onNext(new DownloadRequest(url));
 
     public static class DownloadRequest {
         private final String url;
