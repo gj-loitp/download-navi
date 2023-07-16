@@ -11,8 +11,8 @@ android {
         applicationId 'com.roy.downloader'
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 20230715
-        versionName '2023.07.15'
+        versionCode 20230716
+        versionName '2023.07.16'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -160,7 +160,6 @@ dependencies {
     implementation "androidx.room:room-runtime:2.5.2"
     implementation "androidx.room:room-rxjava2:2.5.2"
 //    implementation 'androidx.core:core-ktx:+'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     annotationProcessor "androidx.room:room-compiler:2.5.2" /* For schemas import */
     implementation 'androidx.work:work-runtime:2.8.1'
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -188,6 +187,7 @@ dependencies {
     implementation 'org.tukaani:xz:1.9'
 
     api 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+//    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     api "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
