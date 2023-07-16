@@ -326,4 +326,5 @@
     <string name="more_apps">More apps</string>
     <string name="share_app">Share app</string>
     <string name="term_and_policy">Term and policy</string>
+    <string name="open_file_location">Open file location</string>
 </resources>

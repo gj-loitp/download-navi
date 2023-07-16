@@ -1,8 +1,10 @@
 package com.roy.downloader.ui.main;
 
 import android.app.Dialog;
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
@@ -114,6 +116,11 @@ public class FinishedFragmentDownloads extends FragmentDownloads implements Down
             case R.id.shareMenu -> shareDownload(item);
             case R.id.shareUrlMenu -> shareUrl(item);
             case R.id.reDownloadMenu -> showAddDownloadDialog(item.info);
+            case R.id.openLocationFolder -> {
+//                Log.d(TAG, "onItemMenuClicked: " + item.info);
+//                Log.d(TAG, "onItemMenuClicked: " + item.info.dirPath);
+                startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+            }
         }
     }
 

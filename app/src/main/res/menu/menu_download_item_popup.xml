@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/openLocationFolder"
+        android:title="@string/open_file_location"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/openDetailsMenu"
         android:title="@string/download_details"
         app:showAsAction="never" />
