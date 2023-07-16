@@ -171,7 +171,7 @@ public class DialogAddDownload extends DialogFragment {
     private final ClipboardManager.OnPrimaryClipChangedListener clipListener = this::switchClipboardButton;
 
     private void switchClipboardButton() {
-        ClipData clip = Utils.getClipData(activity.getApplicationContext());
+        ClipData clip = Utils.getClipData(requireContext());
         viewModel.showClipboardButton.set(clip != null);
     }
 
