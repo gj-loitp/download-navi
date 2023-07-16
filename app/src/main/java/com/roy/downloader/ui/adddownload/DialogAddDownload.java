@@ -587,6 +587,13 @@ public class DialogAddDownload extends DialogFragment {
 
             return false;
         }
+        if (viewModel.params.getUrl().contains("youtube")) {
+            binding.layoutLink.setErrorEnabled(true);
+            binding.layoutLink.setError("Sorry, we do not support this link.");
+            binding.layoutLink.requestFocus();
+
+            return false;
+        }
 
         binding.layoutLink.setErrorEnabled(false);
         binding.layoutLink.setError(null);
