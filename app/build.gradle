@@ -5,12 +5,12 @@ apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
     namespace 'com.roy.downloader'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId 'com.roy.downloader'
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 20230716
         versionName '2023.07.16'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -76,17 +76,17 @@ android {
         }
     }
 
-    android.applicationVariants.all { variant ->
-        variant.outputs.all {
+    android.applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach {
             outputFileName = defaultConfig.applicationId + buildType.name + "_" + defaultConfig.versionName + "_" + defaultConfig.versionCode + ".apk"
         }
     }
 
-    flavorDimensions "type"
+    flavorDimensions.add("type")
     productFlavors {
 
         dev {
-//            applicationId = "com.roygroup.base.dev"
+//            applicationId = "com.roy.downloader.dev"
             dimension "type"
             buildConfigField("String", "FLAVOR_buildEnv", '"dev"')
             resValue "string", "app_name", "Download Manager DEV"
@@ -95,12 +95,12 @@ android {
 //            resValue "string", "BANNER", "18a3d1924d3ebee6"
 //            resValue "string", "INTER", "895d5d41cb20edb7"
 //
-//            resValue "string", "EnableAdInter", "false"
-//            resValue "string", "EnableAdBanner", "false"
+            resValue "string", "EnableAdInter", "false"
+            resValue "string", "EnableAdBanner", "false"
         }
 
         production {
-//            applicationId = "com.roygroup.base.prod"
+//            applicationId = "com.roy.downloader.prod"
             dimension "type"
             buildConfigField("String", "FLAVOR_buildEnv", '"prod"')
             resValue "string", "app_name", "Download Manager"
@@ -109,8 +109,8 @@ android {
 //            resValue "string", "BANNER", "18a3d1924d3ebee6"
 //            resValue "string", "INTER", "895d5d41cb20edb7"
 //
-//            resValue "string", "EnableAdInter", "true"
-//            resValue "string", "EnableAdBanner", "true"
+            resValue "string", "EnableAdInter", "true"
+            resValue "string", "EnableAdBanner", "true"
         }
 
     }
@@ -125,7 +125,7 @@ android {
     }
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     testLogging {
         exceptionFormat 'full'
         events 'started', 'skipped', 'passed', 'failed'
