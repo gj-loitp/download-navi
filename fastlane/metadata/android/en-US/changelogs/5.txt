@@ -1,7 +1,0 @@
- * Bugfixing
- * Added:
-     - Auto connect option for the add dialog
- * Updated current translations
- * New translations:
-     - Hindi
-     - Serbian
