@@ -50,6 +50,15 @@
         android:id="@+id/licenseMenu"
         android:title="@string/license" />
     <item
+        android:id="@+id/helpTranslateTheAppMenu"
+        android:title="@string/help_translate_the_app" />
+    <item
+        android:id="@+id/contributorsAppMenu"
+        android:title="@string/contributors" />
+    <item
+        android:id="@+id/developersAppMenu"
+        android:title="@string/developers" />
+    <item
         android:id="@+id/shutdownAppMenu"
         android:title="@string/shutdown" />
 </menu>

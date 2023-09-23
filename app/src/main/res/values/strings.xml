@@ -329,4 +329,7 @@
     <string name="open_file_location">Open file location</string>
     <string name="github">Github</string>
     <string name="license">License</string>
+    <string name="help_translate_the_app">Help translate the app</string>
+    <string name="contributors">Contributors</string>
+    <string name="developers">Developers</string>
 </resources>

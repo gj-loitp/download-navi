@@ -442,6 +442,12 @@ public class MainActivity extends AppCompatActivity {
             openUrlInBrowser(this, "https://github.com/TachibanaGeneralLaboratories/download-navi");
         } else if (itemId == R.id.licenseMenu) {
             openUrlInBrowser(this, "https://raw.githubusercontent.com/TachibanaGeneralLaboratories/download-navi/master/LICENSE.md");
+        } else if (itemId == R.id.helpTranslateTheAppMenu) {
+            openUrlInBrowser(this, "https://hosted.weblate.org/engage/download-navi/");
+        } else if (itemId == R.id.contributorsAppMenu) {
+            openUrlInBrowser(this, "https://raw.githubusercontent.com/TachibanaGeneralLaboratories/download-navi/master/CONTRIBUTING.md");
+        } else if (itemId == R.id.developersAppMenu) {
+            openUrlInBrowser(this, "https://github.com/proninyaroslav");
         }
 
         return true;
