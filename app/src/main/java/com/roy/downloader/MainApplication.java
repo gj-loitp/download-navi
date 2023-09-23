@@ -18,7 +18,6 @@ import org.acra.data.StringFormat;
 //link tai apk, can tim cach de nhan vao item thi co the install dc apk
 //https://d-11.winudf.com/custom/com.apkpure.aegon-3192247.apk?_fn=QVBLUHVyZV92My4xOS4yMl9hcGtwdXJlLmNvbS5hcGs&_p=Y29tLmFwa3B1cmUuYWVnb24&am=C3PIm0KTpOuOQlATfuWS1Q&arg=apkpure%3A%2F%2Fcampaign%2F%3Futm_medium%3Dapkpure%26utm_source%3Ddetails%26report_context%3D%7B%22id%22%3A%221398309105%22%2C%22channel_id%22%3A%221001%22%7D&at=1689433980&download_id=1994907656740157&k=059100da14636c98de905b47542b59cf64b40942&r=https%3A%2F%2Fapkpure.com%2Fvn%2Fapkpure%2Fcom.apkpure.aegon&uu=http%3A%2F%2F172.16.60.1%2Fcustom%2Fcom.apkpure.aegon-3192247.apk%3Fk%3Db3f3458e88a7f095b2baf13a5ff6228764b40942
 //TODO add background animation
-//TODO github
 //TODO vung bi mat de show applovin config
 //TODO why you see ad
 //TODO custom button selector
@@ -31,6 +30,8 @@ import org.acra.data.StringFormat;
 //policy
 //keystore
 //rename app
+//github
+//license
 
 public class MainApplication extends MultiDexApplication {
     public static final String TAG = MainApplication.class.getSimpleName();

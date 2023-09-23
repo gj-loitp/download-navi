@@ -43,7 +43,12 @@
     <item
         android:id="@+id/policyMenu"
         android:title="@string/term_and_policy" />
-
+    <item
+        android:id="@+id/githubMenu"
+        android:title="@string/github" />
+    <item
+        android:id="@+id/licenseMenu"
+        android:title="@string/license" />
     <item
         android:id="@+id/shutdownAppMenu"
         android:title="@string/shutdown" />

@@ -4,6 +4,7 @@ import static com.roy.downloader.ext.ActivityKt.moreApp;
 import static com.roy.downloader.ext.ActivityKt.rateApp;
 import static com.roy.downloader.ext.ActivityKt.shareApp;
 import static com.roy.downloader.ext.ContextKt.openBrowserPolicy;
+import static com.roy.downloader.ext.ContextKt.openUrlInBrowser;
 
 import android.app.Dialog;
 import android.app.SearchManager;
@@ -177,10 +178,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(DownloadListPagerAdapter.NUM_FRAGMENTS);
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
-                case DownloadListPagerAdapter.QUEUED_FRAG_POS ->
-                        tab.setText(R.string.fragment_title_queued);
-                case DownloadListPagerAdapter.COMPLETED_FRAG_POS ->
-                        tab.setText(R.string.fragment_title_completed);
+                case DownloadListPagerAdapter.QUEUED_FRAG_POS -> tab.setText(R.string.fragment_title_queued);
+                case DownloadListPagerAdapter.COMPLETED_FRAG_POS -> tab.setText(R.string.fragment_title_completed);
             }
         }).attach();
 
@@ -439,6 +438,10 @@ public class MainActivity extends AppCompatActivity {
             shareApp(this);
         } else if (itemId == R.id.policyMenu) {
             openBrowserPolicy(this);
+        } else if (itemId == R.id.githubMenu) {
+            openUrlInBrowser(this, "https://github.com/TachibanaGeneralLaboratories/download-navi");
+        } else if (itemId == R.id.licenseMenu) {
+            openUrlInBrowser(this, "https://raw.githubusercontent.com/TachibanaGeneralLaboratories/download-navi/master/LICENSE.md");
         }
 
         return true;

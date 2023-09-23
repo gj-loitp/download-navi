@@ -11,8 +11,8 @@ android {
         applicationId 'com.roy.downloader'
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 20230716
-        versionName '2023.07.16'
+        versionCode 20230923
+        versionName '2023.09.23'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
