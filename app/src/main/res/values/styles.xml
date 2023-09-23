@@ -195,7 +195,7 @@
         <item name="android:topDark">@color/background_dialog_black</item>
     </style>
 
-    <style name="BaseTheme.EmptyView" parent="@style/TextAppearance.MaterialComponents.Headline4">
+    <style name="BaseTheme.EmptyView" parent="@style/TextAppearance.MaterialComponents.Headline6">
         <item name="android:gravity">center</item>
         <item name="android:visibility">gone</item>
     </style>
