@@ -1,5 +1,7 @@
 package com.roy.downloader;
 
+import static com.roy.downloader.ext.ApplovinKt.setupApplovinAd;
+
 import android.util.Log;
 
 import androidx.multidex.MultiDexApplication;
@@ -44,6 +46,7 @@ public class MainApplication extends MultiDexApplication {
     }
 
     private void setupApp() {
+        setupApplovinAd(this);
         CoreConfigurationBuilder builder = new CoreConfigurationBuilder();
         builder
                 .withBuildConfigClass(BuildConfig.class)
