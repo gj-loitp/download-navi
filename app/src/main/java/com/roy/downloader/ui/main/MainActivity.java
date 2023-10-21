@@ -17,12 +17,16 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +42,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.applovin.mediation.MaxAd;
+import com.applovin.mediation.MaxAdListener;
+import com.applovin.mediation.MaxError;
 import com.applovin.mediation.ads.MaxAdView;
+import com.applovin.mediation.ads.MaxInterstitialAd;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -48,6 +56,7 @@ import com.h6ah4i.android.widget.advrecyclerview.animator.RefactoredDefaultItemA
 import com.h6ah4i.android.widget.advrecyclerview.expandable.RecyclerViewExpandableItemManager;
 
 import com.roy.downloader.R;
+import com.roy.downloader.generated.callback.OnClickListener;
 import com.roy.downloader.ui.BatteryOptimizationDialog;
 import com.roy.downloader.ui.DialogPermissionDenied;
 import com.roy.downloader.core.RepositoryHelper;
@@ -66,6 +75,7 @@ import com.roy.downloader.ui.main.drawer.DrawerGroupItem;
 import com.roy.downloader.ui.settings.ActivitySettings;
 
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -97,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
     private PermissionManager permissionManager;
 
     private MaxAdView adView = null;
+    private MaxInterstitialAd interstitialAd = null;
+    private int retryAttempt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         adView = createAdBanner(this, getClass().getSimpleName(), Color.TRANSPARENT, findViewById(R.id.flAd), true);
+        createAdInter();
     }
 
     @Override
@@ -198,7 +211,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }).attach();
 
-        fab.setOnClickListener((v) -> startActivity(new Intent(this, ActivityAddDownload.class)));
+        fab.setOnClickListener(v -> showAd(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(MainActivity.this, ActivityAddDownload.class));
+            }
+        }));
     }
 
     private void initDrawer() {
@@ -511,5 +529,81 @@ public class MainActivity extends AppCompatActivity {
         i.setAction(DownloadService.ACTION_SHUTDOWN);
         startService(i);
         finish();
+    }
+
+    private void createAdInter() {
+        boolean enableAdInter = Objects.equals(getString(R.string.EnableAdInter), "true");
+        if (enableAdInter) {
+            interstitialAd = new MaxInterstitialAd(getString(R.string.INTER), this);
+            if (interstitialAd != null) {
+                interstitialAd.setListener(new MaxAdListener() {
+                    @Override
+                    public void onAdLoaded(MaxAd maxAd) {
+                        Log.d("Applovin", "onAdLoaded");
+                        retryAttempt = 0;
+                    }
+
+                    @Override
+                    public void onAdDisplayed(MaxAd maxAd) {
+                        Log.d("Applovin", "onAdDisplayed");
+                    }
+
+                    @Override
+                    public void onAdHidden(MaxAd maxAd) {
+                        Log.d("Applovin", "onAdHidden");
+                        interstitialAd.loadAd();
+                    }
+
+                    @Override
+                    public void onAdClicked(MaxAd maxAd) {
+                        Log.d("Applovin", "onAdClicked");
+                    }
+
+                    @Override
+                    public void onAdLoadFailed(String s, MaxError maxError) {
+                        Log.d("Applovin", "onAdLoadFailed " + maxError.toString());
+                        retryAttempt++;
+
+                        final Handler handler = new Handler();
+                        handler.postDelayed(() -> {
+                            if (!isDestroyed() && interstitialAd != null) {
+                                interstitialAd.loadAd();
+                            }
+                        }, 5000);
+                    }
+
+                    @Override
+                    public void onAdDisplayFailed(MaxAd maxAd, MaxError maxError) {
+                        Log.d("Applovin", "onAdDisplayFailed " + maxError.toString());
+                        interstitialAd.loadAd();
+                    }
+                });
+                interstitialAd.loadAd();
+            }
+        }
+    }
+
+    private void showAd(Runnable runnable) {
+        boolean enableAdInter = Objects.equals(getString(R.string.EnableAdInter), "true");
+        Log.d("Applovin", "showAd enableAdInter " + enableAdInter);
+        if (enableAdInter) {
+            if (interstitialAd != null) {
+                if (interstitialAd.isReady()) {
+                    interstitialAd.showAd();
+                    runnable.run();
+                    Log.d("Applovin", "showAd 1");
+                } else {
+                    runnable.run();
+                    Log.d("Applovin", "showAd 2");
+                }
+            } else {
+                runnable.run();
+                Log.d("Applovin", "showAd 3");
+            }
+        } else {
+            Toast.makeText(this, "Applovin show ad Inter in debug mode", Toast.LENGTH_SHORT).show();
+            runnable.run();
+            Log.d("Applovin", "showAd 4");
+        }
     }
 }
