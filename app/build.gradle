@@ -91,9 +91,9 @@ android {
             buildConfigField("String", "FLAVOR_buildEnv", '"dev"')
             resValue "string", "app_name", "Download Manager DEV"
 
-//            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
-//            resValue "string", "BANNER", "18a3d1924d3ebee6"
-//            resValue "string", "INTER", "895d5d41cb20edb7"
+            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
+            resValue "string", "BANNER", "66ba7c5d90f2f0a1"
+            resValue "string", "INTER", "4b8252ea220f9802"
 //
             resValue "string", "EnableAdInter", "false"
             resValue "string", "EnableAdBanner", "false"
@@ -105,9 +105,9 @@ android {
             buildConfigField("String", "FLAVOR_buildEnv", '"prod"')
             resValue "string", "app_name", "Download Manager"
 
-//            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
-//            resValue "string", "BANNER", "18a3d1924d3ebee6"
-//            resValue "string", "INTER", "895d5d41cb20edb7"
+            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
+            resValue "string", "BANNER", "66ba7c5d90f2f0a1"
+            resValue "string", "INTER", "4b8252ea220f9802"
 //
             resValue "string", "EnableAdInter", "true"
             resValue "string", "EnableAdBanner", "true"
@@ -185,6 +185,8 @@ dependencies {
     implementation 'com.github.albfernandez:juniversalchardet:2.4.0'
     implementation 'org.apache.commons:commons-compress:1.23.0'
     implementation 'org.tukaani:xz:1.9'
+
+    implementation 'com.applovin:applovin-sdk:11.11.3'
 
     api 'org.jetbrains.kotlin:kotlin-stdlib:1.9.10'
 //    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
