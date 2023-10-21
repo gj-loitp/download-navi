@@ -61,4 +61,7 @@
     <item
         android:id="@+id/shutdownAppMenu"
         android:title="@string/shutdown" />
+    <item
+        android:id="@+id/applovinConfig"
+        android:title="@string/show_mediation_debugger_applovin" />
 </menu>

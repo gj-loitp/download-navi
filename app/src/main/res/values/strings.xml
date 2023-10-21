@@ -332,4 +332,5 @@
     <string name="help_translate_the_app">Help translate the app</string>
     <string name="contributors">Contributors</string>
     <string name="developers">Developers</string>
+    <string name="show_mediation_debugger_applovin">Show mediation debugger Applovin</string>
 </resources>

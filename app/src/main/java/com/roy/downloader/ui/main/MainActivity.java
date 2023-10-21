@@ -3,6 +3,7 @@ package com.roy.downloader.ui.main;
 import static com.roy.downloader.ext.ActivityKt.moreApp;
 import static com.roy.downloader.ext.ActivityKt.rateApp;
 import static com.roy.downloader.ext.ActivityKt.shareApp;
+import static com.roy.downloader.ext.ApplovinKt.showMediationDebuggerApplovin;
 import static com.roy.downloader.ext.ContextKt.openBrowserPolicy;
 import static com.roy.downloader.ext.ContextKt.openUrlInBrowser;
 
@@ -448,6 +449,8 @@ public class MainActivity extends AppCompatActivity {
             openUrlInBrowser(this, "https://raw.githubusercontent.com/TachibanaGeneralLaboratories/download-navi/master/CONTRIBUTING.md");
         } else if (itemId == R.id.developersAppMenu) {
             openUrlInBrowser(this, "https://github.com/proninyaroslav");
+        } else if (itemId == R.id.applovinConfig) {
+            showMediationDebuggerApplovin(this);
         }
 
         return true;
