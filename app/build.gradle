@@ -95,8 +95,8 @@ android {
             resValue "string", "BANNER", "66ba7c5d90f2f0a1"
             resValue "string", "INTER", "4b8252ea220f9802"
 //
-            resValue "string", "EnableAdInter", "false"
-            resValue "string", "EnableAdBanner", "false"
+            resValue "string", "EnableAdInter", "true"
+            resValue "string", "EnableAdBanner", "true"
         }
 
         production {

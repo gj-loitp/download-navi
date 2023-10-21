@@ -23,13 +23,24 @@
             app:tabMaxWidth="0dp"
             app:tabMode="fixed" />
 
+        <FrameLayout
+            android:id="@+id/flAd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/downloadListTabs"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            tools:background="@color/primary"
+            tools:layout_height="50dp" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/downloadListViewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/downloadListTabs"
+            android:layout_below="@id/flAd"
             android:background="?attr/background"
             android:nextFocusDown="@id/addFab" />
+
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

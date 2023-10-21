@@ -3,6 +3,8 @@ package com.roy.downloader.ui.main;
 import static com.roy.downloader.ext.ActivityKt.moreApp;
 import static com.roy.downloader.ext.ActivityKt.rateApp;
 import static com.roy.downloader.ext.ActivityKt.shareApp;
+import static com.roy.downloader.ext.ApplovinKt.createAdBanner;
+import static com.roy.downloader.ext.ApplovinKt.destroyAdBanner;
 import static com.roy.downloader.ext.ApplovinKt.showMediationDebuggerApplovin;
 import static com.roy.downloader.ext.ContextKt.openBrowserPolicy;
 import static com.roy.downloader.ext.ContextKt.openUrlInBrowser;
@@ -12,6 +14,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -35,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.applovin.mediation.ads.MaxAdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -92,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
     private BatteryOptimizationDialog batteryDialog;
     private PermissionManager permissionManager;
 
+    private MaxAdView adView = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(Utils.getAppTheme(getApplicationContext()));
@@ -147,6 +153,14 @@ public class MainActivity extends AppCompatActivity {
         if (Utils.shouldShowBatteryOptimizationDialog(this)) {
             showBatteryOptimizationDialog();
         }
+
+        adView = createAdBanner(this, getClass().getSimpleName(), Color.TRANSPARENT, findViewById(R.id.flAd), true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        destroyAdBanner(findViewById(R.id.flAd), adView);
+        super.onDestroy();
     }
 
     private void initLayout() {
