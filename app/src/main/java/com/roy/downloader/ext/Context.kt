@@ -32,7 +32,7 @@ fun Context.isDefaultLauncher(): Boolean {
 
 //mo app setting default cua device
 fun Context.launchSystemSetting(
-    packageName: String
+    packageName: String,
 ) {
     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
     intent.data = Uri.parse("package:$packageName")
@@ -58,19 +58,16 @@ fun Context.openBrowserPolicy(
 }
 
 fun Context?.openUrlInBrowser(
-    url: String?
+    url: String?,
 ) {
     if (this == null || url.isNullOrEmpty()) {
         return
     }
     try {
-        val defaultBrowser =
-            Intent.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_APP_BROWSER)
-        defaultBrowser.data = Uri.parse(url)
-        this.startActivity(defaultBrowser)
-    } catch (e: Exception) {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(url)
         this.startActivity(i)
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 }
