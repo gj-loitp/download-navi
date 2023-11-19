@@ -11,8 +11,8 @@ android {
         applicationId 'com.roy.downloader'
         minSdkVersion 21
         targetSdkVersion 34
-        versionCode 20231021
-        versionName '2023.10.21'
+        versionCode 20231119
+        versionName '2023.11.19'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -95,8 +95,8 @@ android {
             resValue "string", "BANNER", "66ba7c5d90f2f0a1"
             resValue "string", "INTER", "4b8252ea220f9802"
 //
-            resValue "string", "EnableAdInter", "true"
-            resValue "string", "EnableAdBanner", "true"
+            resValue "string", "EnableAdInter", "false"
+            resValue "string", "EnableAdBanner", "false"
         }
 
         production {

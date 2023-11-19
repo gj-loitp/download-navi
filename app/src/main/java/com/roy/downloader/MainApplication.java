@@ -23,7 +23,7 @@ import org.acra.data.StringFormat;
 //TODO custom button selector
 
 //done
-//ic_launcher
+//ic_launcher gen https://easyappicon.com/
 //proguard
 //leak canary
 //rate, more app, share app
